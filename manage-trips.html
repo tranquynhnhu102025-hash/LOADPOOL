@@ -10,29 +10,34 @@
 </head>
 <body>
 
-
     <nav class="sidebar py-3">
         <div class="sidebar-brand text-center pb-3 mb-3">
             <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
         </div>
         <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm AI (Train)</a>
         <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe (Chiều về)</a>
+        <a href="manage-trips.html" class="active"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
         <a href="users.html"><i class="fa-solid fa-users me-3"></i>Nông dân & Tiểu thương</a>
         <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Khiếu nại</a>
     </nav>
-
 
     <div class="main-content">
         
         <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
             <div>
                 <h3 class="fw-bold text-dark m-0">Quản lý Chuyến xe</h3>
-                <p class="text-muted m-0">Theo dõi tiến độ ghép đơn và điều phối phương tiện</p>
+                <p class="text-muted m-0">Theo dõi tiến độ ghép đơn và điều phối phương tiện chiều về</p>
             </div>
             <div class="d-flex align-items-center">
+                <a href="create-order.html" class="btn btn-success btn-sm fw-bold me-3 px-3 py-2 rounded-pill shadow-sm">
+                    <i class="fa-solid fa-plus me-1"></i> Thêm đơn ghép mới
+                </a>
                 <button class="btn btn-light position-relative me-3 rounded-circle" style="width: 45px; height: 45px;">
                     <i class="fa-regular fa-bell text-secondary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
                 </button>
                 <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm">
                     <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="35">
@@ -41,139 +46,64 @@
             </div>
         </div>
 
+        <!-- Bộ lọc tìm kiếm hoạt động thật -->
         <div class="row mb-4 g-3">
             <div class="col-md-4">
                 <div class="input-group shadow-sm">
                     <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                    <input type="text" class="form-control border-start-0" placeholder="Tìm mã chuyến, biển số xe...">
+                    <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Tìm mã chuyến, biển số, nông sản, tài xế...">
                 </div>
             </div>
             <div class="col-md-3">
-                <select class="form-select shadow-sm">
+                <select class="form-select shadow-sm" id="statusFilter">
                     <option value="">Tất cả trạng thái</option>
-                    <option value="1">Đang gom tải</option>
-                    <option value="2">Đã chốt xe (Chờ bốc hàng)</option>
-                    <option value="3">Đang di chuyển</option>
+                    <option value="pooling">Đang gom tải</option>
+                    <option value="matched">Đã chốt xe (Chờ bốc hàng)</option>
+                    <option value="moving">Đang di chuyển</option>
                 </select>
             </div>
             <div class="col-md-3">
-                <select class="form-select shadow-sm">
+                <select class="form-select shadow-sm" id="routeFilter">
                     <option value="">Tất cả tuyến đường</option>
-                    <option value="LA">Long An - TP.HCM</option>
-                    <option value="TG">Tiền Giang - TP.HCM</option>
-                    <option value="DT">Đồng Tháp - TP.HCM</option>
+                    <option value="LA">Long An ➔ TP.HCM</option>
+                    <option value="TG">Tiền Giang ➔ TP.HCM</option>
+                    <option value="DT">Đồng Tháp ➔ TP.HCM</option>
                 </select>
             </div>
             <div class="col-md-2 text-end">
-                <button class="btn btn-success shadow-sm w-100 fw-bold"><i class="fa-solid fa-filter me-2"></i>Lọc dữ liệu</button>
+                <button class="btn btn-outline-secondary shadow-sm w-100 fw-bold" onclick="resetFilters()">
+                    <i class="fa-solid fa-rotate-left me-1"></i>Đặt lại
+                </button>
             </div>
         </div>
 
+        <!-- Bảng danh sách chuyến xe -->
         <div class="card table-card">
             <div class="table-responsive">
                 <table class="table table-hover m-0">
                     <thead>
                         <tr>
                             <th>Mã Chuyến</th>
-                            <th>Tuyến Đường</th>
+                            <th>Tuyến Đường & Hàng Hóa</th>
                             <th>Phương Tiện / Tài Xế</th>
-                            <th style="width: 200px;">Tiến Độ Gom Tải</th>
+                            <th style="width: 220px;">Tiến Độ Gom Tải</th>
                             <th>Trạng Thái</th>
                             <th class="text-center">Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                        <tr>
-                            <td><span class="fw-bold text-success">#TRP-1042</span><br><small class="text-muted">Hôm nay, 14:30</small></td>
-                            <td>
-                                <div class="fw-bold text-dark">Long An <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Thủ Đức</div>
-                                <small class="text-muted">Bí đỏ hồ lô</small>
-                            </td>
-                            <td>
-                                <div class="fw-bold">51C-123.45 <span class="badge bg-light text-dark border ms-1">5 Tấn</span></div>
-                                <small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>Nguyễn Văn An</small>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
-                                    <span>5.0 Tấn</span>
-                                    <span class="fw-bold text-dark">100%</span>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-info" style="width: 100%;"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-info bg-opacity-10 text-info border border-info badge-status">Đã chốt xe</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('TRP-1042')" title="Xem chi tiết"><i class="fa-solid fa-eye"></i></button>
-                                <button class="btn btn-light border action-btn text-danger" onclick="cancelTrip('TRP-1042')" title="Hủy chuyến"><i class="fa-solid fa-ban"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><span class="fw-bold text-success">#TRP-1043</span><br><small class="text-muted">Hôm nay, 16:00</small></td>
-                            <td>
-                                <div class="fw-bold text-dark">Tiền Giang <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Bình Điền</div>
-                                <small class="text-muted">Thanh long (Sọt nhựa)</small>
-                            </td>
-                            <td>
-                                <div class="fw-bold text-muted fst-italic">Chưa có xe nhận</div>
-                                <small class="text-warning"><i class="fa-solid fa-radar me-1"></i>Đang phát sóng ghép tải</small>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
-                                    <span>3.5/5.0 Tấn</span>
-                                    <span class="fw-bold text-dark">70%</span>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: 70%;"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-warning bg-opacity-10 text-warning border border-warning badge-status">Đang gom tải</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('TRP-1043')"><i class="fa-solid fa-eye"></i></button>
-                                <button class="btn btn-light border action-btn text-danger" onclick="cancelTrip('TRP-1043')"><i class="fa-solid fa-ban"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><span class="fw-bold text-success">#TRP-1040</span><br><small class="text-muted">Hôm qua, 22:15</small></td>
-                            <td>
-                                <div class="fw-bold text-dark">Đồng Tháp <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Hóc Môn</div>
-                                <small class="text-muted">Xoài cát Hòa Lộc</small>
-                            </td>
-                            <td>
-                                <div class="fw-bold">66H-789.01 <span class="badge bg-light text-dark border ms-1">3 Tấn</span></div>
-                                <small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>Trần Hữu Lộc</small>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
-                                    <span>3.0 Tấn</span>
-                                    <span class="fw-bold text-dark">100%</span>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-success" style="width: 100%;"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success bg-opacity-10 text-success border border-success badge-status"><i class="fa-solid fa-truck-moving me-1"></i>Đang di chuyển</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('TRP-1040')"><i class="fa-solid fa-eye"></i></button>
-                                <button class="btn btn-light border action-btn text-secondary" disabled><i class="fa-solid fa-ban"></i></button>
-                            </td>
-                        </tr>
+                    <tbody id="tripsTableBody">
+                        <!-- Dữ liệu được render tự động bằng JS -->
                     </tbody>
                 </table>
             </div>
             
             <div class="card-footer bg-white p-3 d-flex justify-content-between align-items-center border-top">
-                <small class="text-muted">Hiển thị 1 đến 3 trong số 45 chuyến xe</small>
-                <ul class="pagination pagination-sm m-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
-                    <li class="page-item active"><a class="page-link bg-success border-success" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-success" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link text-success" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link text-success" href="#">Sau</a></li>
-                </ul>
+                <small class="text-muted" id="tableCountInfo">Hiển thị 3 chuyến xe</small>
+                <div class="d-flex gap-2 align-items-center">
+                    <button class="btn btn-sm btn-outline-danger" onclick="clearCustomOrders()" title="Xóa các đơn thử nghiệm vừa tạo">
+                        <i class="fa-solid fa-trash-can me-1"></i>Reset dữ liệu mẫu
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -182,17 +112,200 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
+        // 1. Dữ liệu mặc định ban đầu (Chuẩn hóa chi tiết riêng cho từng chuyến)
+        const defaultTrips = [
+            {
+                tripId: 'TRP-1042',
+                routeCode: 'LA',
+                from: 'Tân Thạnh, Long An',
+                to: 'Chợ Thủ Đức',
+                crop: 'Bí đỏ hồ lô (Đóng sọt 20kg)',
+                plate: '51C-123.45',
+                truckType: '5 Tấn',
+                driver: 'Nguyễn Văn An (0903.111.222)',
+                tons: 5.0,
+                maxTons: 5.0,
+                time: 'Hôm nay, 14:30',
+                status: 'matched', // 'pooling' | 'matched' | 'moving'
+                farmersCount: '5 hộ nông dân & tiểu thương ghép chung',
+                cost: '2.800.000 VNĐ (560.000đ/tấn)',
+                hubName: 'Hub 01 - Bưu điện xã Tân Thạnh, Long An'
+            },
+            {
+                tripId: 'TRP-1043',
+                routeCode: 'TG',
+                from: 'Châu Thành, Tiền Giang',
+                to: 'Chợ Bình Điền',
+                crop: 'Thanh long ruột đỏ (Sọt nhựa)',
+                plate: null,
+                truckType: '5 Tấn',
+                driver: null,
+                tons: 3.5,
+                maxTons: 5.0,
+                time: 'Hôm nay, 16:00',
+                status: 'pooling',
+                farmersCount: '3 hộ nông dân (Còn trống 1.5 Tấn)',
+                cost: '1.960.000 VNĐ (Tạm tính theo tỷ lệ 70%)',
+                hubName: 'Hub 02 - HTX Nông nghiệp Châu Thành, Tiền Giang'
+            },
+            {
+                tripId: 'TRP-1040',
+                routeCode: 'DT',
+                from: 'Cao Lãnh, Đồng Tháp',
+                to: 'Chợ Hóc Môn',
+                crop: 'Xoài cát Hòa Lộc (Thùng Carton 15kg)',
+                plate: '66H-789.01',
+                truckType: '3 Tấn',
+                driver: 'Trần Hữu Lộc (0918.555.666)',
+                tons: 3.0,
+                maxTons: 3.0,
+                time: 'Hôm qua, 22:15',
+                status: 'moving',
+                farmersCount: '4 hộ nông dân HTX Cao Lãnh',
+                cost: '2.100.000 VNĐ (Đã khóa ví Escrow)',
+                hubName: 'Hub 03 - Chợ đầu mối nông sản, Đồng Tháp'
+            }
+        ];
 
+        let allTrips = [];
+
+        // 2. Nạp dữ liệu từ localStorage + Dữ liệu mặc định
+        function loadTripsData() {
+            const customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
+            const convertedCustom = customOrders.map(order => ({
+                tripId: order.tripId.replace('#', ''),
+                routeCode: order.routeCode || 'LA',
+                from: order.from,
+                to: order.to,
+                crop: `${order.crop} (${order.creator || 'Nông dân'})`,
+                plate: order.plate || null,
+                truckType: '5 Tấn',
+                driver: order.driver || null,
+                tons: order.tons,
+                maxTons: order.maxTons || 5.0,
+                time: order.time,
+                status: order.status || (order.tons >= 4.0 ? 'matched' : 'pooling'),
+                farmersCount: `Chủ hàng khởi tạo: ${order.creator || 'Lê Văn Sang'}`,
+                cost: `${order.cost} (Cước chia sẻ qua LOADPOOL)`,
+                hubName: `Trạm tập kết Hub ${order.from}`
+            }));
+
+            allTrips = [...convertedCustom, ...defaultTrips];
+            renderTable();
+        }
+
+        // 3. Render bảng dựa theo bộ lọc
+        function renderTable() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const statusVal = document.getElementById('statusFilter').value;
+            const routeVal = document.getElementById('routeFilter').value;
+
+            const filtered = allTrips.filter(t => {
+                const matchKeyword = !keyword || 
+                    t.tripId.toLowerCase().includes(keyword) ||
+                    t.crop.toLowerCase().includes(keyword) ||
+                    t.from.toLowerCase().includes(keyword) ||
+                    t.to.toLowerCase().includes(keyword) ||
+                    (t.plate && t.plate.toLowerCase().includes(keyword)) ||
+                    (t.driver && t.driver.toLowerCase().includes(keyword));
+                
+                const matchStatus = !statusVal || t.status === statusVal;
+                const matchRoute = !routeVal || t.routeCode === routeVal;
+                return matchKeyword && matchStatus && matchRoute;
+            });
+
+            const tbody = document.getElementById('tripsTableBody');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Không tìm thấy chuyến xe nào phù hợp với bộ lọc.</td></tr>`;
+                document.getElementById('tableCountInfo').innerText = 'Hiển thị 0 chuyến xe';
+                return;
+            }
+
+            filtered.forEach(t => {
+                const percent = Math.min(100, Math.round((t.tons / t.maxTons) * 100));
+                
+                // Cột Phương tiện / Tài xế
+                let vehicleHtml = '';
+                if (t.plate) {
+                    vehicleHtml = `
+                        <div class="fw-bold">${t.plate} <span class="badge bg-light text-dark border ms-1">${t.truckType}</span></div>
+                        <small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>${t.driver}</small>
+                    `;
+                } else {
+                    vehicleHtml = `
+                        <div class="fw-bold text-muted fst-italic">Chưa có xe nhận</div>
+                        <small class="text-warning fw-bold"><i class="fa-solid fa-satellite-dish me-1"></i>Đang phát sóng ghép tải</small>
+                    `;
+                }
+
+                // Cột Thanh tiến độ & Badge Trạng thái
+                let progressBarClass = 'bg-warning progress-bar-striped progress-bar-animated';
+                let statusBadgeHtml = `<span class="badge bg-warning bg-opacity-10 text-warning border border-warning badge-status">Đang gom tải</span>`;
+                let assignBtnHtml = `<button class="btn btn-light border action-btn text-success me-1" onclick="assignDriver('${t.tripId}')" title="Điều phối xe rỗng chiều về"><i class="fa-solid fa-truck-medical"></i></button>`;
+                let cancelDisabled = '';
+
+                if (t.status === 'matched') {
+                    progressBarClass = 'bg-info';
+                    statusBadgeHtml = `<span class="badge bg-info bg-opacity-10 text-info border border-info badge-status">Đã chốt xe</span>`;
+                    assignBtnHtml = '';
+                } else if (t.status === 'moving') {
+                    progressBarClass = 'bg-success';
+                    statusBadgeHtml = `<span class="badge bg-success bg-opacity-10 text-success border border-success badge-status"><i class="fa-solid fa-truck-moving me-1"></i>Đang di chuyển</span>`;
+                    assignBtnHtml = '';
+                    cancelDisabled = 'disabled';
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="fw-bold text-success">#${t.tripId}</span><br><small class="text-muted">${t.time}</small></td>
+                    <td>
+                        <div class="fw-bold text-dark">${t.from} <i class="fa-solid fa-arrow-right text-muted mx-1"></i> ${t.to}</div>
+                        <small class="text-muted">${t.crop}</small>
+                    </td>
+                    <td>${vehicleHtml}</td>
+                    <td>
+                        <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
+                            <span>${t.tons.toFixed(1)}/${t.maxTons.toFixed(1)} Tấn</span>
+                            <span class="fw-bold text-dark">${percent}%</span>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar ${progressBarClass}" style="width: ${percent}%;"></div>
+                        </div>
+                    </td>
+                    <td>${statusBadgeHtml}</td>
+                    <td class="text-center">
+                        ${assignBtnHtml}
+                        <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('${t.tripId}')" title="Xem chi tiết"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn btn-light border action-btn ${cancelDisabled ? 'text-secondary' : 'text-danger'}" onclick="cancelTrip('${t.tripId}')" ${cancelDisabled} title="Hủy chuyến"><i class="fa-solid fa-ban"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('tableCountInfo').innerText = `Hiển thị ${filtered.length} trên tổng số ${allTrips.length} chuyến xe`;
+        }
+
+        // 4. Xem chi tiết đúng theo từng chuyến xe
         function viewDetails(tripId) {
+            const trip = allTrips.find(item => item.tripId === tripId);
+            if (!trip) return;
+
+            const percent = Math.min(100, Math.round((trip.tons / trip.maxTons) * 100));
             Swal.fire({
-                title: `Chi tiết chuyến #${tripId}`,
+                title: `Chi tiết chuyến #${trip.tripId}`,
                 html: `
-                    <div class="text-start mt-3">
-                        <p><strong><i class="fa-solid fa-box text-success me-2"></i>Hàng hóa:</strong> Bí đỏ hồ lô (Đóng sọt 20kg)</p>
-                        <p><strong><i class="fa-solid fa-users text-success me-2"></i>Đơn ghép:</strong> 4 Nông dân tham gia</p>
-                        <p><strong><i class="fa-solid fa-money-bill-wave text-success me-2"></i>Tiền cước tạm tính:</strong> 2.800.000 VNĐ</p>
+                    <div class="text-start mt-3" style="font-size: 0.92rem;">
+                        <p class="mb-2"><strong><i class="fa-solid fa-location-dot text-danger me-2"></i>Điểm tập kết:</strong> ${trip.hubName}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-route text-success me-2"></i>Lộ trình:</strong> ${trip.from} ➔ ${trip.to}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-box text-success me-2"></i>Nông sản:</strong> ${trip.crop}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-weight-hanging text-primary me-2"></i>Tải trọng đã gom:</strong> ${trip.tons}/${trip.maxTons} Tấn (${percent}%)</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-users text-success me-2"></i>Thành viên ghép:</strong> ${trip.farmersCount}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-truck text-dark me-2"></i>Phương tiện:</strong> ${trip.plate ? `${trip.plate} (${trip.driver})` : '<span class="text-warning fw-bold">Đang chờ gán xe chiều về</span>'}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success me-2"></i>Tổng cước phí:</strong> <span class="text-danger fw-bold">${trip.cost}</span></p>
                         <hr>
-                        <p class="text-muted mb-0"><small>Hệ thống tự động tính cước và giữ tiền trong ví Escrow chờ xác nhận giao hàng.</small></p>
+                        <p class="text-muted mb-0"><small><i class="fa-solid fa-shield-halved text-success me-1"></i>Tiền cước và tiền cọc được bảo vệ trong ví trung gian Escrow cho đến khi bàn giao đủ cân tại điểm đích.</small></p>
                     </div>
                 `,
                 confirmButtonColor: '#198754',
@@ -200,10 +313,47 @@
             });
         }
 
+        // 5. Tính năng Điều phối / Gán xe tải rỗng chiều về cho chuyến đang gom
+        function assignDriver(tripId) {
+            const trip = allTrips.find(item => item.tripId === tripId);
+            if (!trip) return;
+
+            Swal.fire({
+                title: `Điều phối xe cho #${trip.tripId}`,
+                html: `
+                    <div class="text-start">
+                        <p class="small text-muted mb-2">Hệ thống GPS phát hiện <strong>3 xe tải rỗng chiều về</strong> đang ở gần trạm Hub <b>${trip.from}</b>:</p>
+                        <select id="driverSelectModal" class="form-select mb-3">
+                            <option value="62C-456.78|Lê Hoàng Nam (0909.888.777)">62C-456.78 (Xe 5 Tấn) - Tài xế: Lê Hoàng Nam (Cách Hub 3.2km)</option>
+                            <option value="63C-999.12|Phạm Văn Tùng (0914.222.333)">63C-999.12 (Xe 5 Tấn) - Tài xế: Phạm Văn Tùng (Cách Hub 5.8km)</option>
+                            <option value="51D-345.67|Trương Minh Tuấn (0982.444.555)">51D-345.67 (Xe 5 Tấn) - Tài xế: Trương Minh Tuấn (Cách Hub 8.1km)</option>
+                        </select>
+                        <div class="alert alert-success py-2 small mb-0">
+                            <i class="fa-solid fa-check-circle me-1"></i> Chốt xe ngay giúp tận dụng chiều về rỗng và giữ mức tiết kiệm 44.4% cho nông dân.
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                cancelButtonText: 'Đóng',
+                confirmButtonText: 'Xác nhận Chốt xe'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    const val = document.getElementById('driverSelectModal').value.split('|');
+                    trip.plate = val[0];
+                    trip.driver = val[1];
+                    trip.status = 'matched';
+                    renderTable();
+                    Swal.fire('Đã chốt phương tiện!', `Xe ${trip.plate} đã nhận lệnh đến Hub bốc hàng.`, 'success');
+                }
+            });
+        }
+
+        // 6. Hủy chuyến xe
         function cancelTrip(tripId) {
             Swal.fire({
                 title: 'Hủy chuyến xe?',
-                text: `Bạn có chắc chắn muốn hủy chuyến ${tripId}? Các đơn hàng lẻ sẽ được trả về trạng thái chờ ghép mới.`,
+                text: `Bạn có chắc chắn muốn hủy chuyến #${tripId}? Các đơn hàng lẻ sẽ được hoàn cọc Escrow và trả về hàng đợi ghép mới.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545',
@@ -212,15 +362,38 @@
                 cancelButtonText: 'Quay lại'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Đã hủy!',
-                        text: 'Chuyến xe đã được hủy và tách đơn thành công.',
-                        icon: 'success',
-                        confirmButtonColor: '#198754'
-                    });
+                    allTrips = allTrips.filter(item => item.tripId !== tripId);
+                    // Xóa trong localStorage nếu là đơn mới tạo
+                    let customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
+                    customOrders = customOrders.filter(o => o.tripId.replace('#', '') !== tripId);
+                    localStorage.setItem('loadpool_custom_orders', JSON.stringify(customOrders));
+
+                    renderTable();
+                    Swal.fire('Đã hủy!', 'Chuyến xe đã được hủy và tách đơn thành công.', 'success');
                 }
             });
         }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('routeFilter').value = '';
+            renderTable();
+        }
+
+        function clearCustomOrders() {
+            localStorage.removeItem('loadpool_custom_orders');
+            loadTripsData();
+            Swal.fire({ icon: 'info', title: 'Đã khôi phục dữ liệu gốc', timer: 1200, showConfirmButton: false });
+        }
+
+        // Lắng nghe sự kiện gõ tìm kiếm và chọn lọc
+        document.getElementById('searchInput').addEventListener('input', renderTable);
+        document.getElementById('statusFilter').addEventListener('change', renderTable);
+        document.getElementById('routeFilter').addEventListener('change', renderTable);
+
+        // Khởi chạy khi mở trang
+        loadTripsData();
     </script>
 </body>
 </html>
