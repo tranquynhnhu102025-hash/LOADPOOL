@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Chuyến Xe - LOADPOOL Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+
+    <nav class="sidebar py-3">
+        <div class="sidebar-brand text-center pb-3 mb-3">
+            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        </div>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
+        <a href="users.html"><i class="fa-solid fa-users me-3"></i>Nông dân & Tiểu thương</a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Khiếu nại</a>
+    </nav>
+
+
+    <div class="main-content">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+            <div>
+                <h3 class="fw-bold text-dark m-0">Quản lý Chuyến xe</h3>
+                <p class="text-muted m-0">Theo dõi tiến độ ghép đơn và điều phối phương tiện</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-light position-relative me-3 rounded-circle" style="width: 45px; height: 45px;">
+                    <i class="fa-regular fa-bell text-secondary"></i>
+                </button>
+                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm">
+                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="35">
+                    <span class="fw-bold text-dark" style="font-size: 0.9rem;">Admin Như</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4 g-3">
+            <div class="col-md-4">
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="Tìm mã chuyến, biển số xe...">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select shadow-sm">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="1">Đang gom tải</option>
+                    <option value="2">Đã chốt xe (Chờ bốc hàng)</option>
+                    <option value="3">Đang di chuyển</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select shadow-sm">
+                    <option value="">Tất cả tuyến đường</option>
+                    <option value="LA">Long An - TP.HCM</option>
+                    <option value="TG">Tiền Giang - TP.HCM</option>
+                    <option value="DT">Đồng Tháp - TP.HCM</option>
+                </select>
+            </div>
+            <div class="col-md-2 text-end">
+                <button class="btn btn-success shadow-sm w-100 fw-bold"><i class="fa-solid fa-filter me-2"></i>Lọc dữ liệu</button>
+            </div>
+        </div>
+
+        <div class="card table-card">
+            <div class="table-responsive">
+                <table class="table table-hover m-0">
+                    <thead>
+                        <tr>
+                            <th>Mã Chuyến</th>
+                            <th>Tuyến Đường</th>
+                            <th>Phương Tiện / Tài Xế</th>
+                            <th style="width: 200px;">Tiến Độ Gom Tải</th>
+                            <th>Trạng Thái</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td><span class="fw-bold text-success">#TRP-1042</span><br><small class="text-muted">Hôm nay, 14:30</small></td>
+                            <td>
+                                <div class="fw-bold text-dark">Long An <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Thủ Đức</div>
+                                <small class="text-muted">Bí đỏ hồ lô</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold">51C-123.45 <span class="badge bg-light text-dark border ms-1">5 Tấn</span></div>
+                                <small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>Nguyễn Văn An</small>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
+                                    <span>5.0 Tấn</span>
+                                    <span class="fw-bold text-dark">100%</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-info" style="width: 100%;"></div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-info bg-opacity-10 text-info border border-info badge-status">Đã chốt xe</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('TRP-1042')" title="Xem chi tiết"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn btn-light border action-btn text-danger" onclick="cancelTrip('TRP-1042')" title="Hủy chuyến"><i class="fa-solid fa-ban"></i></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="fw-bold text-success">#TRP-1043</span><br><small class="text-muted">Hôm nay, 16:00</small></td>
+                            <td>
+                                <div class="fw-bold text-dark">Tiền Giang <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Bình Điền</div>
+                                <small class="text-muted">Thanh long (Sọt nhựa)</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-muted fst-italic">Chưa có xe nhận</div>
+                                <small class="text-warning"><i class="fa-solid fa-radar me-1"></i>Đang phát sóng ghép tải</small>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
+                                    <span>3.5/5.0 Tấn</span>
+                                    <span class="fw-bold text-dark">70%</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: 70%;"></div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-warning bg-opacity-10 text-warning border border-warning badge-status">Đang gom tải</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('TRP-1043')"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn btn-light border action-btn text-danger" onclick="cancelTrip('TRP-1043')"><i class="fa-solid fa-ban"></i></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="fw-bold text-success">#TRP-1040</span><br><small class="text-muted">Hôm qua, 22:15</small></td>
+                            <td>
+                                <div class="fw-bold text-dark">Đồng Tháp <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Hóc Môn</div>
+                                <small class="text-muted">Xoài cát Hòa Lộc</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold">66H-789.01 <span class="badge bg-light text-dark border ms-1">3 Tấn</span></div>
+                                <small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>Trần Hữu Lộc</small>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
+                                    <span>3.0 Tấn</span>
+                                    <span class="fw-bold text-dark">100%</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" style="width: 100%;"></div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success bg-opacity-10 text-success border border-success badge-status"><i class="fa-solid fa-truck-moving me-1"></i>Đang di chuyển</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-light border action-btn text-primary me-1" onclick="viewDetails('TRP-1040')"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn btn-light border action-btn text-secondary" disabled><i class="fa-solid fa-ban"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer bg-white p-3 d-flex justify-content-between align-items-center border-top">
+                <small class="text-muted">Hiển thị 1 đến 3 trong số 45 chuyến xe</small>
+                <ul class="pagination pagination-sm m-0">
+                    <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+                    <li class="page-item active"><a class="page-link bg-success border-success" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link text-success" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link text-success" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link text-success" href="#">Sau</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+
+        function viewDetails(tripId) {
+            Swal.fire({
+                title: `Chi tiết chuyến #${tripId}`,
+                html: `
+                    <div class="text-start mt-3">
+                        <p><strong><i class="fa-solid fa-box text-success me-2"></i>Hàng hóa:</strong> Bí đỏ hồ lô (Đóng sọt 20kg)</p>
+                        <p><strong><i class="fa-solid fa-users text-success me-2"></i>Đơn ghép:</strong> 4 Nông dân tham gia</p>
+                        <p><strong><i class="fa-solid fa-money-bill-wave text-success me-2"></i>Tiền cước tạm tính:</strong> 2.800.000 VNĐ</p>
+                        <hr>
+                        <p class="text-muted mb-0"><small>Hệ thống tự động tính cước và giữ tiền trong ví Escrow chờ xác nhận giao hàng.</small></p>
+                    </div>
+                `,
+                confirmButtonColor: '#198754',
+                confirmButtonText: 'Đóng'
+            });
+        }
+
+        function cancelTrip(tripId) {
+            Swal.fire({
+                title: 'Hủy chuyến xe?',
+                text: `Bạn có chắc chắn muốn hủy chuyến ${tripId}? Các đơn hàng lẻ sẽ được trả về trạng thái chờ ghép mới.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Xác nhận Hủy',
+                cancelButtonText: 'Quay lại'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Đã hủy!',
+                        text: 'Chuyến xe đã được hủy và tách đơn thành công.',
+                        icon: 'success',
+                        confirmButtonColor: '#198754'
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

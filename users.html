@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nông dân & Tiểu thương - LOADPOOL Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- Gọi file CSS chung -->
+</head>
+<body>
+
+    <nav class="sidebar py-3">
+        <div class="sidebar-brand text-center pb-3 mb-3">
+            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        </div>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
+        <a href="users.html" class="active"><i class="fa-solid fa-users me-3"></i>Nông dân & Tiểu thương</a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Khiếu nại</a>
+    </nav>
+
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+            <div>
+                <h3 class="fw-bold text-dark m-0">Quản lý Đối tác</h3>
+                <p class="text-muted m-0">Đánh giá uy tín và phân quyền người dùng</p>
+            </div>
+        </div>
+
+        <div class="card table-card">
+            <div class="table-responsive">
+                <table class="table table-hover m-0">
+                    <thead>
+                        <tr>
+                            <th>Người dùng</th>
+                            <th>Vai trò</th>
+                            <th>Khu vực</th>
+                            <th>Uy tín (Rating)</th>
+                            <th>Trạng thái</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="fw-bold">Lê Văn Sang</div>
+                                <small class="text-muted">0901.234.567</small>
+                            </td>
+                            <td><span class="badge bg-success">Nông dân</span></td>
+                            <td>Tân Thạnh, Long An</td>
+                            <td class="text-warning"><i class="fa-solid fa-star"></i> 4.8 <span class="text-muted">(12 chuyến)</span></td>
+                            <td><span class="badge bg-light text-success border border-success">Hoạt động</span></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="lockUser('Lê Văn Sang')"><i class="fa-solid fa-lock"></i> Khóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fw-bold">Chị Hai Loan</div>
+                                <small class="text-muted">0988.765.432</small>
+                            </td>
+                            <td><span class="badge bg-primary">Tiểu thương</span></td>
+                            <td>Chợ Bình Điền</td>
+                            <td class="text-warning"><i class="fa-solid fa-star"></i> 5.0 <span class="text-muted">(45 chuyến)</span></td>
+                            <td><span class="badge bg-light text-success border border-success">Hoạt động</span></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="lockUser('Chị Hai Loan')"><i class="fa-solid fa-lock"></i> Khóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fw-bold">Nguyễn Hữu Tài</div>
+                                <small class="text-muted">0912.333.444</small>
+                            </td>
+                            <td><span class="badge bg-success">Nông dân</span></td>
+                            <td>Châu Thành, Tiền Giang</td>
+                            <td class="text-warning"><i class="fa-solid fa-star-half-stroke"></i> 2.1 <span class="text-muted">(3 hủy chuyến)</span></td>
+                            <td><span class="badge bg-light text-danger border border-danger">Bị cảnh cáo</span></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="lockUser('Nguyễn Hữu Tài')"><i class="fa-solid fa-lock"></i> Khóa</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function lockUser(name) {
+            Swal.fire({
+                title: `Khóa tài khoản?`,
+                text: `Bạn muốn chặn ${name} tham gia ghép tải trên hệ thống?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Khóa ngay'
+            });
+        }
+    </script>
+</body>
+</html>

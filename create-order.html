@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Đơn Gom Tải - LOADPOOL Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="sidebar py-3">
+        <div class="sidebar-brand text-center pb-3 mb-3">
+            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        </div>
+      <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
+    <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
+    <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
+    <a href="users.html"><i class="fa-solid fa-users me-3"></i>Nông dân & Tiểu thương</a>
+    <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Khiếu nại</a>
+    </nav>
+
+   
+    <div class="main-content">
+        
+        <!-- Top Header (Copy y hệt từ trang index.html) --> <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+            <div>
+                <h3 class="fw-bold text-dark m-0">Tạo Đơn Gom Tải</h3>
+                <p class="text-muted m-0">Khởi tạo nhu cầu ghép xe nông sản mới</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-light position-relative me-3 rounded-circle" style="width: 45px; height: 45px;">
+                    <i class="fa-regular fa-bell text-secondary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
+                </button>
+                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm">
+                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="35">
+                    <span class="fw-bold text-dark" style="font-size: 0.9rem;">Admin Như</span>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="card form-card">
+            <div class="card-body p-4 p-md-5">
+                <h5 class="fw-bold text-success mb-4"><i class="fa-solid fa-box-open me-2"></i>Thông tin đơn hàng</h5>
+                
+                <form>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Điểm tập kết lấy hàng (Hub)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fa-solid fa-location-dot text-danger"></i></span>
+                                <select class="form-select">
+                                    <option value="" selected disabled>-- Chọn Hub địa phương --</option>
+                                    <option>Hub 01 - Bưu điện xã Tân Thạnh, Long An</option>
+                                    <option>Hub 02 - HTX Nông nghiệp Châu Thành, Tiền Giang</option>
+                                    <option>Hub 03 - Chợ đầu mối nông sản, Đồng Tháp</option>
+                                </select>
+                            </div>
+                            <small class="text-muted mt-1 d-block"><i class="fa-solid fa-circle-info me-1"></i>Nông dân tự vận chuyển ra Hub trước 16h00 hàng ngày.</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Điểm giao hàng (Điểm cuối)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fa-solid fa-flag-checkered text-success"></i></span>
+                                <select class="form-select">
+                                    <option value="" selected disabled>-- Chọn nơi nhận hàng --</option>
+                                    <option>Chợ đầu mối Nông sản Thủ Đức, TP.HCM</option>
+                                    <option>Chợ đầu mối Bình Điền, TP.HCM</option>
+                                    <option>Chợ đầu mối Hóc Môn, TP.HCM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label">Loại nông sản</label>
+                            <select class="form-select">
+                                <option value="" selected disabled>-- Phân loại --</option>
+                                <option>Bí đỏ hồ lô</option>
+                                <option>Thanh long ruột đỏ</option>
+                                <option>Xoài cát Hòa Lộc</option>
+                                <option>Sầu riêng Ri6 (Yêu cầu xe riêng)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Quy chuẩn đóng gói</label>
+                            <select class="form-select" id="packageType">
+                                <option value="" selected disabled>-- Chọn quy cách --</option>
+                                <option value="20">Sọt nhựa tiêu chuẩn (20kg)</option>
+                                <option value="15">Thùng Carton đục lỗ (15kg)</option>
+                                <option value="30">Bao lưới thông thoáng (30kg)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Số lượng (Sọt/Thùng)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="quantity" placeholder="Nhập số lượng">
+                                <span class="input-group-text bg-light text-muted">Đơn vị</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="p-3 bg-light rounded-3 mb-4 border" style="border-style: dashed !important;">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <span class="text-muted fw-bold">Tổng trọng lượng ước tính: </span>
+                                <span class="fs-5 fw-bold text-dark ms-2" id="totalWeight">0</span> <span class="text-muted">Kg</span>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                                <span class="badge bg-success bg-opacity-10 text-success p-2 px-3 border border-success border-opacity-25 rounded-pill">
+                                    <i class="fa-solid fa-calculator me-1"></i>Hệ thống tự động tính tải
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning border-warning border-opacity-50 bg-warning bg-opacity-10" role="alert">
+                        <div class="d-flex">
+                            <div class="me-3 mt-1"><i class="fa-solid fa-triangle-exclamation text-warning fs-4"></i></div>
+                            <div>
+                                <h6 class="alert-heading fw-bold mb-1">Cảnh báo quy tắc ghép chuyến (Cross-contamination)</h6>
+                                <p class="mb-0 text-dark" style="font-size: 0.9rem;">Thuật toán LOADPOOL sẽ tự động chặn ghép đơn hàng này với các xe đang chở trái cây tỏa mùi nặng (Sầu riêng, Mít) hoặc hàng hóa không tương thích nhiệt độ. Bạn có chắc chắn thông tin khai báo là chính xác?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-5 border-top pt-4">
+                        <button type="button" class="btn btn-light btn-custom me-3 border text-secondary">Hủy thao tác</button>
+                        <button type="button" class="btn btn-success btn-custom" onclick="submitOrder()">
+                            <i class="fa-solid fa-paper-plane me-2"></i>Đẩy Đơn Lên Hệ Thống
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Thư viện Popup đẹp -->
+    
+    <script>
+      
+        const packageSelect = document.getElementById('packageType');
+        const qtyInput = document.getElementById('quantity');
+        const weightDisplay = document.getElementById('totalWeight');
+
+        function calculateWeight() {
+            const weightPerItem = parseFloat(packageSelect.value) || 0;
+            const qty = parseFloat(qtyInput.value) || 0;
+            weightDisplay.innerText = (weightPerItem * qty).toLocaleString();
+        }
+
+        packageSelect.addEventListener('change', calculateWeight);
+        qtyInput.addEventListener('input', calculateWeight);
+
+        
+        function submitOrder() {
+            if(qtyInput.value === '' || packageSelect.value === '') {
+                Swal.fire({ icon: 'error', title: 'Lỗi nhập liệu', text: 'Vui lòng chọn quy cách và nhập số lượng!', confirmButtonColor: '#198754' });
+                return;
+            }
+            Swal.fire({
+                title: 'Đang tìm xe ghép...',
+                text: 'Hệ thống LOADPOOL đang quét các chuyến xe trong bán kính 10km.',
+                icon: 'info',
+                showConfirmButton: false,
+                timer: 2000
+            }).then(() => {
+                Swal.fire({
+                    title: 'Đăng đơn thành công!',
+                    text: 'Đã đưa vào hàng đợi ghép chuyến.',
+                    icon: 'success',
+                    confirmButtonColor: '#198754'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
