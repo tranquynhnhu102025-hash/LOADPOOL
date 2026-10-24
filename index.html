@@ -3,10 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tổng quan - LOADPOOL Admin</title>
+    <title>LOADPOOL - AI Logistics Control Tower</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        .hero-tower-premium {
+            background-color: #082016;
+            background-image: 
+                radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(13, 110, 253, 0.18) 0%, transparent 50%),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 26px 26px;
+            color: white;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -5px rgba(8, 32, 22, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-gradient-text {
+            background: linear-gradient(90deg, #ffffff 0%, #a7f3d0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .ai-status-pill {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: #34d399;
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 1.8s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .glass-kpi-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 18px 15px;
+            text-align: center;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            height: 100%;
+        }
+        .glass-kpi-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(52, 211, 153, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.5);
+            color: inherit;
+        }
+        .glass-kpi-val {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+        .text-accent-gold { color: #facc15; }
+        .text-accent-mint { color: #34d399; }
+        .text-accent-blue { color: #60a5fa; }
+
+        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .chart-container-flex {
+            position: relative;
+            flex-grow: 1;
+            min-height: 260px;
+            width: 100%;
+        }
+        .problem-box {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid #e9ecef;
+            height: 100%;
+            transition: all 0.2s ease;
+        }
+        .problem-box:hover {
+            transform: translateY(-3px);
+            border-color: #198754;
+            box-shadow: 0 6px 15px rgba(25, 135, 84, 0.08);
+        }
+        .benchmark-box {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 16px;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+        .benchmark-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            color: inherit;
+        }
+        .benchmark-box.highlight {
+            background: #f0fdf4;
+            border-color: #198754;
+        }
+    </style>
 </head>
 <body>
    
@@ -14,202 +142,480 @@
         <div class="sidebar-brand text-center pb-3 mb-3">
             <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
         </div>
-        <a href="index.html" class="active"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm AI (Train)</a>
+        <a href="index.html" class="active"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan Control Tower</a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
         <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe (Chiều về)</a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat Voice</a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
         <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
         <a href="users.html"><i class="fa-solid fa-users me-3"></i>Nông dân & Tiểu thương</a>
-        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Khiếu nại</a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
     </nav>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-            <div>
-                <h3 class="fw-bold text-dark m-0">Tổng quan hệ thống</h3>
-                <p class="text-muted m-0">Hiệu suất gom tải và tối ưu chi phí logistics nông sản</p>
-            </div>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-light position-relative me-3 rounded-circle" style="width: 45px; height: 45px;">
-                    <i class="fa-regular fa-bell text-secondary"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
-                </button>
-                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="35">
-                    <span class="fw-bold text-dark" style="font-size: 0.9rem;">Admin Như</span>
-                </div>
-            </div>
-        </div>
+        
+        <section class="hero-tower-premium p-4 p-md-5 mb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-7 pe-lg-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="ai-status-pill">
+                            <span class="pulse-indicator"></span>AI ENGINE ONLINE v2.4
+                        </span>
+                        <span class="badge bg-white bg-opacity-10 text-light border border-white border-opacity-10 fw-normal">
+                            Radar 10km • ĐBSCL ⇄ TP.HCM
+                        </span>
+                    </div>
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted fw-bold mb-2">Tổng Khối Lượng Đã Gom</h6>
-                            <h3 class="fw-bold text-dark mb-0"><span id="statTotalTons">125.4</span> <span class="fs-6 text-muted">Tấn</span></h3>
+                    <h1 class="display-6 brand-gradient-text mb-2">LOADPOOL</h1>
+                    <h5 class="fw-semibold text-light opacity-95 mb-3" style="line-height: 1.4;">
+                        Nền tảng gom tải thông minh kết nối nông dân, tiểu thương và chủ xe tải.
+                    </h5>
+                    <p class="text-light opacity-75 mb-4" style="font-size: 0.94rem; line-height: 1.6; max-width: 580px;">
+                        Hệ thống AI tự động phân tích nhu cầu vận chuyển, ghép các đơn hàng nhỏ lẻ thành chuyến đủ tải xe 5 tấn và giải quyết triệt để bài toán xe chiều về chạy rỗng nhằm tối ưu chi phí logistics nông sản.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="create-order.html" class="btn btn-success fw-bold px-4 py-2 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-plus me-1"></i> Khởi tạo đơn gom tải
+                        </a>
+                        <a href="ai-center.html" class="btn btn-outline-light fw-semibold px-4 py-2 rounded-pill border-opacity-25">
+                            <i class="fa-solid fa-microchip me-1 text-warning"></i> Giám sát thuật toán AI
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 mt-4 mt-lg-0">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <a href="create-order.html" class="glass-kpi-card">
+                                <div class="glass-kpi-val text-accent-gold">44.4%</div>
+                                <div class="small fw-semibold text-white">Tiết kiệm chi phí</div>
+                                <div class="text-white-50" style="font-size: 0.72rem;">So với mua qua thương lái</div>
+                            </a>
                         </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-box"></i></div>
+                        <div class="col-6">
+                            <a href="driver-portal.html" class="glass-kpi-card">
+                                <div class="glass-kpi-val text-accent-mint">412</div>
+                                <div class="small fw-semibold text-white">Xe chiều về đã lấp đầy</div>
+                                <div class="text-white-50" style="font-size: 0.72rem;">Cắt giảm chuyến rỗng</div>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="users.html" class="glass-kpi-card">
+                                <div class="glass-kpi-val text-accent-blue">428</div>
+                                <div class="small fw-semibold text-white">Hộ nông dân liên kết</div>
+                                <div class="text-white-50" style="font-size: 0.72rem;">Long An, Tiền Giang, Đồng Tháp</div>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="manage-trips.html" class="glass-kpi-card">
+                                <div class="glass-kpi-val text-white">2.14 <span class="fs-6 text-accent-gold">Tỷ</span></div>
+                                <div class="small fw-semibold text-white">VNĐ Tiết kiệm tạo ra</div>
+                                <div class="text-white-50" style="font-size: 0.72rem;">Đo lường từ hệ thống</div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left-color: #0d6efd;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted fw-bold mb-2">Tỷ Lệ Lấp Đầy Trung Bình</h6>
-                            <h3 class="fw-bold text-dark mb-0">86% <span class="badge bg-primary ms-1" style="font-size: 0.7rem;"><i class="fa-solid fa-arrow-up"></i> 12%</span></h3>
-                        </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-truck-ramp-box"></i></div>
+        </section>
+
+        <section class="mb-4">
+            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>Điểm Nghẽn Chuỗi Cung Ứng Nông Sản & Lời Giải LOADPOOL</h5>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="problem-box shadow-sm">
+                        <div class="fs-2 mb-2">🚜</div>
+                        <h6 class="fw-bold text-dark">Nông dân sản lượng nhỏ</h6>
+                        <p class="text-muted small mb-0">Từng hộ không đủ khối lượng đặt nguyên chuyến xe, bắt buộc phải bán rẻ cho thương lái ép giá.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="problem-box shadow-sm">
+                        <div class="fs-2 mb-2">🚚</div>
+                        <h6 class="fw-bold text-dark">Xe chiều về chạy rỗng</h6>
+                        <p class="text-muted small mb-0">Tỷ lệ chạy rỗng chiều về phổ biến 35–70%, lãng phí hàng triệu đồng nhiên liệu mỗi chuyến đi.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="problem-box shadow-sm">
+                        <div class="fs-2 mb-2">💸</div>
+                        <h6 class="fw-bold text-dark">Phụ thuộc thương lái</h6>
+                        <p class="text-muted small mb-0">Chi phí trung gian độc quyền cao; nông sản được mùa mất giá, điệp khúc giải cứu lặp lại hàng năm.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="problem-box shadow-sm border-success bg-success bg-opacity-10">
+                        <div class="fs-2 mb-2">🧠</div>
+                        <h6 class="fw-bold text-success">AI Matching Engine</h6>
+                        <p class="text-muted small mb-0">Tự động phát hiện nhu cầu tương đồng trong bán kính 10km, ghép nhóm đủ tải trước khi điều phối xe.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left-color: #ffc107;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted fw-bold mb-2">Chi Phí Tiết Kiệm (Mô phỏng)</h6>
-                            <h3 class="fw-bold text-dark mb-0">44.4%</h3>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 bg-white">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                <div>
+                    <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-scale-balanced text-success me-2"></i>LOADPOOL Giúp Tiết Kiệm Bao Nhiêu? (So Sánh Chi Phí Nhập 1 Tấn Bí Đỏ)</h5>
+                    <small class="text-muted">Mô hình toán mô phỏng tuyến Tân Thạnh (Long An) ➔ Chợ Đầu Mối Thủ Đức (Chương 2.4 & 2.5)</small>
+                </div>
+                <span class="badge bg-success px-3 py-2 fw-bold" style="font-size: 0.9rem;">Tiết kiệm tối ưu 44.4%</span>
+            </div>
+            <div class="row g-3 text-center">
+                <div class="col-md-4">
+                    <div class="benchmark-box">
+                        <small class="text-muted fw-bold d-block mb-1">Trường Hợp 1: Mua Qua Thương Lái</small>
+                        <h3 class="fw-bold text-secondary text-decoration-line-through mb-1">10.000 đ<small class="fs-6">/kg</small></h3>
+                        <p class="text-muted small mb-0">Tổng chi phí: 10.000.000 đ/tấn (Bị ăn chênh lệch trung gian)</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="benchmark-box">
+                        <small class="text-muted fw-bold d-block mb-1">Trường Hợp 2: Tự Thuê Xe Nhỏ Đi Riêng</small>
+                        <h3 class="fw-bold text-dark mb-1">5.800 đ<small class="fs-6">/kg</small></h3>
+                        <p class="text-muted small mb-0">Tổng chi phí: 5.800.000 đ/tấn (Tiết kiệm 42.0% so với TH1)</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <a href="create-order.html" class="benchmark-box highlight shadow-sm" title="Khởi tạo đơn ghép">
+                        <small class="text-success fw-bold d-block mb-1">Trường Hợp 3: Gom Chung Qua LOADPOOL</small>
+                        <h3 class="fw-bold text-success mb-1">5.560 đ<small class="fs-6">/kg</small></h3>
+                        <p class="text-success small fw-bold mb-0"><i class="fa-solid fa-circle-check me-1"></i>Tiết kiệm 4.440.000 đ (44.4%) ➔ Xem chi tiết</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-chart-simple text-primary me-2"></i>Chỉ Số Vận Hành Hôm Nay (Live System KPIs)</h5>
+                <span class="badge bg-success bg-opacity-10 text-success border border-success"><i class="fa-solid fa-satellite-dish me-1"></i>Đồng bộ thời gian thực</span>
+            </div>
+            <div class="row text-center g-3">
+                <div class="col-6 col-md-4 col-lg-2 border-end">
+                    <h3 class="fw-bold text-dark mb-0" id="statNewOrders">84</h3>
+                    <small class="text-muted">Đơn vận chuyển mới</small>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 border-end">
+                    <h3 class="fw-bold text-success mb-0">37</h3>
+                    <small class="text-muted">Chuyến ghép thành công</small>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 border-end">
+                    <h3 class="fw-bold text-primary mb-0">92%</h3>
+                    <small class="text-muted">Tỷ lệ lấp đầy xe</small>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 border-end">
+                    <h3 class="fw-bold text-dark mb-0">48</h3>
+                    <small class="text-muted">Nhà xe đối tác hoạt động</small>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 border-end">
+                    <h3 class="fw-bold text-dark mb-0">12</h3>
+                    <small class="text-muted">Trạm Hub đang xử lý</small>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <h3 class="fw-bold text-success mb-0" id="statTotalTons">132 Tấn</h3>
+                    <small class="text-muted">Khối lượng đã gom tải</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 bg-white">
+            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-lightbulb text-warning me-2"></i>AI Insight Center (Cảnh Báo Thông Minh)</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3 border bg-success bg-opacity-10 border-success h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <h6 class="fw-bold text-success mb-0">🟢 Long An Hub</h6>
+                            <span class="badge bg-success">Gợi ý ghép tải</span>
                         </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-piggy-bank"></i></div>
+                        <p class="small text-dark mb-0">Thiếu <b>1.2 tấn</b> để chốt xe 5 tấn xuất bến lúc 16:00. AI đang gửi thông báo cho 3 hộ trồng dưa hấu lân cận.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3 border bg-warning bg-opacity-10 border-warning h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <h6 class="fw-bold text-warning mb-0">🟡 Cảnh Báo Xe Chiều Về</h6>
+                            <span class="badge bg-warning text-dark">Dự báo rỗng</span>
+                        </div>
+                        <p class="small text-dark mb-0">Phát hiện <b>12 xe tải</b> có nguy cơ chạy rỗng chiều TP.HCM về Tiền Giang. Đã tự động kích hoạt gói ghép giá ưu đãi.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 rounded-3 border bg-danger bg-opacity-10 border-danger h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <h6 class="fw-bold text-danger mb-0">🔴 QC Alert (Kiểm Soát Rủi Ro)</h6>
+                            <span class="badge bg-danger">Hao hụt bất thường</span>
+                        </div>
+                        <p class="small text-dark mb-0">Tuyến Tiền Giang ➔ Bình Điền tăng <b>8% khiếu nại</b> do tài xế chất sọt thanh long sai quy cách kỹ thuật.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left-color: #dc3545;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted fw-bold mb-2">Chuyến Đang Chờ Ghép</h6>
-                            <h3 class="fw-bold text-dark mb-0"><span id="statWaitingTrips">12</span> <span class="fs-6 text-muted">Chuyến</span></h3>
-                        </div>
-                        <div class="stat-icon bg-danger bg-opacity-10 text-danger"><i class="fa-solid fa-hourglass-half"></i></div>
+        </section>
+
+        <section class="row g-4 mb-4 align-items-stretch">
+            <div class="col-lg-7 d-flex">
+                <div class="card card-custom p-4 bg-white w-100 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark m-0">📈 Khối Lượng Ghép Tải (7 Ngày Gần Nhất)</h5>
+                        <small class="text-muted">Đơn vị: Tấn hàng hóa</small>
+                    </div>
+                    <div class="chart-container-flex">
+                        <canvas id="volumeChart"></canvas>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row g-4">
-            <!-- Biểu đồ -->
-            <div class="col-md-7">
-                <div class="card shadow-sm border-0 rounded-4 h-100">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold text-dark mb-4">Biểu đồ khối lượng gom tải (Tuần)</h5>
-                        <canvas id="volumeChart" height="130"></canvas>
+            <div class="col-lg-5 d-flex">
+                <div class="card card-custom p-4 bg-white w-100 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark m-0">🚛 Tỷ Lệ Xe Tải Chạy Rỗng</h5>
+                        <span class="badge bg-danger">Giảm mạnh từ 58% ↓ 35%</span>
+                    </div>
+                    <div class="chart-container-flex">
+                        <canvas id="emptyTruckChart"></canvas>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Tiến độ chuyến xe hiện tại -->
-            <div class="col-md-5">
-                <div class="card shadow-sm border-0 rounded-4 h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="fw-bold text-dark m-0">Tiến độ chuyến xe hiện tại</h5>
-                            <a href="manage-trips.html" class="text-success text-decoration-none fw-bold" style="font-size: 0.9rem;">Xem tất cả <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        <section class="card card-custom p-4 mb-4 bg-white">
+            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-route text-success me-2"></i>Top Tuyến Đường Gom Tải Trọng Điểm ĐBSCL</h5>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light">
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong class="text-dark small">Long An → Thủ Đức</strong>
+                            <span class="badge bg-success">95%</span>
                         </div>
-                        
-                        <div id="liveTripProgressList">
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="fw-bold text-dark"><i class="fa-solid fa-route text-success me-2"></i>Long An ➔ Chợ Đầu Mối Thủ Đức</span>
-                                    <span class="badge bg-success">Đã chốt xe</span>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted mb-2" style="font-size: 0.85rem;">
-                                    <span>Bí đỏ hồ lô (Xe 5 Tấn)</span>
-                                    <span class="fw-bold text-dark">5/5 Tấn (100%)</span>
-                                </div>
-                                <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-success" style="width: 100%;"></div>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="fw-bold text-dark"><i class="fa-solid fa-route text-warning me-2"></i>Tiền Giang ➔ Bình Điền</span>
-                                    <span class="badge bg-warning text-dark">Đang tìm người ghép</span>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted mb-2" style="font-size: 0.85rem;">
-                                    <span>Thanh long (Xe 5 Tấn)</span>
-                                    <span class="fw-bold text-dark">3.5/5 Tấn (70%)</span>
-                                </div>
-                                <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: 70%;"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="fw-bold text-dark"><i class="fa-solid fa-route text-danger me-2"></i>Đồng Tháp ➔ TP.HCM</span>
-                                    <span class="badge bg-danger">Khởi tạo</span>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted mb-2" style="font-size: 0.85rem;">
-                                    <span>Xoài cát (Xe 3 Tấn)</span>
-                                    <span class="fw-bold text-dark">0.5/3 Tấn (16%)</span>
-                                </div>
-                                <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" style="width: 16%;"></div>
-                                </div>
-                            </div>
+                        <small class="text-muted d-block">Đã chốt xe 5T (Bí đỏ hồ lô)</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light">
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong class="text-dark small">Tiền Giang → Bình Điền</strong>
+                            <span class="badge bg-warning text-dark">91%</span>
                         </div>
-
+                        <small class="text-muted d-block">Thiếu 450kg đủ tải xe</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light">
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong class="text-dark small">Đồng Tháp → Hóc Môn</strong>
+                            <span class="badge bg-primary">87%</span>
+                        </div>
+                        <small class="text-muted d-block">Đang gom tải nhóm xoài cát</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded-3 bg-light">
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong class="text-dark small">Bến Tre → Bình Điền</strong>
+                            <span class="badge bg-info">83%</span>
+                        </div>
+                        <small class="text-muted d-block">AI Route Matching Active</small>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 text-white bg-dark shadow-sm">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-warning text-dark mb-2 px-3 py-1 fw-bold">⭐ BEST MATCH OF THE DAY</span>
+                    <h3 class="fw-bold mb-1">Chuyến Xe Gợi Ý: #TRP-1043</h3>
+                    <p class="text-light opacity-85 mb-3">Tuyến <b>Tiền Giang ➔ Chợ Đầu Mối Bình Điền</b> (Tận dụng xe 5 tấn quay đầu rỗng chiều về).</p>
+                    <div class="d-flex flex-wrap gap-3 small">
+                        <div><i class="fa-solid fa-chart-line text-warning me-1"></i> AI Score: <b>98 / 100</b></div>
+                        <div><i class="fa-solid fa-piggy-bank text-success me-1"></i> Tiết kiệm: <b>560.000 VNĐ</b></div>
+                        <div><i class="fa-solid fa-route text-info me-1"></i> Giảm: <b>48 km xe chạy rỗng</b></div>
+                        <div><i class="fa-solid fa-circle-check text-success me-1"></i> Khả năng thành công: <b>96%</b></div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <a href="manage-trips.html" class="btn btn-warning fw-bold px-4 py-2 text-dark shadow-sm">
+                        Xem đề xuất AI <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-satellite-dish text-success me-2"></i>Live Operations (Trạng Thái Chuyến Xe & Điểm AI)</h5>
+                    <small class="text-muted">Dữ liệu chuyến tự động đồng bộ khi tạo đơn mới</small>
+                </div>
+                <a href="manage-trips.html" class="btn btn-sm btn-outline-success fw-bold">Xem tất cả chuyến</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle m-0" style="font-size: 0.9rem;">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Mã chuyến</th>
+                            <th>Loại hàng hóa</th>
+                            <th>Khối lượng</th>
+                            <th>AI Score</th>
+                            <th>Trạng thái</th>
+                            <th class="text-center">Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody id="liveOpsTableBody">
+                        <tr>
+                            <td class="fw-bold text-success">TRP-1043</td>
+                            <td>Thanh long ruột đỏ (Sọt nhựa)</td>
+                            <td>4.5 Tấn</td>
+                            <td><span class="badge bg-success">98 / 100</span></td>
+                            <td><span class="badge bg-warning text-dark">Sắp đủ tải</span></td>
+                            <td class="text-center"><a href="manage-trips.html" class="btn btn-sm btn-light border"><i class="fa-solid fa-eye text-primary"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-success">TRP-1042</td>
+                            <td>Bí đỏ hồ lô (Xe 5T mui bạt)</td>
+                            <td>5.0 Tấn</td>
+                            <td><span class="badge bg-success">95 / 100</span></td>
+                            <td><span class="badge bg-info text-white">Đã chốt xe</span></td>
+                            <td class="text-center"><a href="manage-trips.html" class="btn btn-sm btn-light border"><i class="fa-solid fa-eye text-primary"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-success">TRP-1040</td>
+                            <td>Xoài cát Hòa Lộc (Thùng carton)</td>
+                            <td>3.0 Tấn</td>
+                            <td><span class="badge bg-success">91 / 100</span></td>
+                            <td><span class="badge bg-success">Đang di chuyển</span></td>
+                            <td class="text-center"><a href="manage-trips.html" class="btn btn-sm btn-light border"><i class="fa-solid fa-eye text-primary"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 bg-success bg-opacity-10 border border-success border-opacity-25">
+            <div class="row align-items-center text-center text-md-start">
+                <div class="col-md-3 border-end">
+                    <h5 class="fw-bold text-success mb-1"><i class="fa-solid fa-seedling me-2"></i>ESG Green Logistics</h5>
+                    <p class="text-muted small mb-0">Phát triển chuỗi cung ứng bền vững và cắt giảm phát thải carbon.</p>
+                </div>
+                <div class="col-md-3 text-center border-end">
+                    <h3 class="fw-bold text-success mb-0">18.200 km</h3>
+                    <small class="text-muted">Quãng đường xe chạy rỗng giảm</small>
+                </div>
+                <div class="col-md-3 text-center border-end">
+                    <h3 class="fw-bold text-primary mb-0">2.140 lít</h3>
+                    <small class="text-muted">Nhiên liệu Diesel tiết kiệm</small>
+                </div>
+                <div class="col-md-3 text-center">
+                    <h3 class="fw-bold text-danger mb-0">5.6 tấn</h3>
+                    <small class="text-muted">CO₂ giảm phát thải ra môi trường</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-custom p-4 mb-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-microchip text-primary me-2"></i>Trạng Thái Trọng Số Các Mô Hình AI Đã Huấn Luyện</h5>
+                <a href="ai-center.html" class="small text-primary fw-bold text-decoration-none">Vào AI Studio Train Model <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold mb-1">PhoBERT NER (Bóc tách tin mạng XH)</label>
+                    <div class="d-flex justify-content-between small mb-1"><span>F1-Score</span><strong class="text-success">95.2%</strong></div>
+                    <div class="progress" style="height: 8px;"><div class="progress-bar bg-success" style="width: 95.2%;"></div></div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold mb-1">YOLOv8 QC (Kiểm định dập nát)</label>
+                    <div class="d-flex justify-content-between small mb-1"><span>mAP@50</span><strong class="text-primary">92.1%</strong></div>
+                    <div class="progress" style="height: 8px;"><div class="progress-bar bg-primary" style="width: 92.1%;"></div></div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold mb-1">Route Matching (Gom tải 10km)</label>
+                    <div class="d-flex justify-content-between small mb-1"><span>Accuracy</span><strong class="text-warning text-dark">96.4%</strong></div>
+                    <div class="progress" style="height: 8px;"><div class="progress-bar bg-warning" style="width: 96.4%;"></div></div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold mb-1">Prediction Engine (Dự báo xe rỗng)</label>
+                    <div class="d-flex justify-content-between small mb-1"><span>Precision</span><strong class="text-danger">94.8%</strong></div>
+                    <div class="progress" style="height: 8px;"><div class="progress-bar bg-danger" style="width: 94.8%;"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-4 text-muted border-top" style="font-size: 0.85rem;">
+            <p class="mb-1 fw-bold text-dark">LOADPOOL v2.4 - AI Logistics Platform</p>
+            <p class="mb-0">Demo Concept 2026 | Nền tảng gom tải thông minh kết nối nông sản Việt Nam</p>
+        </footer>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Cập nhật số liệu động từ localStorage nếu có đơn mới tạo
         const customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
-        let extraTons = 0;
-
         if (customOrders.length > 0) {
-            const listContainer = document.getElementById('liveTripProgressList');
-            customOrders.slice(0, 2).forEach(order => {
-                extraTons += parseFloat(order.tons) || 0;
-                const percent = Math.min(100, Math.round((order.tons / (order.maxTons || 5)) * 100));
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'mb-4 p-2 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25';
-                itemDiv.innerHTML = `
-                    <div class="d-flex justify-content-between mb-1">
-                        <span class="fw-bold text-dark"><i class="fa-solid fa-bolt text-success me-2"></i>${order.from} ➔ ${order.to}</span>
-                        <span class="badge bg-success">Mới tạo (${order.tripId})</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-muted mb-2" style="font-size: 0.85rem;">
-                        <span>${order.crop} (Xe ${order.maxTons || 5} Tấn)</span>
-                        <span class="fw-bold text-dark">${order.tons}/${order.maxTons || 5} Tấn (${percent}%)</span>
-                    </div>
-                    <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: ${percent}%;"></div>
-                    </div>
+            let extraTons = 0;
+            const tbody = document.getElementById('liveOpsTableBody');
+            
+            customOrders.forEach(o => {
+                extraTons += parseFloat(o.tons) || 0;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="fw-bold text-success">${o.tripId}</td>
+                    <td>${o.crop} (${o.creator || 'Nông dân'})</td>
+                    <td>${o.tons} Tấn</td>
+                    <td><span class="badge bg-success">96 / 100</span></td>
+                    <td><span class="badge bg-warning text-dark">Đang gom tải</span></td>
+                    <td class="text-center"><a href="manage-trips.html" class="btn btn-sm btn-light border"><i class="fa-solid fa-eye text-primary"></i></a></td>
                 `;
-                listContainer.prepend(itemDiv);
+                tbody.prepend(tr);
             });
 
-            document.getElementById('statTotalTons').innerText = (125.4 + extraTons).toFixed(1);
-            document.getElementById('statWaitingTrips').innerText = 12 + customOrders.length;
+            document.getElementById('statNewOrders').innerText = 84 + customOrders.length;
+            document.getElementById('statTotalTons').innerText = (132 + extraTons).toFixed(1) + ' Tấn';
         }
 
-        const ctx = document.getElementById('volumeChart').getContext('2d');
-        new Chart(ctx, {
+        // Biểu đồ 1: Khối lượng ghép tải
+        new Chart(document.getElementById('volumeChart'), {
             type: 'bar',
             data: {
                 labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'],
                 datasets: [{
-                    label: 'Khối lượng gom (Tấn)',
-                    data: [15, 22, 18, 30, 25, 40, (35 + extraTons)],
+                    label: 'Khối lượng (Tấn)',
+                    data: [62, 78, 81, 95, 110, 126, 132],
                     backgroundColor: '#198754',
-                    borderRadius: 6,
-                    barThickness: 30
+                    borderRadius: 6
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5] } }, x: { grid: { display: false } } }
+                scales: { 
+                    y: { beginAtZero: true, grid: { borderDash: [4, 4] } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Biểu đồ 2: Tỷ lệ xe chạy rỗng chiều về
+        new Chart(document.getElementById('emptyTruckChart'), {
+            type: 'line',
+            data: {
+                labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'],
+                datasets: [{
+                    label: 'Tỷ lệ xe rỗng (%)',
+                    data: [58, 53, 49, 46, 42, 39, 35],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.08)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { beginAtZero: true, max: 70, grid: { borderDash: [4, 4] } },
+                    x: { grid: { display: false } }
+                }
             }
         });
     </script>

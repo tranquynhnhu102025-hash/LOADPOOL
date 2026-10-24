@@ -3,82 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nông dân, Tiểu thương & Nhà xe - LOADPOOL Admin</title>
+    <title>Đối Tác 3 Bên & Tín Nhiệm AI - LOADPOOL</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+
+        .table-custom thead th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+            padding: 12px 14px;
+        }
+        .table-custom tbody td {
+            padding: 12px 14px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
 
+    <!-- Sidebar chuẩn 8 phân hệ đồng bộ -->
     <nav class="sidebar py-3">
         <div class="sidebar-brand text-center pb-3 mb-3">
             <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
         </div>
-        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm AI (Train)</a>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan Control Tower</a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
         <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe (Chiều về)</a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat Voice</a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
         <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
         <a href="users.html" class="active"><i class="fa-solid fa-users me-3"></i>Nông dân & Tiểu thương</a>
-        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Khiếu nại</a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
     </nav>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        
+        <!-- HEADER GỌN GÀNG (KHÔNG BANNER TO) -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
             <div>
-                <h3 class="fw-bold text-dark m-0">Quản lý Hệ sinh thái Đối tác (3 bên)</h3>
-                <p class="text-muted m-0">Đánh giá điểm uy tín (SLA), ví ký quỹ Escrow và phân quyền hoạt động</p>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <h3 class="fw-bold text-dark m-0">Quản Lý Đối Tác 3 Bên & Tín Nhiệm AI</h3>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success">3-Sided Ecosystem</span>
+                </div>
+                <p class="text-muted m-0 small">
+                    Kiểm soát điểm tín nhiệm vận hành (AI SLA Score), số dư ký quỹ Ví Escrow và liên kết mạng lưới nông sản ĐBSCL.
+                </p>
             </div>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-success btn-sm fw-bold me-3 px-3 py-2 rounded-pill shadow-sm" onclick="openAddUserModal()">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-success fw-bold px-3 py-2 rounded-pill shadow-sm" onclick="openAddUserModal()">
                     <i class="fa-solid fa-user-plus me-1"></i> Thêm đối tác mới
                 </button>
-                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="35">
-                    <span class="fw-bold text-dark" style="font-size: 0.9rem;">Admin Như</span>
+                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border ms-1">
+                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="32">
+                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin Như</span>
                 </div>
             </div>
         </div>
 
-        <!-- Thẻ thống kê 3 nhóm đối tượng -->
+        <!-- 4 THẺ THỐNG KÊ NHANH -->
         <div class="row g-3 mb-4">
-            <div class="col-md-4">
-                <div class="card stat-card shadow-sm border-0" style="border-left: 5px solid #198754 !important;">
-                    <div class="card-body d-flex justify-content-between align-items-center py-3">
+            <div class="col-md-3">
+                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #10b981 !important;">
+                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold">HỘ NÔNG DÂN LIÊN KẾT HUB</small>
-                            <h4 class="fw-bold text-dark mb-0">428 <span class="fs-6 text-success fw-normal">(96% Đạt chuẩn QC)</span></h4>
+                            <small class="text-muted fw-bold d-block">HỘ NÔNG DÂN LIÊN KẾT</small>
+                            <h4 class="fw-bold text-dark mb-0">428 <span class="fs-6 text-success fw-normal">(3 Cụm Hub)</span></h4>
                         </div>
                         <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-wheat-awn"></i></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card stat-card shadow-sm border-0" style="border-left: 5px solid #0d6efd !important;">
-                    <div class="card-body d-flex justify-content-between align-items-center py-3">
+            <div class="col-md-3">
+                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #3b82f6 !important;">
+                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold">TIỂU THƯƠNG CHỢ ĐẦU MỐI & TỈNH</small>
-                            <h4 class="fw-bold text-dark mb-0">185 <span class="fs-6 text-primary fw-normal">(Đã xác thực KYC)</span></h4>
+                            <small class="text-muted fw-bold d-block">TIỂU THƯƠNG ĐÃ XÁC THỰC</small>
+                            <h4 class="fw-bold text-dark mb-0">185 <span class="fs-6 text-primary fw-normal">(Đạt KYC)</span></h4>
                         </div>
                         <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-store"></i></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card stat-card shadow-sm border-0" style="border-left: 5px solid #ffc107 !important;">
-                    <div class="card-body d-flex justify-content-between align-items-center py-3">
+            <div class="col-md-3">
+                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #facc15 !important;">
+                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold">CHỦ XE / TÀI XẾ ĐỐI TÁC</small>
+                            <small class="text-muted fw-bold d-block">CHỦ XE / NHÀ XE ĐỐI TÁC</small>
                             <h4 class="fw-bold text-dark mb-0">94 <span class="fs-6 text-warning fw-bold">(Xe 3T - 8T)</span></h4>
                         </div>
                         <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-truck-front"></i></div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #8b5cf6 !important;">
+                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted fw-bold d-block">ĐIỂM TÍN NHIỆM AI TRUNG BÌNH</small>
+                            <h4 class="fw-bold text-dark mb-0">94.2 <span class="fs-6 text-muted fw-normal">/ 100</span></h4>
+                        </div>
+                        <div class="stat-icon bg-purple bg-opacity-10 text-purple" style="color: #8b5cf6;"><i class="fa-solid fa-shield-virus"></i></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Bộ lọc Tab Vai trò & Tìm kiếm -->
+        <!-- BỘ LỌC VAI TRÒ & TÌM KIẾM -->
         <div class="row mb-3 g-3 align-items-center">
             <div class="col-md-7">
                 <div class="btn-group shadow-sm" role="group">
@@ -96,30 +133,44 @@
             </div>
         </div>
 
-        <div class="card table-card">
+        <!-- BẢNG ĐỐI TÁC -->
+        <div class="card card-custom border-0 shadow-sm overflow-hidden mb-4">
             <div class="table-responsive">
-                <table class="table table-hover m-0">
+                <table class="table table-hover align-middle m-0 table-custom">
                     <thead>
                         <tr>
-                            <th>Đối tác / Liên hệ</th>
-                            <th>Vai trò & Phương tiện</th>
-                            <th>Khu vực / Tuyến chính</th>
-                            <th>Ví ký quỹ (Escrow)</th>
-                            <th>Uy tín (Rating)</th>
-                            <th>Trạng thái</th>
-                            <th class="text-center">Thao tác</th>
+                            <th>Đối Tác & Liên Hệ</th>
+                            <th>Vai Trò & Đặc Tính / Xe</th>
+                            <th>Khu Vực Hub / Tuyến Chính</th>
+                            <th>Ví Ký Quỹ (Escrow)</th>
+                            <th>Đánh Giá & Tín Nhiệm AI</th>
+                            <th>Trạng Thái</th>
+                            <th class="text-center">Thao Tác</th>
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
-                        <!-- Render tự động bằng JS -->
+                        <!-- Render tự động qua JavaScript -->
                     </tbody>
                 </table>
             </div>
+            
+            <div class="card-footer bg-white p-3 border-top d-flex justify-content-between align-items-center">
+                <small class="text-muted" id="userCountText">Hiển thị đối tác trong hệ thống</small>
+                <small class="text-muted"><i class="fa-solid fa-lock text-success me-1"></i>Toàn bộ số dư Escrow được bảo chứng qua cổng ngân hàng đối tác</small>
+            </div>
         </div>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-3 text-muted border-top small">
+            LOADPOOL v2.4 • Ecosystem & Partner Scoring Module • Demo Concept 2026
+        </footer>
+
     </div>
 
+    <!-- Scripts chuẩn, không lỗi cú pháp -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         let currentRoleFilter = 'all';
 
@@ -130,10 +181,11 @@
                 phone: '0901.234.567',
                 role: 'farmer',
                 roleText: 'Nông dân',
-                subInfo: 'Chuyên canh: Bí đỏ, Khổ qua',
+                subInfo: 'Chuyên canh: Bí đỏ hồ lô, Khổ qua',
                 area: 'Hub 01 - Tân Thạnh, Long An',
                 escrow: '2.500.000 đ',
                 rating: 4.8,
+                aiScore: 96,
                 trips: '12 chuyến ghép',
                 status: 'active'
             },
@@ -143,10 +195,11 @@
                 phone: '0988.765.432',
                 role: 'trader',
                 roleText: 'Tiểu thương',
-                subInfo: 'Sạp B12 - Khu nông sản củ quả',
-                area: 'Chợ Bình Điền & Tân Thạnh',
+                subInfo: 'Sạp B12 - Chợ nông sản Tân Thạnh',
+                area: 'Chợ Đầu Mối Bình Điền & Tân Thạnh',
                 escrow: '15.000.000 đ',
                 rating: 5.0,
+                aiScore: 99,
                 trips: '45 chuyến nhập',
                 status: 'active'
             },
@@ -156,11 +209,12 @@
                 phone: '0903.111.222',
                 role: 'driver',
                 roleText: 'Chủ xe / Tài xế',
-                subInfo: 'Biển số: 51C-123.45 (Mui bạt 5 Tấn)',
-                area: 'Tuyến Long An ⇄ TP.HCM',
+                subInfo: 'Biển số: 51C-123.45 (Xe 5T Mui bạt)',
+                area: 'Tuyến Tân Thạnh, Long An ⇄ TP.HCM',
                 escrow: '5.000.000 đ',
                 rating: 4.9,
-                trips: '68 chuyến (0% trễ)',
+                aiScore: 98,
+                trips: '68 chuyến (0% trễ giờ)',
                 status: 'active'
             },
             {
@@ -169,10 +223,11 @@
                 phone: '0918.555.666',
                 role: 'driver',
                 roleText: 'Chủ xe / Tài xế',
-                subInfo: 'Biển số: 66H-789.01 (Thùng kín 3 Tấn)',
-                area: 'Tuyến Đồng Tháp ⇄ Hóc Môn',
+                subInfo: 'Biển số: 66H-789.01 (Xe 3T Thùng kín)',
+                area: 'Tuyến Cao Lãnh, Đồng Tháp ⇄ Hóc Môn',
                 escrow: '3.200.000 đ',
                 rating: 4.7,
+                aiScore: 92,
                 trips: '34 chuyến',
                 status: 'active'
             },
@@ -186,7 +241,8 @@
                 area: 'Hub 02 - Châu Thành, Tiền Giang',
                 escrow: '450.000 đ',
                 rating: 2.1,
-                trips: '3 lần hủy chuyến sát giờ',
+                aiScore: 58,
+                trips: '3 lần hủy đơn sát giờ',
                 status: 'warning'
             }
         ];
@@ -206,6 +262,12 @@
                 return matchRole && matchKw;
             });
 
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Không tìm thấy đối tác phù hợp với bộ lọc.</td></tr>`;
+                document.getElementById('userCountText').innerText = `Hiển thị 0 đối tác`;
+                return;
+            }
+
             filtered.forEach(u => {
                 let roleBadge = '';
                 if (u.role === 'farmer') roleBadge = `<span class="badge bg-success">${u.roleText}</span>`;
@@ -216,14 +278,16 @@
                 let lockBtn = '';
                 if (u.status === 'active') {
                     statusBadge = `<span class="badge bg-light text-success border border-success">Hoạt động</span>`;
-                    lockBtn = `<button class="btn btn-sm btn-outline-danger" onclick="toggleLockUser('${u.id}')"><i class="fa-solid fa-lock"></i> Khóa</button>`;
+                    lockBtn = `<button class="btn btn-sm btn-outline-danger" onclick="toggleLockUser('${u.id}')" title="Khóa tài khoản"><i class="fa-solid fa-lock"></i> Khóa</button>`;
                 } else if (u.status === 'warning') {
                     statusBadge = `<span class="badge bg-light text-danger border border-danger">Bị cảnh cáo</span>`;
-                    lockBtn = `<button class="btn btn-sm btn-outline-danger" onclick="toggleLockUser('${u.id}')"><i class="fa-solid fa-lock"></i> Khóa</button>`;
+                    lockBtn = `<button class="btn btn-sm btn-outline-danger" onclick="toggleLockUser('${u.id}')" title="Khóa tài khoản"><i class="fa-solid fa-lock"></i> Khóa</button>`;
                 } else {
-                    statusBadge = `<span class="badge bg-secondary">Đã khóa</span>`;
-                    lockBtn = `<button class="btn btn-sm btn-outline-success" onclick="toggleLockUser('${u.id}')"><i class="fa-solid fa-lock-open"></i> Mở</button>`;
+                    statusBadge = `<span class="badge bg-secondary">Đã tạm khóa</span>`;
+                    lockBtn = `<button class="btn btn-sm btn-outline-success" onclick="toggleLockUser('${u.id}')" title="Mở khóa tài khoản"><i class="fa-solid fa-lock-open"></i> Mở</button>`;
                 }
+
+                let aiBadgeClass = u.aiScore >= 90 ? 'bg-success' : (u.aiScore >= 70 ? 'bg-warning text-dark' : 'bg-danger');
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -237,17 +301,22 @@
                     </td>
                     <td><span class="fw-semibold text-dark" style="font-size:0.9rem;">${u.area}</span></td>
                     <td><span class="fw-bold text-success">${u.escrow}</span></td>
-                    <td class="text-warning fw-bold">
-                        <i class="fa-solid fa-star"></i> ${u.rating} <span class="text-muted fw-normal" style="font-size:0.82rem;">(${u.trips})</span>
+                    <td>
+                        <div class="text-warning fw-bold small mb-1">
+                            <i class="fa-solid fa-star"></i> ${u.rating} <span class="text-muted fw-normal">(${u.trips})</span>
+                        </div>
+                        <span class="badge ${aiBadgeClass}">AI Score: ${u.aiScore}/100</span>
                     </td>
                     <td>${statusBadge}</td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-light border text-primary me-1" onclick="viewUserDetail('${u.id}')" title="Hồ sơ & Ví Escrow"><i class="fa-solid fa-id-card"></i></button>
+                        <button class="btn btn-sm btn-light border text-primary me-1" onclick="viewUserDetail('${u.id}')" title="Xem hồ sơ & tín nhiệm AI"><i class="fa-solid fa-id-card"></i></button>
                         ${lockBtn}
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+
+            document.getElementById('userCountText').innerText = `Hiển thị ${filtered.length} trên tổng số ${usersList.length} đối tác`;
         }
 
         function filterRole(role) {
@@ -268,18 +337,19 @@
             if (!u) return;
             Swal.fire({
                 title: `Hồ sơ đối tác: ${u.name}`,
+                width: '600px',
                 html: `
                     <div class="text-start mt-2" style="font-size: 0.92rem;">
                         <p class="mb-2"><strong>Vai trò:</strong> ${u.roleText} (${u.subInfo})</p>
-                        <p class="mb-2"><strong>Số điện thoại xác thực (Zalo/OTP):</strong> ${u.phone}</p>
-                        <p class="mb-2"><strong>Khu vực hoạt động:</strong> ${u.area}</p>
-                        <p class="mb-2"><strong>Số dư Ví ký quỹ (Escrow):</strong> <span class="text-success fw-bold">${u.escrow}</span></p>
-                        <p class="mb-2"><strong>Lịch sử vận hành:</strong> ★ ${u.rating} (${u.trips})</p>
-                        <hr>
-                        <small class="text-muted"><i class="fa-solid fa-shield-halved text-success me-1"></i>Cơ chế chống bỏ qua nền tảng (Anti-Leakage): Đối tác duy trì giao dịch qua LOADPOOL được hưởng bảo hiểm hàng hóa 100% và tích điểm giảm phí sàn từ 3% xuống 1.5%.</small>
+                        <p class="mb-2"><strong>Số điện thoại:</strong> ${u.phone}</p>
+                        <p class="mb-2"><strong>Khu vực liên kết Hub:</strong> ${u.area}</p>
+                        <p class="mb-2"><strong>Số dư ký quỹ Ví Escrow:</strong> <span class="text-success fw-bold">${u.escrow}</span></p>
+                        <p class="mb-2"><strong>Điểm tín nhiệm AI SLA:</strong> <span class="badge bg-success">${u.aiScore}/100</span></p>
+                        <hr class="my-2">
+                        <small class="text-muted d-block"><i class="fa-solid fa-shield-halved text-success me-1"></i>Chính sách: Điểm SLA ≥ 95 được giảm phí sàn từ 3% xuống 2% và ưu tiên tự động gán xe chiều về gần nhất.</small>
                     </div>
                 `,
-                confirmButtonColor: '#198754',
+                confirmButtonColor: '#10b981',
                 confirmButtonText: 'Đóng'
             });
         }
@@ -291,21 +361,21 @@
             if (u.status === 'locked') {
                 u.status = 'active';
                 renderUsers();
-                Swal.fire('Đã mở khóa!', `Tài khoản ${u.name} đã được phép ghép tải trở lại.`, 'success');
+                Swal.fire('Đã mở khóa!', `Tài khoản đối tác ${u.name} đã được kích hoạt trở lại.`, 'success');
             } else {
                 Swal.fire({
                     title: `Khóa tài khoản ${u.name}?`,
-                    text: `Chặn đối tác này tham gia ghép tải và đóng băng tạm thời ví ký quỹ Escrow?`,
+                    text: `Tạm thời đóng băng quyền gom tải và giữ nguyên số dư ký quỹ Ví Escrow của đối tác?`,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#dc3545',
+                    confirmButtonColor: '#ef4444',
                     cancelButtonText: 'Hủy',
-                    confirmButtonText: 'Khóa ngay'
+                    confirmButtonText: 'Xác nhận Khóa'
                 }).then((res) => {
                     if (res.isConfirmed) {
                         u.status = 'locked';
                         renderUsers();
-                        Swal.fire('Đã khóa!', `Tài khoản ${u.name} đã bị tạm ngưng hoạt động.`, 'success');
+                        Swal.fire('Đã khóa!', `Tài khoản ${u.name} đã bị tạm ngưng giao dịch.`, 'success');
                     }
                 });
             }
@@ -313,36 +383,41 @@
 
         function openAddUserModal() {
             Swal.fire({
-                title: 'Thêm Đối Tác Mới Vào Hub',
+                title: 'Đăng Ký Đối Tác Mới Vào Hệ Thống Hub',
+                width: '550px',
                 html: `
-                    <div class="text-start">
-                        <label class="form-label small fw-bold">Họ tên đối tác / Nhà xe</label>
+                    <div class="text-start" style="font-size: 0.9rem;">
+                        <label class="form-label small fw-bold mb-1">Họ tên đối tác / Chủ nhà xe</label>
                         <input id="newUserName" class="form-control mb-2" placeholder="VD: Lê Hoàng Nam">
-                        <label class="form-label small fw-bold">Số điện thoại</label>
+                        
+                        <label class="form-label small fw-bold mb-1">Số điện thoại xác thực</label>
                         <input id="newUserPhone" class="form-control mb-2" placeholder="VD: 0909.888.777">
-                        <label class="form-label small fw-bold">Phân loại vai trò</label>
+                        
+                        <label class="form-label small fw-bold mb-1">Phân loại vai trò</label>
                         <select id="newUserRole" class="form-select mb-2">
                             <option value="farmer">Nông dân (Chủ hàng vùng trồng)</option>
-                            <option value="trader">Tiểu thương (Chủ hàng chợ)</option>
-                            <option value="driver" selected>Chủ xe / Tài xế (Xe tải 3T - 8T)</option>
+                            <option value="trader">Tiểu thương (Chợ đầu mối / Điểm bán lẻ)</option>
+                            <option value="driver" selected>Chủ xe / Tài xế (Xe tải chiều về)</option>
                         </select>
-                        <label class="form-label small fw-bold">Thông tin bổ sung (Biển số xe / Nông sản)</label>
-                        <input id="newUserSub" class="form-control mb-2" placeholder="VD: Biển số 62C-456.78 (Xe 5 Tấn)">
-                        <label class="form-label small fw-bold">Khu vực / Tuyến đường</label>
-                        <input id="newUserArea" class="form-control" placeholder="VD: Tân Thạnh, Long An ⇄ TP.HCM">
+                        
+                        <label class="form-label small fw-bold mb-1">Thông tin bổ sung (Biển số xe / Loại nông sản)</label>
+                        <input id="newUserSub" class="form-control mb-2" placeholder="VD: 62C-456.78 (Xe 5T Mui bạt)">
+                        
+                        <label class="form-label small fw-bold mb-1">Khu vực Hub / Tuyến đường hoạt động chính</label>
+                        <input id="newUserArea" class="form-control" placeholder="VD: Hub 01 - Tân Thạnh, Long An ⇄ TP.HCM">
                     </div>
                 `,
                 showCancelButton: true,
-                confirmButtonColor: '#198754',
-                confirmButtonText: 'Lưu đối tác',
+                confirmButtonColor: '#10b981',
+                confirmButtonText: 'Lưu Đối Tác',
                 cancelButtonText: 'Hủy'
             }).then((res) => {
                 if (res.isConfirmed) {
-                    const name = document.getElementById('newUserName').value || 'Đối tác mới';
-                    const phone = document.getElementById('newUserPhone').value || '0909.000.111';
+                    const name = document.getElementById('newUserName').value.trim() || 'Đối tác mới';
+                    const phone = document.getElementById('newUserPhone').value.trim() || '0909.000.111';
                     const role = document.getElementById('newUserRole').value;
-                    const sub = document.getElementById('newUserSub').value || 'Đã xác thực hồ sơ tại Hub';
-                    const area = document.getElementById('newUserArea').value || 'Long An ⇄ TP.HCM';
+                    const sub = document.getElementById('newUserSub').value.trim() || 'Đã xác thực hồ sơ tại trạm Hub';
+                    const area = document.getElementById('newUserArea').value.trim() || 'Long An ⇄ TP.HCM';
 
                     const roleMap = { farmer: 'Nông dân', trader: 'Tiểu thương', driver: 'Chủ xe / Tài xế' };
                     usersList.unshift({
@@ -355,11 +430,12 @@
                         area: area,
                         escrow: '2.000.000 đ',
                         rating: 5.0,
-                        trips: 'Mới gia nhập',
+                        aiScore: 95,
+                        trips: 'Mới đăng ký',
                         status: 'active'
                     });
                     renderUsers();
-                    Swal.fire('Thành công!', `Đã thêm ${name} vào hệ thống.`, 'success');
+                    Swal.fire('Thành công!', `Đã thêm đối tác ${name} vào hệ sinh thái LOADPOOL.`, 'success');
                 }
             });
         }
