@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "type": "chrome",
             "request": "launch",
@@ -12,4 +13,4 @@
             "file": "d:\\LOADPOOL\\create-order.html"
         }
     ]
-}
+}   
