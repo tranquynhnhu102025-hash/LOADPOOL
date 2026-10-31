@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Logistics Advisor - Tạo Đơn Gom Tải LOADPOOL</title>
+    <title>Tạo Đơn Gom Tải - LOADPOOL</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,527 +11,224 @@
     <link rel="stylesheet" href="css/main-style.css">
 
     <style>
-        body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-
-        /* AI SCORE CIRCLE */
         .ai-score-ring {
-            width: 95px;
-            height: 95px;
-            border-radius: 50%;
+            width: 85px; height: 85px; border-radius: 50%;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white; box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3); border: 2px solid rgba(255, 255, 255, 0.4);
         }
-
-        .pool-match-card {
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 15px;
-            background: #ffffff;
-            transition: all 0.2s ease;
-        }
-        .pool-match-card:hover {
-            border-color: #10b981;
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.12);
-            transform: translateY(-2px);
-        }
-
-        #orderAdvisorMap {
-            height: 270px;
-            width: 100%;
-            border-radius: 12px;
-            border: 1px solid #dee2e6;
-            z-index: 1;
-        }
+        .pool-match-card { border: 1px solid #e9ecef; border-radius: 12px; padding: 15px; background: #ffffff; transition: all 0.2s ease; }
+        .pool-match-card:hover { border-color: #10b981; box-shadow: 0 6px 16px rgba(16, 185, 129, 0.12); transform: translateY(-2px); }
+        #orderAdvisorMap { height: 320px; width: 100%; border-radius: 12px; border: 1px solid #dee2e6; z-index: 1; }
+        .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar chuẩn 8 phân hệ đồng bộ -->
     <nav class="sidebar py-3">
-        <div class="sidebar-brand text-center pb-3 mb-3">
-            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        <div class="sidebar-brand">
+            <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo">
         </div>
-        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
-        <a href="create-order.html" class="active"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
-        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
-        <a href="users.html"><i class="fa-solid fa-users me-3"></i>Đối tác</a>
-        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i><span class="i18n" data-vi="Tổng quan" data-en="Dashboard">Tổng quan</span></a>
+        <a href="login.html"><i class="fa-solid fa-user-shield me-3 text-info"></i><span class="i18n" data-vi="Tài khoản" data-en="Account">Tài khoản</span></a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i><span class="i18n" data-vi="Tạo đơn" data-en="Create Order">Tạo đơn</span></a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i><span class="i18n" data-vi="Nhóm & Chat" data-en="Community Chat">Nhóm & Chat</span></a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i><span class="i18n" data-vi="Cổng Chủ xe" data-en="Driver Portal">Cổng Chủ xe</span></a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i><span class="i18n" data-vi="Chuyến xe" data-en="Manage Trips">Chuyến xe</span></a>
+        <a href="users.html"><i class="fa-solid fa-users me-3"></i><span class="i18n" data-vi="Đối tác" data-en="Partners">Đối tác</span></a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i><span class="i18n" data-vi="QC & Ví" data-en="QC & Escrow">QC & Ví</span></a>
     </nav>
 
     <div class="main-content">
         
-        <!-- HEADER GỌN GÀNG (KHÔNG BANNER TO) -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-1">
-                    <h3 class="fw-bold text-dark m-0">Tạo Đơn Gom Tải Bằng AI</h3>
-                    <span class="badge bg-success bg-opacity-10 text-success border border-success">AI Logistics Advisor</span>
+                    <h4 class="fw-bold text-dark m-0 i18n" data-vi="Tạo Đơn Hàng Bằng AI" data-en="AI Order Creation">Tạo Đơn Hàng Bằng AI</h4>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success">Smart Matching</span>
                 </div>
-                <p class="text-muted m-0 small">
-                    Hệ thống tự động tìm đơn tương tự, phân tích tải trọng xe 5T và đề xuất nhóm ghép tối ưu trong bán kính 10km.
-                </p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <a href="manage-trips.html" class="btn btn-outline-success btn-sm fw-bold px-3 py-2 rounded-pill">
-                    <i class="fa-solid fa-truck-fast me-1"></i> Xem danh sách chuyến
-                </a>
-                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="32">
-                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin Như</span>
+                <div class="btn-group lang-switch shadow-sm me-2" role="group">
+                    <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
+                    <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
                 </div>
+                <a href="manage-trips.html" class="btn btn-outline-success btn-sm fw-bold px-3 py-2 rounded-pill">
+                    <i class="fa-solid fa-truck-fast me-1"></i> <span class="i18n" data-vi="Xem danh sách chuyến" data-en="View Trips">Xem danh sách chuyến</span>
+                </a>
             </div>
         </div>
 
-        <!-- 4 THẺ CHỈ SỐ NHANH GỌN GÀNG -->
-        <div class="row g-3 mb-4">
+        <div class="row g-3 mb-4 text-center">
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #10b981 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">TỶ LỆ GHÉP TẢI THÀNH CÔNG</small>
-                            <h4 class="fw-bold text-success mb-0">96%</h4>
-                        </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-circle-check"></i></div>
-                    </div>
+                <div class="card form-card p-3 h-100 justify-content-center bg-white border-start border-success border-4">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="TỶ LỆ GHÉP THÀNH CÔNG" data-en="MATCH SUCCESS RATE">TỶ LỆ GHÉP THÀNH CÔNG</small>
+                    <h3 class="fw-bold text-success mb-0">96%</h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #facc15 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">CHI PHÍ TIẾT KIỆM TB</small>
-                            <h4 class="fw-bold text-warning mb-0">18% <span class="fs-6 text-muted fw-normal">/ tấn</span></h4>
-                        </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-piggy-bank"></i></div>
-                    </div>
+                <div class="card form-card p-3 h-100 justify-content-center bg-white border-start border-warning border-4">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="TIẾT KIỆM TRUNG BÌNH" data-en="AVG COST SAVED">TIẾT KIỆM TRUNG BÌNH</small>
+                    <h3 class="fw-bold text-warning text-dark mb-0">18%</h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #3b82f6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">XE CHIỀU VỀ KHẢ DỤNG</small>
-                            <h4 class="fw-bold text-primary mb-0">412 Xe</h4>
-                        </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-truck-front"></i></div>
-                    </div>
+                <div class="card form-card p-3 h-100 justify-content-center bg-white border-start border-primary border-4">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="XE TRỐNG ĐANG QUAY ĐẦU" data-en="RETURNING EMPTY TRUCKS">XE TRỐNG ĐANG QUAY ĐẦU</small>
+                    <h3 class="fw-bold text-primary mb-0">412 <span class="fs-6 fw-normal i18n" data-vi="Xe" data-en="Trucks">Xe</span></h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #8b5cf6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">ĐƠN ĐANG CHỜ GHÉP</small>
-                            <h4 class="fw-bold text-dark mb-0">84 Đơn</h4>
-                        </div>
-                        <div class="stat-icon bg-purple bg-opacity-10" style="color:#8b5cf6;"><i class="fa-solid fa-boxes-packing"></i></div>
-                    </div>
+                <div class="card form-card p-3 h-100 justify-content-center bg-white border-start border-dark border-4">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="ĐƠN ĐANG CHỜ GHÉP" data-en="PENDING ORDERS">ĐƠN ĐANG CHỜ GHÉP</small>
+                    <h3 class="fw-bold text-dark mb-0">84 <span class="fs-6 fw-normal i18n" data-vi="Đơn" data-en="Orders">Đơn</span></h3>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
-            <!-- CỘT TRÁI: FORM NHẬP NHU CẦU & KẾT QUẢ AI -->
             <div class="col-lg-7">
-                
-                <!-- SECTION 2 - FORM NHẬP NHU CẦU -->
-                <div class="card card-custom p-4 mb-4 bg-white">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-keyboard text-success me-2"></i>Nhập Nhu Cầu Vận Chuyển</h5>
-                        <span class="badge bg-light text-muted border">Bước 1: Khai báo đơn</span>
-                    </div>
+                <div class="card form-card p-4 mb-4 bg-white">
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-box-open text-success me-2"></i><span class="i18n" data-vi="Khai Báo Lô Hàng" data-en="Declare Cargo">Khai Báo Lô Hàng</span></h5>
 
                     <form id="advisorInputForm">
-                        <!-- Nhóm 1: Thông tin hàng hóa -->
-                        <div class="p-3 bg-light rounded-3 mb-3 border">
-                            <h6 class="fw-bold text-success small text-uppercase mb-2"><i class="fa-solid fa-box me-1"></i> Nhóm 1: Thông tin hàng hóa</h6>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold">Loại nông sản</label>
-                                    <select class="form-select form-select-sm" id="cropTypeSelect" onchange="runAIAnalysis()">
-                                        <option value="Bí đỏ hồ lô" data-price="5000" selected>Bí đỏ hồ lô (Giá gốc 5.000đ/kg)</option>
-                                        <option value="Thanh long ruột đỏ" data-price="12000">Thanh long ruột đỏ (12.000đ/kg)</option>
-                                        <option value="Xoài cát Hòa Lộc" data-price="25000">Xoài cát Hòa Lộc (25.000đ/kg)</option>
-                                        <option value="Sầu riêng Ri6" data-price="60000" data-odor="strong">Sầu riêng Ri6 (Yêu cầu xe riêng)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold">Quy cách đóng gói</label>
-                                    <select class="form-select form-select-sm" id="packageSelect" onchange="runAIAnalysis()">
-                                        <option value="20" data-cbm="0.06" selected>Sọt nhựa tiêu chuẩn (20kg - 0.06m³)</option>
-                                        <option value="15" data-cbm="0.045">Thùng Carton đục lỗ (15kg - 0.045m³)</option>
-                                        <option value="30" data-cbm="0.08">Bao lưới thông thoáng (30kg - 0.08m³)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-bold">Số lượng kiện</label>
-                                    <input type="number" class="form-control form-control-sm fw-bold" id="itemQuantity" value="50" min="1" oninput="runAIAnalysis()">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-bold">Tổng trọng lượng</label>
-                                    <input type="text" class="form-control form-control-sm bg-white fw-bold text-success" id="calcWeight" value="1,000 Kg (1.0 Tấn)" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-bold">Giá trị lô hàng ước tính</label>
-                                    <input type="text" class="form-control form-control-sm bg-white fw-bold text-dark" id="calcGoodsValue" value="5.000.000 VNĐ" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Nhóm 2 & 3: Điểm lấy & Điểm giao -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <div class="p-3 bg-light rounded-3 border h-100">
-                                    <h6 class="fw-bold text-primary small text-uppercase mb-2"><i class="fa-solid fa-location-dot me-1"></i> Nhóm 2: Điểm lấy hàng (Hub)</h6>
-                                    <label class="form-label small">Tỉnh / Thành xuất phát</label>
-                                    <select class="form-select form-select-sm mb-2" id="originProvince" onchange="runAIAnalysis()">
-                                        <option value="LA" selected>Long An (Tân Thạnh)</option>
-                                        <option value="TG">Tiền Giang (Châu Thành)</option>
-                                        <option value="DT">Đồng Tháp (Cao Lãnh)</option>
-                                    </select>
-                                    <label class="form-label small">Hub tiếp nhận gần bạn nhất</label>
-                                    <input type="text" class="form-control form-control-sm bg-white" id="hubAssigned" value="Hub 01 - Bưu điện Tân Thạnh (Cách 1.2 km)" readonly>
-                                </div>
+                                <label class="form-label small fw-bold i18n" data-vi="Loại nông sản" data-en="Crop Type">Loại nông sản</label>
+                                <select class="form-select form-select-sm" id="cropTypeSelect" onchange="runAIAnalysis()">
+                                    <option value="Bí đỏ hồ lô" data-price="5000" selected>Bí đỏ hồ lô (Giá 5.000đ/kg)</option>
+                                    <option value="Thanh long ruột đỏ" data-price="12000">Thanh long (12.000đ/kg)</option>
+                                    <option value="Xoài cát Hòa Lộc" data-price="25000">Xoài cát (25.000đ/kg)</option>
+                                </select>
                             </div>
                             <div class="col-md-6">
-                                <div class="p-3 bg-light rounded-3 border h-100">
-                                    <h6 class="fw-bold text-danger small text-uppercase mb-2"><i class="fa-solid fa-flag-checkered me-1"></i> Nhóm 3: Điểm giao hàng</h6>
-                                    <label class="form-label small">Chợ đầu mối / Kho nhận</label>
-                                    <select class="form-select form-select-sm mb-2" id="destinationSelect" onchange="runAIAnalysis()">
-                                        <option value="TD" selected>Chợ Đầu Mối Thủ Đức, TP.HCM</option>
-                                        <option value="BD">Chợ Đầu Mối Bình Điền, TP.HCM</option>
-                                        <option value="HM">Chợ Đầu Mối Hóc Môn, TP.HCM</option>
-                                    </select>
-                                    <label class="form-label small">Thời gian giao mong muốn</label>
-                                    <input type="datetime-local" class="form-control form-control-sm bg-white" id="desiredTime">
-                                </div>
+                                <label class="form-label small fw-bold i18n" data-vi="Quy cách đóng gói" data-en="Packaging">Quy cách đóng gói</label>
+                                <select class="form-select form-select-sm" id="packageSelect" onchange="runAIAnalysis()">
+                                    <option value="20" selected>Sọt nhựa (20kg/sọt)</option>
+                                    <option value="15">Thùng Carton (15kg/thùng)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold i18n" data-vi="Số lượng kiện" data-en="Quantity">Số lượng kiện</label>
+                                <input type="number" class="form-control form-control-sm fw-bold" id="itemQuantity" value="50" min="1" oninput="runAIAnalysis()">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold i18n" data-vi="Tổng trọng lượng" data-en="Total Weight">Tổng trọng lượng</label>
+                                <input type="text" class="form-control form-control-sm bg-light fw-bold text-success" id="calcWeight" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold i18n" data-vi="Giá trị ước tính" data-en="Est. Value">Giá trị ước tính</label>
+                                <input type="text" class="form-control form-control-sm bg-light fw-bold text-dark" id="calcGoodsValue" readonly>
                             </div>
                         </div>
 
-                        <!-- Nhóm 4: Nhu cầu đặc biệt -->
-                        <div class="p-3 bg-light rounded-3 mb-2 border">
-                            <h6 class="fw-bold text-dark small text-uppercase mb-2"><i class="fa-solid fa-sliders me-1"></i> Nhóm 4: Yêu cầu phương tiện & Bảo quản</h6>
-                            <div class="d-flex flex-wrap gap-2">
-                                <input type="checkbox" class="btn-check" id="checkCool"><label class="btn btn-sm btn-outline-secondary" for="checkCool">Hàng mát/lạnh</label>
-                                <input type="checkbox" class="btn-check" id="checkFragile"><label class="btn btn-sm btn-outline-secondary" for="checkFragile">Dễ dập nát</label>
-                                <input type="checkbox" class="btn-check" id="checkTarpaulin" checked><label class="btn btn-sm btn-outline-success" for="checkTarpaulin"><i class="fa-solid fa-check me-1"></i>Xe mui bạt tiêu chuẩn</label>
-                                <input type="checkbox" class="btn-check" id="checkBoxTruck"><label class="btn btn-sm btn-outline-secondary" for="checkBoxTruck">Xe thùng kín</label>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-primary"><i class="fa-solid fa-location-dot me-1"></i><span class="i18n" data-vi="Nơi Gửi (Hub)" data-en="Origin (Hub)">Nơi Gửi (Hub)</span></label>
+                                <select class="form-select form-select-sm mb-2" id="originProvince" onchange="runAIAnalysis()">
+                                    <option value="LA" selected>Hub Long An (Tân Thạnh)</option>
+                                    <option value="TG">Hub Tiền Giang (Châu Thành)</option>
+                                    <option value="DT">Hub Đồng Tháp (Cao Lãnh)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-danger"><i class="fa-solid fa-flag-checkered me-1"></i><span class="i18n" data-vi="Nơi Giao (Chợ/Kho)" data-en="Destination">Nơi Giao (Chợ/Kho)</span></label>
+                                <select class="form-select form-select-sm mb-2" id="destinationSelect" onchange="runAIAnalysis()">
+                                    <option value="TD" selected>Chợ Đầu Mối Thủ Đức, TP.HCM</option>
+                                    <option value="BD">Chợ Đầu Mối Bình Điền, TP.HCM</option>
+                                    <option value="HM">Chợ Đầu Mối Hóc Môn, TP.HCM</option>
+                                </select>
                             </div>
                         </div>
                     </form>
                 </div>
 
-                <!-- SECTION 3 - AI PHÂN TÍCH ĐƠN HÀNG (CARD NỔI BẬT) -->
-                <div class="card card-custom p-4 mb-4 bg-white border border-success border-opacity-50 shadow-sm">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="ai-score-ring me-3 flex-shrink-0">
-                            <span class="fs-4 fw-bold" id="aiScoreDisplay">92</span>
-                            <small style="font-size: 0.62rem; text-transform: uppercase;">AI Match</small>
-                        </div>
-                        <div>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success mb-1">AI Engine Analysis</span>
-                            <h5 class="fw-bold text-dark m-0">Đơn hàng tương thích cao với cụm Hub lân cận</h5>
-                            <p class="text-muted small m-0">Thuật toán phân tích tọa độ GPS, thời gian cut-off và khả năng ghép xe chiều về.</p>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 text-center pt-2 border-top">
-                        <div class="col-4 border-end">
-                            <small class="text-muted d-block" style="font-size: 0.78rem;">Xác suất ghép thành công</small>
-                            <h5 class="fw-bold text-success mb-0">94%</h5>
-                        </div>
-                        <div class="col-4 border-end">
-                            <small class="text-muted d-block" style="font-size: 0.78rem;">Thời gian chờ dự kiến</small>
-                            <h5 class="fw-bold text-dark mb-0">18 phút</h5>
-                        </div>
-                        <div class="col-4">
-                            <small class="text-muted d-block" style="font-size: 0.78rem;">Xe phù hợp đang ở gần</small>
-                            <h5 class="fw-bold text-primary mb-0">12 xe</h5>
-                        </div>
-                    </div>
-                    <div class="row g-2 text-center pt-2 border-top mt-2">
-                        <div class="col-6 border-end">
-                            <small class="text-muted d-block" style="font-size: 0.78rem;">Tiết kiệm dự kiến (so với xe riêng)</small>
-                            <h5 class="fw-bold text-danger mb-0" id="aiEstimatedSave">240.000 VNĐ</h5>
-                        </div>
-                        <div class="col-6">
-                            <small class="text-muted d-block" style="font-size: 0.78rem;">Tỷ lệ giao đúng hẹn</small>
-                            <h5 class="fw-bold text-success mb-0">96%</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 6 - AI EXPLAINABILITY -->
-                <div class="card card-custom p-4 mb-4 bg-white">
+                <div class="card form-card p-4 mb-4 bg-white">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-brain text-primary me-2"></i>Vì sao AI đề xuất nhóm này? (Explainable AI)</h5>
-                        <span class="badge bg-primary bg-opacity-10 text-primary">Trọng số thuật toán</span>
-                    </div>
-                    <div class="vstack gap-2" style="font-size: 0.88rem;">
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Điểm tương đồng tuyến đường (Route Matching)</span><strong class="text-dark">25 / 25 điểm</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Điểm khoảng cách vị trí tập kết Hub (Proximity &lt; 2km)</span><strong class="text-dark">20 / 20 điểm</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Điểm tối ưu tải trọng xe 5 tấn (Load Consolidation)</span><strong class="text-dark">18 / 20 điểm</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Điểm đồng thuận thời gian giao nhận (Time Window)</span><strong class="text-dark">15 / 15 điểm</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Điểm khai thác chuyến xe rỗng chiều về (Backhaul Factor)</span><strong class="text-dark">20 / 20 điểm</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-success bg-opacity-10 border border-success rounded fw-bold text-success">
-                            <span>Tổng điểm đánh giá giải thuật (AI Recommendation Index)</span>
-                            <span class="fs-6">98 / 100 điểm</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- CỘT PHẢI: GỢI Ý NHÓM, SO SÁNH GIÁ & BẢN ĐỒ RADAR -->
-            <div class="col-lg-5">
-                
-                <!-- SECTION 4 - AI GỢI Ý NHÓM GOM TẢI -->
-                <div class="card card-custom p-4 mb-4 bg-white">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-users-rectangle text-success me-2"></i>AI Gợi Ý Nhóm Gom Tải</h5>
-                        <span class="badge bg-success">3 đề xuất tối ưu</span>
-                    </div>
-
-                    <div class="vstack gap-3">
-                        <!-- Nhóm số 1 -->
-                        <div class="pool-match-card border-success bg-success bg-opacity-10">
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <strong class="text-dark">Nhóm 1: Bí đỏ hồ lô</strong>
-                                <span class="badge bg-success">Sắp đủ tải</span>
-                            </div>
-                            <small class="text-muted d-block mb-1">Tuyến: <b>Long An → Thủ Đức</b></small>
-                            <div class="d-flex justify-content-between small text-muted mb-2">
-                                <span>Đã có: <b>4.2 / 5 tấn</b></span>
-                                <span>Khớp tuyến: <b class="text-success">98%</b></span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <span class="text-success fw-bold small"><i class="fa-solid fa-piggy-bank me-1"></i>Tiết kiệm thêm 18%</span>
-                                <button type="button" class="btn btn-sm btn-success fw-bold px-3" onclick="selectPoolGroup('Nhóm 1 (Bí đỏ Long An ➔ Thủ Đức)')">Tham gia nhóm</button>
-                            </div>
-                        </div>
-
-                        <!-- Nhóm số 2 -->
-                        <div class="pool-match-card">
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <strong class="text-dark">Nhóm 2: Thanh long</strong>
-                                <span class="badge bg-warning text-dark">Đang gom</span>
-                            </div>
-                            <small class="text-muted d-block mb-1">Tuyến: <b>Tiền Giang → Bình Điền</b></small>
-                            <div class="d-flex justify-content-between small text-muted mb-2">
-                                <span>Đã có: <b>3.8 / 5 tấn</b></span>
-                                <span>Khớp tuyến: <b class="text-success">95%</b></span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <span class="text-success fw-bold small"><i class="fa-solid fa-piggy-bank me-1"></i>Tiết kiệm thêm 14%</span>
-                                <button type="button" class="btn btn-sm btn-outline-success fw-bold px-3" onclick="selectPoolGroup('Nhóm 2 (Thanh long Tiền Giang ➔ Bình Điền)')">Tham gia nhóm</button>
-                            </div>
-                        </div>
-
-                        <!-- Nhóm số 3 -->
-                        <div class="pool-match-card">
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <strong class="text-dark">Nhóm 3: Xoài cát</strong>
-                                <span class="badge bg-primary">Chờ xác nhận</span>
-                            </div>
-                            <small class="text-muted d-block mb-1">Tuyến: <b>Đồng Tháp → Hóc Môn</b></small>
-                            <div class="d-flex justify-content-between small text-muted mb-2">
-                                <span>Đã có: <b>4.5 / 5 tấn</b></span>
-                                <span>Khớp tuyến: <b class="text-success">97%</b></span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <span class="text-success fw-bold small"><i class="fa-solid fa-piggy-bank me-1"></i>Tiết kiệm thêm 16%</span>
-                                <button type="button" class="btn btn-sm btn-outline-success fw-bold px-3" onclick="selectPoolGroup('Nhóm 3 (Xoài cát Đồng Tháp ➔ Hóc Môn)')">Tham gia nhóm</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 5 - CHI PHÍ SO SÁNH -->
-                <div class="card card-custom p-4 mb-4 bg-white border border-success border-opacity-25 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0">LOADPOOL giúp tiết kiệm bao nhiêu?</h5>
-                        <span class="badge bg-danger px-3 py-1 fw-bold">Giảm 30%</span>
-                    </div>
-                    <div class="row g-2 text-center">
-                        <div class="col-6">
-                            <div class="p-3 bg-light rounded-3 border">
-                                <small class="text-muted d-block">Thuê xe nhỏ riêng</small>
-                                <h4 class="fw-bold text-secondary text-decoration-line-through mb-0">800.000 đ</h4>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="p-3 bg-success bg-opacity-10 border border-success rounded-3">
-                                <small class="text-success fw-bold d-block">Ghép tải LOADPOOL</small>
-                                <h4 class="fw-bold text-success mb-0">560.000 đ</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-3 text-center text-success fw-bold small">
-                        <i class="fa-solid fa-piggy-bank me-1"></i> Mức tiết kiệm trực tiếp: 240.000 VNĐ / tấn hàng
-                    </div>
-                </div>
-
-                <!-- SECTION 7 - HUB & BẢN ĐỒ RADAR -->
-                <div class="card card-custom p-4 mb-4 bg-white">
-                    <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-location-crosshairs text-danger me-2"></i>Đơn Hàng Gần Bạn & Bản Đồ Radar</h5>
-                    <div class="vstack gap-1 small mb-3">
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>📍 <b>Hub Long An (Tân Thạnh)</b></span><strong class="text-success">Khoảng cách: 1.2 km</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>📍 <b>Hub Tân An</b></span><strong class="text-muted">Khoảng cách: 3.1 km</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>📍 <b>Hub Bình Điền</b></span><strong class="text-muted">Khoảng cách: 7.8 km</strong></div>
+                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-satellite-dish text-primary me-2"></i><span class="i18n" data-vi="Radar Tìm Xe (Bán Kính 10km)" data-en="Radar (10km Radius)">Radar Tìm Xe (Bán Kính 10km)</span></h5>
+                        <span class="badge bg-danger pulse-indicator">Live</span>
                     </div>
                     <div id="orderAdvisorMap"></div>
-                    <small class="text-muted mt-2 d-block" style="font-size: 0.76rem;"><i class="fa-solid fa-satellite me-1 text-primary"></i>Bản đồ hiển thị: Điểm gửi hàng • Trạm Hub • Đơn tương thích • Xe chiều về</small>
                 </div>
+            </div>
 
-                <!-- SECTION 9 - DỰ BÁO AI -->
-                <div class="card card-custom p-4 mb-4 bg-white">
-                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-chart-line text-warning me-2"></i>AI Prediction (Dự Báo Độ Tin Cậy)</h5>
-                    <div class="vstack gap-2" style="font-size: 0.88rem;">
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Khả năng đủ tải trong 30 phút</span><strong class="text-success">96%</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Khả năng tìm được xe chiều về</span><strong class="text-success">93%</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Khả năng giao đúng giờ</span><strong class="text-success">94%</strong></div>
-                        <div class="d-flex justify-content-between p-2 bg-light rounded"><span>Khả năng tiết kiệm trên 15%</span><strong class="text-success">91%</strong></div>
+            <div class="col-lg-5">
+                <div class="card form-card p-4 mb-4 bg-dark text-white shadow-sm">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="ai-score-ring me-3 flex-shrink-0">
+                            <span class="fs-3 fw-bold" id="aiScoreDisplay">92</span>
+                        </div>
+                        <div>
+                            <span class="badge bg-warning text-dark mb-1">AI Recommendation</span>
+                            <h5 class="fw-bold text-white m-0 i18n" data-vi="Gợi Ý Ghép Chuyến" data-en="Pooling Suggestion">Gợi Ý Ghép Chuyến</h5>
+                            <p class="text-white-50 small m-0 i18n" data-vi="Tỉ lệ thành công dự kiến: 94%" data-en="Expected success rate: 94%">Tỉ lệ thành công dự kiến: 94%</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-white bg-opacity-10 rounded text-center">
+                        <small class="text-light d-block mb-1 i18n" data-vi="Dự kiến tiết kiệm so với đi xe riêng:" data-en="Est. saving compared to private truck:">Dự kiến tiết kiệm so với đi xe riêng:</small>
+                        <h3 class="fw-bold text-warning mb-0" id="aiEstimatedSave">240.000 VNĐ</h3>
+                    </div>
+                </div>
+                
+                <div class="card form-card p-4 mb-4 bg-white">
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-users-rectangle text-success me-2"></i><span class="i18n" data-vi="Gợi Ý Nhóm Đang Chờ" data-en="Suggested Pooling Groups">Gợi Ý Nhóm Đang Chờ</span></h5>
+                    <div class="vstack gap-3">
+                        <div class="pool-match-card border-success bg-success bg-opacity-10">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <strong class="text-dark i18n" data-vi="Nhóm 1: Bí đỏ hồ lô" data-en="Group 1: Pumpkins">Nhóm 1: Bí đỏ hồ lô</strong>
+                                <span class="badge bg-success i18n" data-vi="Sắp đủ xe" data-en="Almost Full">Sắp đủ xe</span>
+                            </div>
+                            <small class="text-muted d-block mb-1 i18n" data-vi="Tuyến: Long An → Thủ Đức" data-en="Route: Long An → Thu Duc">Tuyến: Long An → Thủ Đức</small>
+                            <div class="d-flex justify-content-between small text-muted mb-2">
+                                <span class="i18n" data-vi="Đã có: 4.2 / 5 tấn" data-en="Filled: 4.2 / 5 tons">Đã có: 4.2 / 5 tấn</span>
+                                <span><span class="i18n" data-vi="Trùng khớp: " data-en="Match: ">Trùng khớp: </span><b class="text-success">98%</b></span>
+                            </div>
+                            <div class="pt-2 border-top text-end">
+                                <button type="button" class="btn btn-sm btn-success fw-bold px-3 w-100" onclick="selectPoolGroup()">
+                                    <span class="i18n" data-vi="Ghép vào nhóm này" data-en="Join this group">Ghép vào nhóm này</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <div class="card form-card p-4 text-center bg-white border border-success border-2 shadow-sm">
+                    <h5 class="fw-bold text-dark mb-2 i18n" data-vi="Chưa muốn ghép ngay?" data-en="Don't want to pool now?">Chưa muốn ghép ngay?</h5>
+                    <p class="text-muted small mb-3 i18n" data-vi="Tạo đơn và đưa lên Chợ Gom Tải để hệ thống tự động tìm đối tác cho bạn." data-en="Create an order and post it to the Pooling Market to find partners automatically.">Tạo đơn và đưa lên Chợ Gom Tải để hệ thống tự động tìm đối tác cho bạn.</p>
+                    <button type="button" class="btn btn-dark fw-bold py-2 rounded-pill" onclick="executeCreateOrder()">
+                        <i class="fa-solid fa-plus me-2"></i><span class="i18n" data-vi="Đăng lên Chợ Chờ Ghép" data-en="Post to Pooling Market">Đăng lên Chợ Chờ Ghép</span>
+                    </button>
+                </div>
             </div>
         </div>
-
-        <!-- SECTION 8 - ĐƠN ĐANG CHỜ GHÉP (MARKETPLACE) -->
-        <section class="card card-custom p-4 mb-4 bg-white">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-store text-primary me-2"></i>Đơn Đang Chờ Ghép (Marketplace)</h5>
-                <span class="badge bg-light text-muted border">Cập nhật 2 phút trước</span>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Thanh long ruột đỏ</strong>
-                        <span class="text-success fw-bold">2.4 tấn</span> • Tiền Giang
-                        <hr class="my-2">
-                        <small class="text-muted"><i class="fa-solid fa-users me-1"></i>4 người tham gia</small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Bí đỏ hồ lô</strong>
-                        <span class="text-success fw-bold">1.8 tấn</span> • Long An
-                        <hr class="my-2">
-                        <small class="text-muted"><i class="fa-solid fa-users me-1"></i>3 người tham gia</small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Xoài cát</strong>
-                        <span class="text-success fw-bold">2.7 tấn</span> • Đồng Tháp
-                        <hr class="my-2">
-                        <small class="text-muted"><i class="fa-solid fa-users me-1"></i>5 người tham gia</small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Mít thái</strong>
-                        <span class="text-success fw-bold">1.2 tấn</span> • Bến Tre
-                        <hr class="my-2">
-                        <small class="text-muted"><i class="fa-solid fa-users me-1"></i>2 người tham gia</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 10 - SUCCESS STORIES -->
-        <section class="card card-custom p-4 mb-4 bg-white">
-            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-award text-warning me-2"></i>Các Chuyến Ghép Tải Thành Công</h5>
-            <div class="row g-3 text-center">
-                <div class="col-md-4">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Long An → Thủ Đức</strong>
-                        <h4 class="fw-bold text-success my-1">5 tấn</h4>
-                        <span class="badge bg-success">Tiết kiệm 22%</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Tiền Giang → Bình Điền</strong>
-                        <h4 class="fw-bold text-success my-1">5 tấn</h4>
-                        <span class="badge bg-success">Tiết kiệm 18%</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 border rounded-3 bg-light">
-                        <strong class="text-dark d-block">Đồng Tháp → Hóc Môn</strong>
-                        <h4 class="fw-bold text-success my-1">4.8 tấn</h4>
-                        <span class="badge bg-success">Tiết kiệm 20%</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 11 - CTA CUỐI TRANG GỌN GÀNG (DẠNG CARD TRẮNG SÁNG) -->
-        <section class="card card-custom p-4 text-center bg-white border border-success border-opacity-25 mb-4">
-            <div class="py-2">
-                <h4 class="fw-bold text-dark mb-2">Sẵn sàng ghép tải tối ưu bằng AI?</h4>
-                <p class="text-muted small mb-3 mx-auto" style="max-width: 540px;">
-                    Đưa lô hàng của bạn lên hệ thống LOADPOOL ngay bây giờ để nhận gợi ý điều phối và hưởng mức chi phí tối ưu nhất.
-                </p>
-                <button type="button" class="btn btn-success fw-bold px-5 py-2 fs-6 shadow-sm rounded-pill" onclick="executeCreateOrder()">
-                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Tạo đơn và nhận đề xuất AI
-                </button>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="text-center py-3 text-muted border-top small">
-            LOADPOOL v2.4 • AI Logistics Advisor Module • Demo Concept 2026
-        </footer>
-
     </div>
 
-    <!-- Scripts chuẩn, sạch lỗi cú pháp -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(4, 0, 0, 0);
-        document.getElementById('desiredTime').value = tomorrow.toISOString().slice(0, 16);
+        let currentLang = 'vi';
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.i18n').forEach(el => {
+                if(el.hasAttribute('data-' + lang)) el.innerText = el.getAttribute('data-' + lang);
+            });
+            document.getElementById('btn-en').className = lang === 'en' ? 'btn btn-success fw-bold' : 'btn btn-white border bg-white text-secondary fw-semibold';
+            document.getElementById('btn-vi').className = lang === 'vi' ? 'btn btn-success fw-bold' : 'btn btn-white border bg-white text-secondary fw-semibold';
+        }
 
-        const map = L.map('orderAdvisorMap').setView([10.6085, 106.0914], 11);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+        const map = L.map('orderAdvisorMap').setView([10.6085, 106.0914], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
-        L.marker([10.6085, 106.0914]).addTo(map)
-            .bindPopup('<b>Hub 01 - Tân Thạnh, Long An</b><br>Khoảng cách: 1.2 km').openPopup();
-
-        L.circle([10.6085, 106.0914], {
-            color: '#10b981',
-            fillColor: '#10b981',
-            fillOpacity: 0.15,
-            radius: 10000
-        }).addTo(map);
-
-        L.marker([10.6385, 106.1214]).addTo(map).bindPopup('🚚 Xe 5T (51C-123.45) đang trống chiều về');
-        L.marker([10.5885, 106.0514]).addTo(map).bindPopup('🚚 Xe 3.5T (62C-456.78) cách Hub 3.2km');
+        L.marker([10.6085, 106.0914]).addTo(map).bindPopup('<b>Hub Long An</b>').openPopup();
+        L.circle([10.6085, 106.0914], { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.15, radius: 5000 }).addTo(map);
 
         function runAIAnalysis() {
             const cropSelect = document.getElementById('cropTypeSelect');
-            const pkgSelect = document.getElementById('packageSelect');
             const qty = parseFloat(document.getElementById('itemQuantity').value) || 0;
-
-            const unitKg = parseFloat(pkgSelect.value) || 20;
+            const unitKg = parseFloat(document.getElementById('packageSelect').value) || 20;
             const pricePerKg = parseFloat(cropSelect.options[cropSelect.selectedIndex].getAttribute('data-price')) || 5000;
 
             const totalKg = qty * unitKg;
@@ -550,61 +247,36 @@
             document.getElementById('aiScoreDisplay').innerText = score;
         }
 
-        function selectPoolGroup(groupName) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Đã chọn nhóm ghép!',
-                html: `Hệ thống AI đã kết nối đơn hàng của bạn vào <b>${groupName}</b>.<br>Đang đồng bộ phân bổ cước phí xe 5 tấn.`,
-                confirmButtonColor: '#10b981'
-            });
+        function selectPoolGroup() {
+            const msg = currentLang === 'en' ? 'System connected you to Group 1.' : 'Hệ thống đã kết nối bạn vào Nhóm 1.';
+            Swal.fire({ icon: 'success', title: currentLang === 'en' ? 'Joined successfully!' : 'Ghép thành công!', text: msg, confirmButtonColor: '#10b981' })
+            .then(() => { window.location.href = 'manage-trips.html'; });
         }
 
         function executeCreateOrder() {
-            const qty = parseFloat(document.getElementById('itemQuantity').value) || 0;
-            if (qty <= 0) {
-                Swal.fire({ icon: 'error', title: 'Số lượng không hợp lệ', text: 'Vui lòng nhập số kiện lớn hơn 0', confirmButtonColor: '#10b981' });
-                return;
-            }
-
             const crop = document.getElementById('cropTypeSelect').value;
-            const pkgSelect = document.getElementById('packageSelect');
-            const unitKg = parseFloat(pkgSelect.value) || 20;
-            const totalKg = qty * unitKg;
-            const totalTons = totalKg / 1000;
+            const qty = parseFloat(document.getElementById('itemQuantity').value) || 0;
+            if (qty <= 0) return Swal.fire('Lỗi', 'Nhập số lượng lớn hơn 0', 'error');
 
-            const provinceText = document.getElementById('originProvince').options[document.getElementById('originProvince').selectedIndex].text.split('(')[0].trim();
-            const destText = document.getElementById('destinationSelect').options[document.getElementById('destinationSelect').selectedIndex].text.split(',')[0].replace('Chợ Đầu Mối ', '').trim();
+            const unitKg = parseFloat(document.getElementById('packageSelect').value) || 20;
+            const totalTons = (qty * unitKg) / 1000;
+
+            const origin = document.getElementById('originProvince').options[document.getElementById('originProvince').selectedIndex].text;
+            const dest = document.getElementById('destinationSelect').options[document.getElementById('destinationSelect').selectedIndex].text;
 
             const newOrder = {
                 tripId: 'TRP-' + Math.floor(1050 + Math.random() * 800),
-                routeCode: document.getElementById('originProvince').value,
-                from: provinceText,
-                to: destText,
-                crop: `${crop} (AI Advisor)`,
-                tons: parseFloat(totalTons.toFixed(1)),
-                maxTons: 5.0,
-                time: 'Hôm nay, 16:00',
-                creator: 'Lê Văn Sang (Nông dân)',
-                cost: '560.000 đ'
+                from: origin.replace('Hub ', '').trim(), to: dest.split(',')[0].trim(),
+                crop: crop, tons: parseFloat(totalTons.toFixed(1)), maxTons: 5.0, cost: 'Chờ AI báo giá',
+                time: 'Đang xếp tài', creator: 'Tôi (Nông dân)'
             };
 
             const saved = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
             saved.unshift(newOrder);
             localStorage.setItem('loadpool_custom_orders', JSON.stringify(saved));
 
-            Swal.fire({
-                title: 'Khởi tạo đơn thành công!',
-                html: `Đã đưa đơn hàng <b>${totalKg.toLocaleString('vi-VN')} Kg (${crop})</b> vào tiến trình ghép xe của hệ thống.`,
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonColor: '#10b981',
-                confirmButtonText: 'Xem tại Quản lý chuyến xe',
-                cancelButtonText: 'Ở lại trang này'
-            }).then((res) => {
-                if (res.isConfirmed) {
-                    window.location.href = 'manage-trips.html';
-                }
-            });
+            Swal.fire({ icon: 'success', title: currentLang==='en'?'Posted to Market!':'Đã lên Chợ Gom Tải!', confirmButtonColor: '#10b981' })
+            .then(() => { window.location.href = 'manage-trips.html'; });
         }
 
         runAIAnalysis();

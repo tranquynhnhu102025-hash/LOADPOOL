@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - LOADPOOL</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            background: linear-gradient(135deg, #f4f7f6 0%, #e8f5e9 100%); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+            background: #ffffff;
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+        }
+        .login-left {
+            background-color: #198754;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .login-right {
+            padding: 50px 40px;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+            border-color: #198754;
+        }
+        .btn-success {
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 600;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-tabs .nav-link.active {
+            color: #198754;
+            background: transparent;
+            border-bottom: 2px solid #198754;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card login-card flex-row">
+                    <!-- Banner trái -->
+                    <div class="col-md-5 d-none d-md-flex login-left">
+                        <!-- Trỏ đúng đường dẫn Logo nền xanh tĩnh -->
+                        <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo" class="mb-4 bg-white p-2 rounded-3" style="width: 70%;">
+                        <h4 class="fw-bold mb-3">Kết Nối Nông Sản ĐBSCL</h4>
+                        <p class="small opacity-75 mb-0">Hệ thống gom tải thông minh bằng AI, tối ưu chi phí vận chuyển cho nông dân và lấp đầy xe chạy rỗng cho tài xế.</p>
+                    </div>
+
+                    <!-- Form phải -->
+                    <div class="col-md-7 login-right">
+                        <ul class="nav nav-tabs mb-4" id="loginTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active w-100" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button">ĐĂNG NHẬP</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link w-100" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button">TẠO TÀI KHOẢN</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <!-- Tab Đăng nhập -->
+                            <div class="tab-pane fade show active" id="login">
+                                <!-- Gọi hàm fakeLogin khi bấm submit -->
+                                <form onsubmit="event.preventDefault(); fakeLogin('Nguyễn Văn An', 'Tài xế Xe 5 Tấn', '10b981');">
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Số điện thoại</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-phone text-success"></i></span>
+                                            <input type="text" class="form-control border-start-0" value="0903111222" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label small fw-bold text-muted d-flex justify-content-between">
+                                            <span>Mật khẩu</span>
+                                            <a href="#" class="text-success text-decoration-none">Quên mật khẩu?</a>
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-lock text-success"></i></span>
+                                            <input type="password" class="form-control border-start-0" value="123456" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">Đăng Nhập Hệ Thống</button>
+                                </form>
+                            </div>
+
+                            <!-- Tab Đăng ký -->
+                            <div class="tab-pane fade" id="register">
+                                <form onsubmit="event.preventDefault(); window.location.href='index.html';">
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Họ và tên</label>
+                                        <input type="text" class="form-control" placeholder="Nguyễn Văn A" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Số điện thoại</label>
+                                        <input type="text" class="form-control" placeholder="Nhập SĐT để xác thực OTP" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label small fw-bold text-muted">Loại tài khoản</label>
+                                        <select class="form-select">
+                                            <option value="farmer">Nông dân / Tiểu thương</option>
+                                            <option value="driver">Chủ xe / Tài xế tải</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">Đăng Ký Khởi Tạo Ví Escrow</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function fakeLogin(name, role, color) {
+            // 1. Lưu thông tin giả lập vào bộ nhớ trình duyệt
+            const userData = {
+                name: name,
+                role: role,
+                avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff`
+            };
+            localStorage.setItem('loadpool_user', JSON.stringify(userData));
+            
+            // 2. Hiển thị hiệu ứng loading
+            Swal.fire({
+                title: 'Đang xác thực...',
+                text: 'Vui lòng chờ trong giây lát',
+                timer: 1500,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            }).then(() => {
+                // 3. Chuyển hướng sang trang đích
+                window.location.href = 'driver-portal.html'; 
+            });
+        }
+    </script>
+</body>
+</html>

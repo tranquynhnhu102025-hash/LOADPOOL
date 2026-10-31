@@ -3,348 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QC & Phân Xử Ví Escrow - LOADPOOL</title>
+    <title>QC & Phân Xử Escrow - LOADPOOL</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/main-style.css">
 
     <style>
-        body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-
-        .table-custom thead th {
-            background-color: #f8f9fa;
-            color: #495057;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
-            padding: 12px 14px;
-        }
-        .table-custom tbody td {
-            padding: 12px 14px;
-            vertical-align: middle;
-        }
+        .badge-soft-warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .badge-soft-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .badge-soft-secondary { background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
+        .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar chuẩn 8 phân hệ đồng bộ -->
     <nav class="sidebar py-3">
-        <div class="sidebar-brand text-center pb-3 mb-3">
-            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        <div class="sidebar-brand">
+            <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo">
         </div>
-        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
-        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
-        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
-        <a href="users.html"><i class="fa-solid fa-users me-3"></i>Đối tác</a>
-        <a href="qc.html" class="active"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
+
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i><span class="i18n" data-vi="Tổng quan" data-en="Dashboard">Tổng quan</span></a>
+        <a href="account.html"><i class="fa-solid fa-user-shield me-3 text-info"></i><span class="i18n" data-vi="Tài khoản" data-en="Account">Tài khoản</span></a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i><span class="i18n" data-vi="Tạo đơn" data-en="Create Order">Tạo đơn</span></a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i><span class="i18n" data-vi="Nhóm & Chat" data-en="Community Chat">Nhóm & Chat</span></a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i><span class="i18n" data-vi="Cổng Chủ xe" data-en="Driver Portal">Cổng Chủ xe</span></a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i><span class="i18n" data-vi="Chuyến xe" data-en="Manage Trips">Chuyến xe</span></a>
+        <a href="users.html"><i class="fa-solid fa-users me-3"></i><span class="i18n" data-vi="Đối tác" data-en="Partners">Đối tác</span></a>
+        <a href="qc.html" class="active"><i class="fa-solid fa-shield-halved me-3"></i><span class="i18n" data-vi="QC & Ví" data-en="QC & Escrow">QC & Ví</span></a>
     </nav>
 
     <div class="main-content">
         
-        <!-- HEADER GỌN GÀNG (KHÔNG BANNER TO) -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
+        <!-- HEADER VÀ MENU DROPDOWN -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom gap-2">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <h3 class="fw-bold text-dark m-0">Kiểm Định Chất Lượng & Phân Xử Ví Escrow</h3>
-                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger">Hao hụt ≤ 2.0%</span>
-                </div>
-                <p class="text-muted m-0 small">
+                <h4 class="fw-bold text-dark m-0 d-flex align-items-center i18n" data-vi="Kiểm Định Chất Lượng & Phân Xử Ví Escrow" data-en="Quality Control & Escrow Dispute">
+                    Kiểm Định Chất Lượng & Phân Xử Ví Escrow
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger ms-3 fs-6" style="font-weight: 500;">Hao hụt < 2.0%</span>
+                </h4>
+                <p class="text-muted m-0 mt-1 small i18n" data-vi="Đối chiếu biên bản cân và ảnh quét AI Vision 2 đầu (Hub ➔ Chợ đầu mối), tự động phân xử đền bù qua quỹ Escrow." data-en="Compare weight logs and AI Vision scans (Hub ➔ Market), automatically resolve compensation via Escrow.">
                     Đối chiếu biên bản cân và ảnh quét AI Vision 2 đầu (Hub ➔ Chợ đầu mối), tự động phân xử đền bù qua quỹ Escrow.
                 </p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <a href="ai-center.html" class="btn btn-outline-success btn-sm fw-bold px-3 py-2 rounded-pill">
-                    <i class="fa-solid fa-camera-retro me-1"></i> Model YOLOv8 QC
-                </a>
-                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border ms-1">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="32">
-                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin Như</span>
+                <div class="btn-group lang-switch shadow-sm me-2" role="group">
+                    <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
+                    <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
                 </div>
-            </div>
-        </div>
+                
+            
 
-        <!-- 4 THẺ CHỈ SỐ NHANH -->
+        <!-- 4 THẺ THỐNG KÊ TỔNG QUAN -->
         <div class="row g-3 mb-4">
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #10b981 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
+                <div class="card card-custom stat-card p-3 h-100" style="border-left-color: #10b981;">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">HAO HỤT TỰ NHIÊN TRUNG BÌNH</small>
-                            <h4 class="fw-bold text-success mb-0">1.8% <span class="fs-6 text-muted fw-normal">(≤ 2.0%)</span></h4>
+                            <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="HAO HỤT TỰ NHIÊN TRUNG BÌNH" data-en="AVG NATURAL LOSS">HAO HỤT TỰ NHIÊN TRUNG BÌNH</small>
+                            <h3 class="fw-bold text-success mb-0">1.8% <span class="fs-6 fw-normal text-muted">(≤ 2.0%)</span></h3>
                         </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-leaf"></i></div>
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fa-solid fa-leaf"></i></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #3b82f6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
+                <div class="card card-custom stat-card p-3 h-100" style="border-left-color: #3b82f6;">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">QUỸ ESCROW ĐANG BẢO VỆ</small>
-                            <h4 class="fw-bold text-primary mb-0">48.500.000 <span class="fs-6 text-muted fw-normal">VNĐ</span></h4>
+                            <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="QUỸ ESCROW ĐANG BẢO VỆ" data-en="ESCROW FUND PROTECTION">QUỸ ESCROW ĐANG BẢO VỆ</small>
+                            <h3 class="fw-bold text-primary mb-0">48.500.000 <span class="fs-6 fw-normal text-muted">VNĐ</span></h3>
                         </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-vault"></i></div>
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fa-solid fa-money-bill-shield"></i></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #ef4444 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
+                <div class="card card-custom stat-card p-3 h-100" style="border-left-color: #ef4444;">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">KHIẾU NẠI CHỜ PHÂN XỬ</small>
-                            <h4 class="fw-bold text-danger mb-0" id="pendingCasesBadge">2 Hồ sơ</h4>
+                            <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="KHIẾU NẠI CHỜ PHÂN XỬ" data-en="PENDING DISPUTES">KHIẾU NẠI CHỜ PHÂN XỬ</small>
+                            <h3 class="fw-bold text-danger mb-0">2 <span class="fs-6 fw-normal text-muted i18n" data-vi="Hồ sơ" data-en="Cases">Hồ sơ</span></h3>
                         </div>
-                        <div class="stat-icon bg-danger bg-opacity-10 text-danger"><i class="fa-solid fa-scale-unbalanced"></i></div>
+                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fa-solid fa-scale-unbalanced"></i></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #8b5cf6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
+                <div class="card card-custom stat-card p-3 h-100" style="border-left-color: #8b5cf6;">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">ĐỘ CHÍNH XÁC AI VISION QC</small>
-                            <h4 class="fw-bold text-dark mb-0">92.1% <span class="badge bg-purple text-white ms-1" style="background:#8b5cf6; font-size: 0.7rem;">mAP@50</span></h4>
+                            <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="ĐỘ CHÍNH XÁC AI VISION QC" data-en="AI VISION QC ACCURACY">ĐỘ CHÍNH XÁC AI VISION QC</small>
+                            <h3 class="fw-bold text-purple mb-0" style="color: #8b5cf6;">92.1% <span class="badge bg-purple ms-1" style="background-color: #8b5cf6; font-size: 0.6rem;">mAP@50</span></h3>
                         </div>
-                        <div class="stat-icon bg-purple bg-opacity-10" style="color:#8b5cf6;"><i class="fa-solid fa-microchip"></i></div>
+                        <div class="bg-purple text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: #8b5cf6;"><i class="fa-solid fa-microchip"></i></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- BỘ LỌC HỒ SƠ -->
-        <div class="row mb-3 g-3 align-items-center">
-            <div class="col-md-6">
-                <div class="input-group shadow-sm">
-                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                    <input type="text" id="qcSearchInput" class="form-control border-start-0" placeholder="Tìm mã hồ sơ, mã chuyến xe, loại sự cố...">
+        <!-- BẢNG DANH SÁCH -->
+        <div class="card card-custom p-4 bg-white border">
+            <!-- Bộ lọc -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-5">
+                    <div class="input-group shadow-sm">
+                        <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Tìm mã hồ sơ, mã chuyến xe, loại sự cố...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select shadow-sm">
+                        <option value="">Tất cả trạng thái hồ sơ</option>
+                        <option value="pending">Chờ đối chiếu xử lý</option>
+                        <option value="resolved">Đã hoàn tiền</option>
+                    </select>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-outline-secondary shadow-sm fw-bold px-4">
+                        <i class="fa-solid fa-rotate-left me-1"></i> <span class="i18n" data-vi="Đặt lại" data-en="Reset">Đặt lại</span>
+                    </button>
                 </div>
             </div>
-            <div class="col-md-4">
-                <select class="form-select shadow-sm" id="qcStatusFilter">
-                    <option value="">Tất cả trạng thái hồ sơ</option>
-                    <option value="pending">Chờ đối chiếu bồi thường</option>
-                    <option value="resolved">Đã tất toán / Giải ngân Escrow</option>
-                </select>
-            </div>
-            <div class="col-md-2 text-end">
-                <button class="btn btn-outline-secondary shadow-sm w-100 fw-bold" onclick="resetQcFilter()">
-                    <i class="fa-solid fa-rotate-left me-1"></i> Đặt lại
-                </button>
-            </div>
-        </div>
 
-        <!-- BẢNG HỒ SƠ KIỂM ĐỊNH -->
-        <div class="card card-custom border-0 shadow-sm overflow-hidden mb-4">
+            <!-- Table -->
             <div class="table-responsive">
-                <table class="table table-hover align-middle m-0 table-custom">
-                    <thead>
-                        <tr>
-                            <th>Mã Hồ Sơ</th>
-                            <th>Chuyến Xe</th>
-                            <th>Nội Dung Sự Cố & Hao Hụt</th>
-                            <th>Bên Chịu Trách Nhiệm</th>
-                            <th>Số Tiền Cấn Trừ</th>
-                            <th>Trạng Thái</th>
-                            <th class="text-center">Thao Tác (Escrow)</th>
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="border-bottom: 2px solid #dee2e6;">
+                        <tr class="text-muted small">
+                            <th class="i18n" data-vi="Mã Hồ Sơ" data-en="Case ID">Mã Hồ Sơ</th>
+                            <th class="i18n" data-vi="Chuyến Xe" data-en="Trip">Chuyến Xe</th>
+                            <th class="i18n" data-vi="Nội Dung Sự Cố & Hao Hụt" data-en="Issue & Loss Detail">Nội Dung Sự Cố & Hao Hụt</th>
+                            <th class="i18n" data-vi="Bên Chịu Trách Nhiệm" data-en="Responsible Party">Bên Chịu Trách Nhiệm</th>
+                            <th class="i18n" data-vi="Số Tiền Cấn Trừ" data-en="Deducted Amount">Số Tiền Cấn Trừ</th>
+                            <th class="i18n" data-vi="Trạng Thái" data-en="Status">Trạng Thái</th>
+                            <th class="text-center i18n" data-vi="Thao Tác (Escrow)" data-en="Action (Escrow)">Thao Tác (Escrow)</th>
                         </tr>
                     </thead>
-                    <tbody id="qcTableBody">
-                        <!-- Render tự động qua JavaScript -->
+                    <tbody>
+                        <!-- Record 1 -->
+                        <tr id="row-081">
+                            <td class="fw-bold text-danger">#QC-081</td>
+                            <td class="fw-bold text-success">#TRP-1040</td>
+                            <td>
+                                <div class="fw-bold text-dark i18n" data-vi="Hao hụt trọng lượng vượt định mức (5.0%)" data-en="Weight loss exceeded limit (5.0%)">Hao hụt trọng lượng vượt định mức (5.0%)</div>
+                                <small class="text-muted d-block mt-1">Tiểu thương báo thiếu 10kg Thanh long ruột đỏ khi nhận tại Chợ Bình Điền</small>
+                            </td>
+                            <td><span class="badge badge-soft-warning px-2 py-1"><span class="i18n" data-vi="Nông dân:" data-en="Farmer:">Nông dân:</span> Nguyễn Hữu Tài (Giao thiếu tại Hub)</span></td>
+                            <td class="fw-bold text-danger">150.000 VNĐ</td>
+                            <td><span class="badge badge-soft-danger px-2 py-1 i18n" data-vi="Chờ đối chiếu xử lý" data-en="Pending Review">Chờ đối chiếu xử lý</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm fw-bold px-3 shadow-sm" onclick="resolveDispute('081')">
+                                    <i class="fa-solid fa-search me-1"></i> <span class="i18n" data-vi="Đối chiếu & Xử lý" data-en="Review & Resolve">Đối chiếu & Xử lý</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Record 2 -->
+                        <tr id="row-082">
+                            <td class="fw-bold text-danger">#QC-082</td>
+                            <td class="fw-bold text-success">#TRP-1042</td>
+                            <td>
+                                <div class="fw-bold text-dark i18n" data-vi="Dập nát 2 sọt Bí đỏ hồ lô ở đáy thùng xe" data-en="Crushed 2 crates of pumpkins at bottom">Dập nát 2 sọt Bí đỏ hồ lô ở đáy thùng xe</div>
+                                <small class="text-muted d-block mt-1">Vỏ sọt nhựa bị nứt vỡ do tài xế chất hàng quá chiều cao và chằng buộc sai cách</small>
+                            </td>
+                            <td><span class="badge badge-soft-danger px-2 py-1"><span class="i18n" data-vi="Tài xế:" data-en="Driver:">Tài xế:</span> Nguyễn Văn An (Lỗi xếp dỡ & vận chuyển)</span></td>
+                            <td class="fw-bold text-danger">250.000 VNĐ</td>
+                            <td><span class="badge badge-soft-danger px-2 py-1 i18n" data-vi="Chờ đối chiếu xử lý" data-en="Pending Review">Chờ đối chiếu xử lý</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm fw-bold px-3 shadow-sm" onclick="resolveDispute('082')">
+                                    <i class="fa-solid fa-search me-1"></i> <span class="i18n" data-vi="Đối chiếu & Xử lý" data-en="Review & Resolve">Đối chiếu & Xử lý</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Record 3 -->
+                        <tr>
+                            <td class="fw-bold text-danger">#QC-079</td>
+                            <td class="fw-bold text-success">#TRP-1022</td>
+                            <td>
+                                <div class="fw-bold text-dark i18n" data-vi="Nông sản bị xước vỏ do va đập trên thùng xe" data-en="Crop scratched due to impact in truck">Nông sản bị xước vỏ do va đập trên thùng xe</div>
+                                <small class="text-muted d-block mt-1">Xoài cát Hòa Lộc bị trầy xước vỏ ngoài do thùng xe phanh gấp trên cao tốc</small>
+                            </td>
+                            <td><span class="badge badge-soft-secondary px-2 py-1"><span class="i18n" data-vi="Nhà xe:" data-en="Fleet:">Nhà xe:</span> 63C-999.12 (Cấn trừ cọc nhà xe)</span></td>
+                            <td class="fw-bold text-danger">420.000 VNĐ</td>
+                            <td><span class="badge bg-light text-success border border-success px-2 py-1 i18n" data-vi="Đã hoàn tiền (Người mua)" data-en="Refunded (Buyer)">Đã hoàn tiền (Người mua)</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-light border btn-sm fw-bold px-3 text-secondary">
+                                    <i class="fa-solid fa-eye me-1"></i> <span class="i18n" data-vi="Xem biên bản" data-en="View Log">Xem biên bản</span>
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer bg-white p-3 border-top d-flex justify-content-between align-items-center">
-                <small class="text-muted" id="qcCountText">Hiển thị hồ sơ kiểm định</small>
-                <small class="text-muted"><i class="fa-solid fa-shield-check text-success me-1"></i>Hao hụt bay hơi tự nhiên ≤ 2.0%, vượt ngưỡng tự động cấn trừ từ cọc Escrow bên vi phạm</small>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                <small class="text-muted i18n" data-vi="Hiển thị 3 trên tổng số 3 hồ sơ" data-en="Showing 3 of 3 records">Hiển thị 3 trên tổng số 3 hồ sơ</small>
+                <small class="text-muted i18n" data-vi="Hao hụt bay hơi tự nhiên ≤ 2.0%, vượt ngưỡng tự động cấn trừ từ cọc Escrow bên vi phạm" data-en="Natural evaporation loss ≤ 2.0%, exceeding limit auto-deducts from violator's Escrow deposit">Hao hụt bay hơi tự nhiên ≤ 2.0%, vượt ngưỡng tự động cấn trừ từ cọc Escrow bên vi phạm</small>
             </div>
         </div>
 
         <!-- FOOTER -->
-        <footer class="text-center py-3 text-muted border-top small">
+        <footer class="text-center py-4 text-muted small mt-2">
             LOADPOOL v2.4 • Quality Control & Escrow Dispute Module • Demo Concept 2026
         </footer>
-
     </div>
 
-    <!-- Scripts chuẩn, không lỗi cú pháp -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    
     <script>
-        const qcCases = [
-            {
-                id: 'QC-081',
-                tripId: 'TRP-1040',
-                title: 'Hao hụt trọng lượng vượt định mức (5.0%)',
-                desc: 'Tiểu thương báo thiếu 10kg Thanh long ruột đỏ khi nhận tại Chợ Bình Điền',
-                hubCheckin: 'Cân trạm Hub 02 (Châu Thành, Tiền Giang) lúc 15:30: Chỉ đạt 190 Kg (Thiếu 10kg ngay từ vườn khi giao ra trạm, niêm phong kẹp chì sọt nhựa còn nguyên vẹn).',
-                marketCheckout: 'Cân tại Chợ Bình Điền lúc 21:00: Đạt 189.5 Kg (Hao hụt tự nhiên đường bộ chỉ 0.25% - Đạt chuẩn kỹ thuật).',
-                aiVisionResult: 'AI YOLOv8 quét ảnh mặt sọt: 100% vỏ căng, không có dấu hiệu dập nát vật lý. Kết luận: Lỗi cân thiếu tại nguồn xuất phát.',
-                faultParty: 'Nông dân: Nguyễn Hữu Tài (Giao thiếu tại Hub)',
-                faultBadge: 'warning',
-                deductAmount: '150.000 VNĐ',
-                escrowHold: '3.000.000 VNĐ',
-                status: 'pending'
-            },
-            {
-                id: 'QC-082',
-                tripId: 'TRP-1042',
-                title: 'Dập nát 2 sọt Bí đỏ hồ lô ở đáy thùng xe',
-                desc: 'Vỏ sọt nhựa bị nứt vỡ do tài xế chất hàng quá chiều cao và chằng buộc sai cách',
-                hubCheckin: 'Cân trạm Hub 01 (Tân Thạnh, Long An) lúc 14:00: Đủ 1.000 Kg (50 sọt nhựa 20kg), nông sản loại 1 đạt chuẩn nguyên vẹn 100%.',
-                marketCheckout: 'Kiểm tra Chợ Thủ Đức lúc 19:30: Dập nát 25 Kg ở 2 sọt tầng đáy do tài xế xếp chồng vượt tải trọng quy định.',
-                aiVisionResult: 'AI YOLOv8 quét ảnh bề mặt: Phát hiện 18 vết nứt vỏ sâu và dập móp (Conf: 0.94). Kết luận: Tổn thất phát sinh trong quá trình vận chuyển của xe.',
-                faultParty: 'Tài xế: Nguyễn Văn An (Lỗi xếp dỡ & vận chuyển)',
-                faultBadge: 'danger',
-                deductAmount: '250.000 VNĐ',
-                escrowHold: '2.800.000 VNĐ',
-                status: 'pending'
-            },
-            {
-                id: 'QC-079',
-                tripId: 'TRP-1022',
-                title: 'Nông sản bị xước vỏ do va đập trên thùng xe',
-                desc: 'Xoài cát Hòa Lộc bị trầy xước vỏ ngoài do thùng xe phanh gấp trên cao tốc',
-                hubCheckin: 'Biên bản Hub 03 (Cao Lãnh, Đồng Tháp) xác nhận đóng thùng carton đục lỗ đạt chuẩn 100%.',
-                marketCheckout: 'Biên bản Chợ Hóc Môn xác nhận hư hỏng 8% do thùng xe xô lệch.',
-                aiVisionResult: 'AI YOLOv8 phân loại ngoại quan: 92% đạt loại 1, 8% trầy xước vỏ.',
-                faultParty: 'Nhà xe 63C-999.12 (Cấn trừ cọc nhà xe)',
-                faultBadge: 'secondary',
-                deductAmount: '420.000 VNĐ',
-                escrowHold: 'Đã tất toán',
-                status: 'resolved'
+        // 1. KIỂM TRA ĐĂNG NHẬP (Lấy Tên & Avatar điền vào góc trên bên phải)
+        function checkLoginStatus() {
+            const userStr = localStorage.getItem('loadpool_user');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                document.getElementById('topNavName').innerText = user.name;
+                document.getElementById('topNavAvatar').src = user.avatar;
+            } else {
+                window.location.href = 'login.html'; // Nếu chưa đăng nhập thì đuổi ra login
             }
-        ];
-
-        function renderQcTable() {
-            const keyword = document.getElementById('qcSearchInput').value.toLowerCase().trim();
-            const statusFilter = document.getElementById('qcStatusFilter').value;
-            const tbody = document.getElementById('qcTableBody');
-            tbody.innerHTML = '';
-            let pendingCount = 0;
-
-            const filtered = qcCases.filter(c => {
-                const matchKw = !keyword || 
-                    c.id.toLowerCase().includes(keyword) || 
-                    c.tripId.toLowerCase().includes(keyword) || 
-                    c.title.toLowerCase().includes(keyword) || 
-                    c.faultParty.toLowerCase().includes(keyword);
-                const matchStatus = !statusFilter || c.status === statusFilter;
-                return matchKw && matchStatus;
-            });
-
-            qcCases.forEach(c => { if (c.status === 'pending') pendingCount++; });
-            document.getElementById('pendingCasesBadge').innerText = `${pendingCount} Hồ sơ`;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Không tìm thấy hồ sơ kiểm định nào phù hợp.</td></tr>`;
-                document.getElementById('qcCountText').innerText = `Hiển thị 0 hồ sơ`;
-                return;
-            }
-
-            filtered.forEach(c => {
-                const statusHtml = c.status === 'pending'
-                    ? `<span class="badge bg-light text-danger border border-danger">Chờ đối chiếu xử lý</span>`
-                    : `<span class="badge bg-light text-success border border-success">Đã hoàn tiền (Người mua)</span>`;
-
-                const actionHtml = c.status === 'pending'
-                    ? `<button class="btn btn-sm btn-success fw-bold px-3" onclick="openInspectModal('${c.id}')"><i class="fa-solid fa-magnifying-glass-chart me-1"></i> Đối chiếu & Xử lý</button>`
-                    : `<button class="btn btn-sm btn-outline-secondary" onclick="openInspectModal('${c.id}')"><i class="fa-solid fa-eye me-1"></i> Xem biên bản</button>`;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="fw-bold text-danger">#${c.id}</td>
-                    <td><a href="manage-trips.html" class="text-success fw-bold text-decoration-none" title="Xem chuyến xe tương ứng">#${c.tripId}</a></td>
-                    <td>
-                        <div class="fw-bold text-dark">${c.title}</div>
-                        <small class="text-muted">${c.desc}</small>
-                    </td>
-                    <td><span class="badge bg-${c.faultBadge} bg-opacity-10 text-dark border border-${c.faultBadge}">${c.faultParty}</span></td>
-                    <td class="fw-bold text-danger">${c.deductAmount}</td>
-                    <td>${statusHtml}</td>
-                    <td class="text-center">${actionHtml}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('qcCountText').innerText = `Hiển thị ${filtered.length} trên tổng số ${qcCases.length} hồ sơ`;
         }
 
-        function openInspectModal(caseId) {
-            const c = qcCases.find(item => item.id === caseId);
-            if (!c) return;
-
-            const isPending = (c.status === 'pending');
-
+        // 2. ĐĂNG XUẤT
+        function logoutUser() {
             Swal.fire({
-                title: `Biên Bản Đối Chiếu QC #${c.id} (Chuyến #${c.tripId})`,
-                width: '680px',
-                html: `
-                    <div class="text-start mt-2" style="font-size: 0.9rem;">
-                        <div class="p-3 rounded-3 bg-light border mb-3">
-                            <h6 class="fw-bold text-success mb-1"><i class="fa-solid fa-clipboard-check me-2"></i>1. Biên bản Trạm Hub (Đầu xuất hàng):</h6>
-                            <p class="mb-2 text-dark">${c.hubCheckin}</p>
-                            <hr class="my-2">
-                            <h6 class="fw-bold text-danger mb-1"><i class="fa-solid fa-truck-ramp-box me-2"></i>2. Biên bản Chợ Đầu Mối (Đầu nhận hàng):</h6>
-                            <p class="mb-2 text-dark">${c.marketCheckout}</p>
-                            <hr class="my-2">
-                            <h6 class="fw-bold text-primary mb-1"><i class="fa-solid fa-eye me-2"></i>3. Kết quả AI Vision YOLOv8 QC:</h6>
-                            <p class="mb-0 text-dark fst-italic">${c.aiVisionResult}</p>
-                        </div>
+                title: currentLang === 'en' ? 'Logging out...' : 'Đang đăng xuất...',
+                timer: 1000,
+                didOpen: () => { Swal.showLoading() }
+            }).then(() => {
+                localStorage.removeItem('loadpool_user');
+                window.location.href = 'login.html';
+            });
+        }
 
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <div class="p-2 border rounded bg-white">
-                                    <small class="text-muted d-block">Bên chịu trách nhiệm:</small>
-                                    <strong class="text-dark">${c.faultParty}</strong>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-2 border rounded bg-white">
-                                    <small class="text-muted d-block">Số tiền cấn trừ đền bù:</small>
-                                    <strong class="text-danger fs-6">${c.deductAmount}</strong> <small class="text-muted">(Quỹ giữ: ${c.escrowHold})</small>
-                                </div>
-                            </div>
-                        </div>
+        // 3. ĐA NGÔN NGỮ
+        let currentLang = 'vi';
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.i18n').forEach(el => {
+                if(el.hasAttribute('data-' + lang)) el.innerText = el.getAttribute('data-' + lang);
+            });
+            document.getElementById('btn-en').className = lang === 'en' ? 'btn btn-success fw-bold' : 'btn btn-light border text-secondary fw-semibold';
+            document.getElementById('btn-vi').className = lang === 'vi' ? 'btn btn-success fw-bold' : 'btn btn-light border text-secondary fw-semibold';
+        }
 
-                        <div class="alert alert-info py-2 small mb-0">
-                            <i class="fa-solid fa-scale-balanced me-1"></i> <strong>Quy tắc Ví Escrow LOADPOOL:</strong> Tự động trừ tiền đền bù từ ví người vi phạm để hoàn trả cho người mua, phần tiền cước còn lại tự động giải ngân cho nhà xe.
-                        </div>
-                    </div>
-                `,
-                showCancelButton: isPending,
+        // 4. MÔ PHỎNG XỬ LÝ KHIẾU NẠI (Dùng SweetAlert)
+        function resolveDispute(qcId) {
+            Swal.fire({
+                title: currentLang === 'en' ? 'Review & Deduct Escrow?' : 'Xác nhận trừ tiền ví Escrow?',
+                text: currentLang === 'en' ? `Approve compensation for case #QC-${qcId}?` : `Bạn có chắc chắn muốn cấn trừ tiền bảo chứng để bồi thường cho hồ sơ #QC-${qcId}?`,
+                icon: 'warning',
+                showCancelButton: true,
                 confirmButtonColor: '#10b981',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: isPending ? '<i class="fa-solid fa-check me-1"></i> Duyệt cấn trừ & Giải ngân Escrow' : 'Đóng',
-                cancelButtonText: 'Để sau'
+                confirmButtonText: currentLang === 'en' ? 'Confirm Deduct' : 'Xác nhận Phân Xử',
+                cancelButtonText: currentLang === 'en' ? 'Cancel' : 'Hủy'
             }).then((result) => {
-                if (result.isConfirmed && isPending) {
-                    c.status = 'resolved';
-                    c.escrowHold = 'Đã tất toán';
-                    renderQcTable();
-                    Swal.fire(
-                        'Đã giải ngân & Tất toán!',
-                        `Đã hoàn trả ${c.deductAmount} cho người mua và tự động giải ngân phần tiền còn lại trong ví ký quỹ Escrow.`,
-                        'success'
-                    );
+                if (result.isConfirmed) {
+                    document.getElementById('row-' + qcId).remove(); // Xóa dòng đó khỏi bảng
+                    Swal.fire({
+                        icon: 'success',
+                        title: currentLang === 'en' ? 'Resolved!' : 'Đã xử lý!',
+                        text: currentLang === 'en' ? 'Funds have been transferred.' : 'Đã tự động cấn trừ quỹ Escrow để hoàn tiền cho người bị hại.',
+                        confirmButtonColor: '#10b981'
+                    });
                 }
             });
         }
 
-        function resetQcFilter() {
-            document.getElementById('qcSearchInput').value = '';
-            document.getElementById('qcStatusFilter').value = '';
-            renderQcTable();
-        }
-
-        document.getElementById('qcSearchInput').addEventListener('input', renderQcTable);
-        document.getElementById('qcStatusFilter').addEventListener('change', renderQcTable);
-
-        renderQcTable();
+        // Chạy kiểm tra đăng nhập khi vừa mở trang
+        checkLoginStatus();
     </script>
 </body>
 </html>

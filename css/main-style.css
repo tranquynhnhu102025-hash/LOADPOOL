@@ -2,13 +2,13 @@
    1. DÙNG CHUNG (TẤT CẢ CÁC TRANG)
 ========================================= */
 body { 
-    background-color: #f8f9fa; 
+    background-color: #f4f7f6; /* Nền xám xanh sáng hiện đại */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 }
 .sidebar { 
     min-height: 100vh; 
     width: 260px; 
-    background-color: #198754; 
+    background-color: #166534; /* Xanh lá đậm - Trùng khớp tuyệt đối với màu nền Logo mới */
     color: white; 
     position: fixed; 
     top: 0;
@@ -17,12 +17,20 @@ body {
     z-index: 1000;
     transition: all 0.3s ease;
 }
+
 .sidebar-brand { 
-    font-size: 1.5rem; 
-    font-weight: 800; 
-    letter-spacing: 1px; 
-    border-bottom: 1px solid rgba(255,255,255,0.1); 
+    background-color: transparent; 
+    margin: 20px 15px 25px 15px; 
+    padding: 10px 0; 
+    text-align: center;
 }
+.sidebar-brand img {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+    display: inline-block;
+}
+
 .sidebar a { 
     color: rgba(255,255,255,0.85); 
     text-decoration: none; 
@@ -34,7 +42,7 @@ body {
     transition: all 0.25s ease;
 }
 .sidebar a:hover, .sidebar a.active { 
-    background-color: rgba(255,255,255,0.22); 
+    background-color: rgba(255,255,255,0.2); 
     color: white; 
     transform: translateX(5px); 
     font-weight: 600;
@@ -52,7 +60,7 @@ body {
     border-radius: 12px; 
     border: none; 
     transition: transform 0.2s; 
-    border-left: 5px solid #198754; 
+    border-left: 5px solid #10b981; /* Xanh ngọc nổi bật */
 }
 .stat-card:hover { 
     transform: translateY(-5px); 
@@ -87,8 +95,8 @@ body {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; 
 }
 .form-control:focus, .form-select:focus { 
-    border-color: #198754; 
-    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.2); 
+    border-color: #10b981; 
+    box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.2); 
 }
 .btn-custom { 
     border-radius: 8px; 
@@ -101,7 +109,6 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
 }
 
-/* Khung bản đồ GPS và Bảng tính chi phí */
 #hubMap {
     height: 310px;
     width: 100%;
@@ -177,9 +184,8 @@ body {
         padding: 10px !important;
     }
     .sidebar-brand {
-        width: 100%;
-        margin-bottom: 8px !important;
-        padding-bottom: 8px !important;
+        width: 90%;
+        margin: 10px auto !important;
     }
     .sidebar a {
         margin: 4px;

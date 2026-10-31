@@ -3,406 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Chủ Xe & Lấp Đầy Chiều Về - LOADPOOL</title>
+    <title>Cổng Chủ Xe - LOADPOOL</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="css/main-style.css">
-
-    <style>
-        body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-
-        .load-opportunity-card {
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 16px;
-            background: #ffffff;
-            transition: all 0.2s ease;
-        }
-        .load-opportunity-card:hover {
-            border-color: #10b981;
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.12);
-            transform: translateY(-2px);
-        }
-
-        #driverRadarMap {
-            height: 250px;
-            width: 100%;
-            border-radius: 12px;
-            border: 1px solid #dee2e6;
-            z-index: 1;
-        }
-    </style>
 </head>
 <body>
 
-    <!-- Sidebar chuẩn 8 phân hệ đồng bộ -->
     <nav class="sidebar py-3">
-        <div class="sidebar-brand text-center pb-3 mb-3">
-            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        <div class="sidebar-brand">
+            <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo">
         </div>
-        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
-        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html" class="active"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
-        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
-        <a href="users.html"><i class="fa-solid fa-users me-3"></i>Đối tác</a>
-        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i><span class="i18n" data-vi="Tổng quan" data-en="Dashboard">Tổng quan</span></a>
+        <a href="login.html"><i class="fa-solid fa-user-shield me-3 text-info"></i><span class="i18n" data-vi="Tài khoản" data-en="Account">Tài khoản</span></a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i><span class="i18n" data-vi="Tạo đơn" data-en="Create Order">Tạo đơn</span></a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i><span class="i18n" data-vi="Nhóm & Chat" data-en="Community Chat">Nhóm & Chat</span></a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i><span class="i18n" data-vi="Cổng Chủ xe" data-en="Driver Portal">Cổng Chủ xe</span></a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i><span class="i18n" data-vi="Chuyến xe" data-en="Manage Trips">Chuyến xe</span></a>
+        <a href="users.html"><i class="fa-solid fa-users me-3"></i><span class="i18n" data-vi="Đối tác" data-en="Partners">Đối tác</span></a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i><span class="i18n" data-vi="QC & Ví" data-en="QC & Escrow">QC & Ví</span></a>
     </nav>
 
     <div class="main-content">
         
-        <!-- HEADER GỌN GÀNG (KHÔNG BANNER TO) -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom gap-2">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <h3 class="fw-bold text-dark m-0">Cổng Chủ Xe & Lấp Đầy Chiều Về</h3>
-                    <span class="badge bg-warning text-dark">Giảm 35–70% xe chạy rỗng</span>
-                </div>
-                <p class="text-muted m-0 small">
-                    Đăng ký lộ trình xe quay đầu rỗng từ TP.HCM để nhận các lô nông sản đã tập kết sẵn tại Hub dọc tuyến.
-                </p>
+                <h4 class="fw-bold text-dark m-0 i18n" data-vi="Cổng Chủ Xe & Lấp Đầy Chiều Về" data-en="Driver Portal & Backhaul Matching">Cổng Chủ Xe & Lấp Đầy Chiều Về</h4>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <div class="btn-group lang-switch shadow-sm me-3" role="group">
+                    <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
+                    <button type="button" id="btn-en" class="btn btn-light border text-secondary fw-semibold" onclick="setLang('en')">EN</button>
+                </div>
                 <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border">
-                    <img src="https://ui-avatars.com/api/?name=Van+An&background=ffc107&color=000" class="rounded-circle me-2" width="32">
+                    <img src="https://ui-avatars.com/api/?name=Van+An&background=10b981&color=fff" class="rounded-circle me-2" width="32">
                     <div>
                         <span class="fw-bold text-dark d-block" style="font-size: 0.85rem; line-height: 1.1;">Nguyễn Văn An</span>
-                        <small class="text-muted" style="font-size: 0.72rem;">Xe 51C-123.45 (Mui bạt 5T)</small>
+                        <small class="text-muted i18n" data-vi="Xe 5 Tấn (51C-123.45)" data-en="5T Truck (51C-123.45)" style="font-size: 0.72rem;">Xe 5 Tấn (51C-123.45)</small>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3 THẺ CHỈ SỐ NHANH -->
         <div class="row g-3 mb-4">
             <div class="col-md-4">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #10b981 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">DOANH THU CHIỀU VỀ (THÁNG)</small>
-                            <h4 class="fw-bold text-success mb-0" id="driverRevenueVal">28.400.000 đ</h4>
-                        </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-sack-dollar"></i></div>
-                    </div>
+                <div class="card card-custom stat-card p-3 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="SỐ DƯ VÍ TÀI XẾ" data-en="DRIVER WALLET BALANCE">SỐ DƯ VÍ TÀI XẾ</small>
+                    <h3 class="fw-bold text-success mb-0" id="driverRevenueVal">0 đ</h3>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #3b82f6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">TỶ LỆ GIẢM XE CHẠY RỖNG</small>
-                            <h4 class="fw-bold text-primary mb-0">88.5% <span class="fs-6 text-muted fw-normal">(15/17 Chuyến)</span></h4>
-                        </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-route"></i></div>
-                    </div>
+                <div class="card card-custom stat-card p-3 h-100" style="border-left-color: #3b82f6;">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="CHUYẾN ĐÃ NHẬN" data-en="ACCEPTED TRIPS">CHUYẾN ĐÃ NHẬN</small>
+                    <h3 class="fw-bold text-primary mb-0" id="tripCountVal">0 <span class="fs-6 fw-normal text-muted i18n" data-vi="Chuyến" data-en="Trips">Chuyến</span></h3>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #facc15 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block">CHỈ SỐ LOGISTICS XANH (ESG)</small>
-                            <h4 class="fw-bold text-dark mb-0">-412 kg CO₂ <span class="fs-6 text-success fw-normal">(~155L Dầu)</span></h4>
-                        </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-seedling"></i></div>
-                    </div>
+                <div class="card card-custom stat-card p-3 h-100" style="border-left-color: #f59e0b;">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="TRẠNG THÁI XE" data-en="VEHICLE STATUS">TRẠNG THÁI XE</small>
+                    <h3 class="fw-bold text-warning text-dark mb-0"><i class="fa-solid fa-truck-fast me-2"></i><span class="i18n" data-vi="Đang trống" data-en="Available">Đang trống</span></h3>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
-            <!-- CỘT TRÁI: FORM ĐĂNG KÝ XE RỖNG CHIỀU VỀ & RADAR -->
             <div class="col-lg-5">
-                <div class="card card-custom p-4 mb-4 bg-white">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-bullhorn text-warning me-2"></i>Đăng Ký Chuyến Quay Đầu Rỗng</h5>
-                        <span class="badge bg-warning text-dark">Phát sóng Hub</span>
+                <div class="card card-custom p-4 h-100 border">
+                    <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-satellite-dish text-success me-2"></i><span class="i18n" data-vi="Bật Radar Tìm Hàng" data-en="Turn on Radar">Bật Radar Tìm Hàng</span></h5>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted i18n" data-vi="Khu vực hiện tại" data-en="Current Area">Khu vực hiện tại</label>
+                        <select class="form-select fw-bold border-success text-success" id="returnFromSelect">
+                            <option value="Chợ Đầu Mối Thủ Đức">Chợ Đầu Mối Thủ Đức, TP.HCM</option>
+                        </select>
                     </div>
 
-                    <form id="emptyTruckRegisterForm">
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Phương tiện vận hành</label>
-                            <select class="form-select form-select-sm fw-bold" id="truckVehicleSelect">
-                                <option value="51C-123.45|5.0">51C-123.45 - Xe Mui bạt 5.0 Tấn (22 m³)</option>
-                                <option value="66H-789.01|3.0">66H-789.01 - Xe Thùng kín 3.0 Tấn (14 m³)</option>
-                                <option value="62C-456.78|5.0">62C-456.78 - Xe Mui bạt 5.0 Tấn (22 m³)</option>
-                            </select>
-                        </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted i18n" data-vi="Hướng chạy về" data-en="Heading Route">Hướng chạy về</label>
+                        <select class="form-select fw-bold" id="returnToSelect">
+                            <option value="Long An">Tuyến Miền Tây (Long An, Tiền Giang...)</option>
+                        </select>
+                    </div>
 
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Điểm xuất phát (TP.HCM)</label>
-                                <select class="form-select form-select-sm" id="returnFromSelect">
-                                    <option value="Chợ Đầu Mối Thủ Đức" selected>Chợ Đầu Mối Thủ Đức</option>
-                                    <option value="Chợ Đầu Mối Bình Điền">Chợ Đầu Mối Bình Điền</option>
-                                    <option value="Chợ Đầu Mối Hóc Môn">Chợ Đầu Mối Hóc Môn</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Hướng quay về tỉnh</label>
-                                <select class="form-select form-select-sm" id="returnToSelect">
-                                    <option value="Tân Thạnh, Long An" data-code="LA" selected>Tân Thạnh, Long An</option>
-                                    <option value="Châu Thành, Tiền Giang" data-code="TG">Châu Thành, Tiền Giang</option>
-                                    <option value="Cao Lãnh, Đồng Tháp" data-code="DT">Cao Lãnh, Đồng Tháp</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Tải trọng trống</label>
-                                <div class="input-group input-group-sm">
-                                    <input type="number" class="form-control fw-bold" id="freeCapacityInput" value="5.0" step="0.5" min="1" max="8">
-                                    <span class="input-group-text">Tấn</span>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Giờ xe quay đầu</label>
-                                <input type="time" class="form-control form-control-sm fw-bold" id="departureTimeInput" value="16:30">
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Mức cước đề xuất</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control fw-bold text-success" id="driverPriceInput" value="2.800.000">
-                                <span class="input-group-text">VNĐ / Chuyến 5T</span>
-                            </div>
-                            <small class="text-muted mt-1 d-block" style="font-size: 0.76rem;">
-                                <i class="fa-solid fa-check text-success me-1"></i>Tương đương 560.000 đ/tấn (Khớp bài toán Chương 2.5)
-                            </small>
-                        </div>
-
-                        <button type="button" class="btn btn-warning w-100 fw-bold py-2 shadow-sm text-dark rounded-pill" onclick="broadcastEmptyTruck()">
-                            <i class="fa-solid fa-satellite-dish me-2"></i>Phát Sóng Tìm Lô Hàng Gom Sẵn
-                        </button>
-                    </form>
-                </div>
-
-                <div class="card card-custom p-4 bg-white">
-                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-map-location-dot text-danger me-2"></i>Trạm Hub Tiếp Nhận Dọc Tuyến</h6>
-                    <div id="driverRadarMap"></div>
+                    <button type="button" class="btn btn-success w-100 fw-bold py-3 shadow-sm rounded-pill mt-auto" onclick="broadcastEmptyTruck()">
+                        <i class="fa-solid fa-radar me-2"></i><span class="i18n" data-vi="Quét Lô Hàng Đang Chờ" data-en="Scan Pending Cargo">Quét Lô Hàng Đang Chờ</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- CỘT PHẢI: CÁC LÔ HÀNG ĐÃ GOM SẴN TẠI HUB -->
             <div class="col-lg-7">
-                <div class="card card-custom p-4 bg-white h-100">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div>
-                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-boxes-stacked text-success me-2"></i>Lô Hàng Đã Gom Sẵn Chờ Xe Nhận</h5>
-                            <small class="text-muted">Bốc hàng tại 1 điểm Hub duy nhất - Đã kiểm định QC trước khi lên xe</small>
-                        </div>
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success">AI Match ≥ 95%</span>
-                    </div>
+                <div class="card card-custom p-4 h-100 border">
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-map-location-dot text-danger me-2"></i><span class="i18n" data-vi="Bản Đồ Lấp Đầy Tuyến" data-en="Route Filling Map">Bản Đồ Lấp Đầy Tuyến</span></h5>
+                    
+                    <div id="driverRadarMap" class="mb-4" style="height: 280px; width: 100%; border-radius: 10px; border: 1px solid #e2e8f0; z-index: 1;"></div>
 
-                    <div id="availablePoolsList" class="vstack gap-3">
-                        <!-- Lô 1 -->
-                        <div class="load-opportunity-card" id="card-batch-1">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <span class="badge bg-success me-1">Khớp lộ trình 98%</span>
-                                    <span class="badge bg-light text-dark border">#TRP-1043 (HTX Châu Thành)</span>
-                                    <h6 class="fw-bold text-dark mt-2 mb-1">
-                                        Hub 02 (Châu Thành, Tiền Giang) <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Chợ Bình Điền
-                                    </h6>
-                                </div>
-                                <div class="text-end">
-                                    <span class="fs-5 fw-bold text-success d-block">2.600.000 đ</span>
-                                    <small class="text-muted">Đã ký quỹ Escrow</small>
-                                </div>
+                    <div class="card border border-success bg-success bg-opacity-10 p-3 rounded-3" id="card-batch-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-success me-1 i18n" data-vi="Khớp tuyến 98%" data-en="98% Match">Khớp tuyến 98%</span>
+                                <h6 class="fw-bold text-dark mt-2 mb-0 i18n" data-vi="Chợ Thủ Đức ➔ Hub Tân Thạnh (Long An)" data-en="Thu Duc Market ➔ Tan Thanh Hub">
+                                    Chợ Thủ Đức ➔ Hub Tân Thạnh (Long An)
+                                </h6>
                             </div>
-                            <div class="row g-2 small text-muted mb-3 bg-light p-2 rounded">
-                                <div class="col-4"><i class="fa-solid fa-box text-success me-1"></i><b>Hàng:</b> Thanh long ruột đỏ</div>
-                                <div class="col-4"><i class="fa-solid fa-weight-hanging text-primary me-1"></i><b>Tải:</b> 4.5 / 5.0 Tấn (90%)</div>
-                                <div class="col-4"><i class="fa-solid fa-clock text-warning me-1"></i><b>Giờ bốc:</b> Hôm nay, 16:30</div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <small class="text-success fw-semibold"><i class="fa-solid fa-circle-check me-1"></i>Đã cân kiểm định QC xong tại Hub 02</small>
-                                <button type="button" class="btn btn-sm btn-success fw-bold px-4 rounded-pill" onclick="acceptLoadBatch('TRP-1043', 'Châu Thành, Tiền Giang', 'Chợ Bình Điền', 'Thanh long ruột đỏ', 4.5, '2.600.000 đ', 'card-batch-1')">
-                                    <i class="fa-solid fa-hand-pointer me-1"></i>Nhận Chuyến Ngay
-                                </button>
-                            </div>
+                            <h4 class="fw-bold text-success mb-0">2.700.000 đ</h4>
                         </div>
-
-                        <!-- Lô 2 -->
-                        <div class="load-opportunity-card" id="card-batch-2">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <span class="badge bg-primary me-1">Chiều về Tỉnh (Chương 2.4)</span>
-                                    <span class="badge bg-light text-dark border">#TRP-1049 (5 Tiểu thương)</span>
-                                    <h6 class="fw-bold text-dark mt-2 mb-1">
-                                        Chợ Đầu Mối Thủ Đức <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Hub 01 (Tân Thạnh, Long An)
-                                    </h6>
-                                </div>
-                                <div class="text-end">
-                                    <span class="fs-5 fw-bold text-success d-block">2.800.000 đ</span>
-                                    <small class="text-muted">560.000 đ / người</small>
-                                </div>
-                            </div>
-                            <div class="row g-2 small text-muted mb-3 bg-light p-2 rounded">
-                                <div class="col-4"><i class="fa-solid fa-box text-success me-1"></i><b>Hàng:</b> Bí đỏ hồ lô (250 Sọt)</div>
-                                <div class="col-4"><i class="fa-solid fa-weight-hanging text-primary me-1"></i><b>Tải:</b> 5.0 / 5.0 Tấn (100%)</div>
-                                <div class="col-4"><i class="fa-solid fa-clock text-warning me-1"></i><b>Giờ bốc:</b> Hôm nay, 17:00</div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <small class="text-primary fw-semibold"><i class="fa-solid fa-shield-halved me-1"></i>100% tiền cước đã nạp đủ vào ví Escrow</small>
-                                <button type="button" class="btn btn-sm btn-success fw-bold px-4 rounded-pill" onclick="acceptLoadBatch('TRP-1049', 'Chợ Thủ Đức', 'Tân Thạnh, Long An', 'Bí đỏ hồ lô (5 Tiểu thương)', 5.0, '2.800.000 đ', 'card-batch-2')">
-                                    <i class="fa-solid fa-hand-pointer me-1"></i>Nhận Chuyến Ngay
-                                </button>
-                            </div>
+                        
+                        <div class="d-flex gap-3 small text-muted mb-3 mt-2">
+                            <span><i class="fa-solid fa-box text-success me-1"></i><span class="i18n" data-vi="Bí đỏ hồ lô" data-en="Pumpkins">Bí đỏ hồ lô</span></span>
+                            <span><i class="fa-solid fa-weight-hanging text-primary me-1"></i><span class="i18n" data-vi="Đủ tải 5.0 Tấn" data-en="Full Load 5.0 Tons">Đủ tải 5.0 Tấn</span></span>
                         </div>
-
-                        <!-- Lô 3 -->
-                        <div class="load-opportunity-card" id="card-batch-3">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <span class="badge bg-warning text-dark me-1">Đang gom thêm</span>
-                                    <span class="badge bg-light text-dark border">#TRP-1052 (HTX Cao Lãnh)</span>
-                                    <h6 class="fw-bold text-dark mt-2 mb-1">
-                                        Hub 03 (Cao Lãnh, Đồng Tháp) <i class="fa-solid fa-arrow-right text-muted mx-1"></i> Chợ Hóc Môn
-                                    </h6>
-                                </div>
-                                <div class="text-end">
-                                    <span class="fs-5 fw-bold text-success d-block">2.100.000 đ</span>
-                                    <small class="text-muted">Chờ đủ tải 3T</small>
-                                </div>
-                            </div>
-                            <div class="row g-2 small text-muted mb-3 bg-light p-2 rounded">
-                                <div class="col-4"><i class="fa-solid fa-box text-success me-1"></i><b>Hàng:</b> Xoài cát Hòa Lộc</div>
-                                <div class="col-4"><i class="fa-solid fa-weight-hanging text-primary me-1"></i><b>Tải:</b> 2.4 / 3.0 Tấn (80%)</div>
-                                <div class="col-4"><i class="fa-solid fa-clock text-warning me-1"></i><b>Giờ bốc:</b> Tối nay, 21:00</div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <small class="text-muted"><i class="fa-solid fa-hourglass-half me-1"></i>Chờ thêm 600kg để chốt xe xuất bến</small>
-                                <button type="button" class="btn btn-sm btn-outline-success fw-bold px-4 rounded-pill" onclick="acceptLoadBatch('TRP-1052', 'Cao Lãnh, Đồng Tháp', 'Chợ Hóc Môn', 'Xoài cát Hòa Lộc', 2.4, '2.100.000 đ', 'card-batch-3')">
-                                    <i class="fa-solid fa-hand-pointer me-1"></i>Nhận Chuyến Trước
-                                </button>
-                            </div>
-                        </div>
+                        
+                        <button type="button" class="btn btn-success w-100 fw-bold py-2 rounded-pill" onclick="acceptLoadBatch('TRP-1049')">
+                            <span class="i18n" data-vi="Nhận Chuyến Này" data-en="Accept This Trip">Nhận Chuyến Này</span>
+                        </button>
                     </div>
 
                 </div>
             </div>
         </div>
-
-        <!-- FOOTER -->
-        <footer class="text-center py-3 text-muted border-top small mt-4">
-            LOADPOOL v2.4 • Driver Backhaul Management Module • Giảm thiểu xe tải chạy rỗng chiều về
-        </footer>
-
     </div>
 
-    <!-- Scripts chuẩn, không lỗi cú pháp -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
+        // NGÔN NGỮ
+        let currentLang = 'vi';
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.i18n').forEach(el => {
+                if(el.hasAttribute('data-' + lang)) el.innerText = el.getAttribute('data-' + lang);
+            });
+            document.getElementById('btn-en').className = lang === 'en' ? 'btn btn-success fw-bold' : 'btn btn-light border text-secondary fw-semibold';
+            document.getElementById('btn-vi').className = lang === 'vi' ? 'btn btn-success fw-bold' : 'btn btn-light border text-secondary fw-semibold';
+        }
+
+        // BẢN ĐỒ
         const mapDriver = L.map('driverRadarMap').setView([10.6085, 106.35], 9);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(mapDriver);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapDriver);
 
-        L.marker([10.6085, 106.0914]).addTo(mapDriver).bindPopup('<b>Hub 01 - Tân Thạnh, Long An</b><br>Có lô Bí đỏ 5 Tấn');
-        L.marker([10.4251, 106.3025]).addTo(mapDriver).bindPopup('<b>Hub 02 - Châu Thành, Tiền Giang</b><br>Có lô Thanh long 4.5 Tấn');
-        L.marker([10.8691, 106.7311]).addTo(mapDriver).bindPopup('<b>Chợ Đầu Mối Thủ Đức</b><br>Điểm xuất phát xe rỗng');
+        L.marker([10.8691, 106.7311]).addTo(mapDriver).bindPopup('<b>Chợ Đầu Mối Thủ Đức</b>');
+        L.marker([10.6085, 106.0914]).addTo(mapDriver).bindPopup('<b>Hub 01 - Tân Thạnh, Long An</b><br>Đang chờ xe tới bốc hàng').openPopup();
 
-        L.polyline([[10.8691, 106.7311], [10.6085, 106.0914]], {
-            color: '#10b981',
-            weight: 3,
-            dashArray: '6, 6'
-        }).addTo(mapDriver);
+        L.polyline([[10.8691, 106.7311], [10.6085, 106.0914]], { color: '#10b981', weight: 3, dashArray: '6, 6' }).addTo(mapDriver);
 
         function broadcastEmptyTruck() {
-            const origin = document.getElementById('returnFromSelect').value;
-            const dest = document.getElementById('returnToSelect').value;
-            const tons = parseFloat(document.getElementById('freeCapacityInput').value) || 5.0;
-            const time = document.getElementById('departureTimeInput').value;
-            const price = document.getElementById('driverPriceInput').value;
-
-            const newTrip = {
-                tripId: 'TRP-DRV' + Math.floor(100 + Math.random() * 899),
-                routeCode: 'LA',
-                from: origin,
-                to: dest,
-                crop: 'Xe rỗng chiều về tìm ghép nông sản',
-                plate: '51C-123.45',
-                driver: 'Nguyễn Văn An (0903.111.222)',
-                tons: 0.0,
-                maxTons: tons,
-                time: `Hôm nay, ${time}`,
-                status: 'pooling',
-                creator: 'Tài xế Nguyễn Văn An',
-                cost: `${price} đ`
-            };
-
-            const saved = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
-            saved.unshift(newTrip);
-            localStorage.setItem('loadpool_custom_orders', JSON.stringify(saved));
-
             Swal.fire({
                 icon: 'success',
-                title: 'Đã phát sóng chuyến xe chiều về!',
-                html: `Hệ thống AI đang thông báo cho các hộ nông dân và tiểu thương trên tuyến <b>${origin} ➔ ${dest}</b> để gom hàng lấp đầy <b>${tons} Tấn</b>.`,
-                confirmButtonColor: '#10b981'
+                title: currentLang === 'en' ? 'Scanning...' : 'Đang quét bản đồ...',
+                text: currentLang === 'en' ? 'Finding matched cargo.' : 'Hệ thống đã tìm thấy 1 lô hàng 5 Tấn khớp tuyến đường của bạn.',
+                timer: 2000,
+                showConfirmButton: false
             });
         }
 
-        function acceptLoadBatch(tripId, from, to, crop, tons, cost, cardId) {
+        function acceptLoadBatch(tripId) {
             Swal.fire({
-                title: `Nhận vận chuyển lô #${tripId}?`,
-                html: `
-                    <div class="text-start small">
-                        <p class="mb-1"><strong>Lộ trình:</strong> ${from} ➔ ${to}</p>
-                        <p class="mb-1"><strong>Nông sản:</strong> ${crop} (${tons} Tấn)</p>
-                        <p class="mb-2"><strong>Cước phí nhận về ví:</strong> <span class="text-success fw-bold fs-6">${cost}</span></p>
-                        <div class="alert alert-success py-2 small mb-0">
-                            <i class="fa-solid fa-shield-halved me-1"></i> Tiền cước đã được khóa bảo vệ trong Ví Escrow và tự động giải ngân khi giao hàng đủ cân.
-                        </div>
-                    </div>
-                `,
+                title: currentLang === 'en' ? `Accept Trip #${tripId}?` : `Nhận vận chuyển lô #${tripId}?`,
+                text: currentLang === 'en' ? 'Money locked in Escrow.' : 'Tiền cước 2.700.000đ đã được bảo chứng trong Ví Escrow.',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#10b981',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Xác nhận Nhận Chuyến',
-                cancelButtonText: 'Hủy'
+                confirmButtonText: currentLang === 'en' ? 'Accept' : 'Xác nhận',
+                cancelButtonText: currentLang === 'en' ? 'Cancel' : 'Hủy'
             }).then((res) => {
                 if (res.isConfirmed) {
-                    const acceptedTrip = {
-                        tripId: tripId,
-                        routeCode: 'LA',
-                        from: from,
-                        to: to,
-                        crop: crop,
-                        plate: '51C-123.45',
-                        driver: 'Nguyễn Văn An (0903.111.222)',
-                        tons: tons,
-                        maxTons: 5.0,
-                        time: 'Hôm nay, 16:30',
-                        status: 'matched',
-                        creator: 'Ghép tải qua Hub',
-                        cost: cost
-                    };
-
-                    const saved = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
-                    saved.unshift(acceptedTrip);
-                    localStorage.setItem('loadpool_custom_orders', JSON.stringify(saved));
-
-                    document.getElementById(cardId).innerHTML = `
-                        <div class="alert alert-success m-0 d-flex justify-content-between align-items-center">
-                            <span><i class="fa-solid fa-circle-check me-2"></i><b>Đã nhận chuyến #${tripId}!</b> Xe 51C-123.45 đã được điều phối đến trạm Hub.</span>
-                            <a href="manage-trips.html" class="btn btn-sm btn-success fw-bold rounded-pill px-3">Xem chuyến xe</a>
-                        </div>
-                    `;
-
-                    document.getElementById('driverRevenueVal').innerText = '31.200.000 đ';
-                    Swal.fire('Nhận chuyến thành công!', 'Lệnh điều phối đã kích hoạt, bạn có thể di chuyển ra trạm Hub bốc hàng.', 'success');
+                    document.getElementById('driverRevenueVal').innerText = '2.700.000 đ';
+                    document.getElementById('tripCountVal').innerHTML = currentLang === 'en' ? '1 <span class="fs-6 fw-normal text-muted">Trips</span>' : '1 <span class="fs-6 fw-normal text-muted">Chuyến</span>';
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: currentLang === 'en' ? 'Accepted!' : 'Thành công!',
+                        confirmButtonColor: '#10b981',
+                        confirmButtonText: currentLang === 'en' ? 'Go to Trips' : 'Xem Quản Lý Chuyến'
+                    }).then(() => {
+                        window.location.href = 'manage-trips.html';
+                    });
                 }
             });
         }

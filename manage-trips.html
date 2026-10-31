@@ -13,84 +13,65 @@
         body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
 
-        .table-custom thead th {
-            background-color: #f8f9fa;
-            color: #495057;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
-            padding: 12px 14px;
-        }
-        .table-custom tbody td {
-            padding: 12px 14px;
-            vertical-align: middle;
-        }
+        .table-custom thead th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px 14px; }
+        .table-custom tbody td { padding: 12px 14px; vertical-align: middle; }
 
-        .action-btn-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .action-btn-circle:hover {
-            transform: scale(1.08);
-        }
+        .action-btn-circle { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .action-btn-circle:hover { transform: scale(1.08); }
+        
+        .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar chuẩn 8 phân hệ đồng bộ -->
-    <nav class="sidebar py-3">
-        <div class="sidebar-brand text-center pb-3 mb-3">
-            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+  <nav class="sidebar py-3">
+        <div class="sidebar-brand">
+            <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo">
         </div>
-        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
-        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
-        <a href="manage-trips.html" class="active"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
-        <a href="users.html"><i class="fa-solid fa-users me-3"></i>Đối tác</a>
-        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i><span class="i18n" data-vi="Tổng quan" data-en="Dashboard">Tổng quan</span></a>
+        <a href="login.html"><i class="fa-solid fa-user-shield me-3 text-info"></i><span class="i18n" data-vi="Tài khoản" data-en="Account">Tài khoản</span></a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i><span class="i18n" data-vi="Tạo đơn" data-en="Create Order">Tạo đơn</span></a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i><span class="i18n" data-vi="Nhóm & Chat" data-en="Community Chat">Nhóm & Chat</span></a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i><span class="i18n" data-vi="Cổng Chủ xe" data-en="Driver Portal">Cổng Chủ xe</span></a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i><span class="i18n" data-vi="Chuyến xe" data-en="Manage Trips">Chuyến xe</span></a>
+        <a href="users.html"><i class="fa-solid fa-users me-3"></i><span class="i18n" data-vi="Đối tác" data-en="Partners">Đối tác</span></a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i><span class="i18n" data-vi="QC & Ví" data-en="QC & Escrow">QC & Ví</span></a>
     </nav>
 
     <div class="main-content">
         
-        <!-- HEADER GỌN GÀNG (KHÔNG BANNER TO) -->
+        <!-- HEADER -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-1">
-                    <h3 class="fw-bold text-dark m-0">Quản Lý Chuyến Xe & Điều Phối Tải</h3>
+                    <h4 class="fw-bold text-dark m-0 i18n" data-vi="Quản Lý Chuyến Xe & Điều Phối Tải" data-en="Trip Management & Dispatching">Quản Lý Chuyến Xe & Điều Phối Tải</h4>
                     <span class="badge bg-success bg-opacity-10 text-success border border-success">AI Dispatch Active</span>
                 </div>
-                <p class="text-muted m-0 small">
-                    Theo dõi tiến độ gom đủ tải tại các trạm Hub ĐBSCL và gán nhanh phương tiện rỗng chiều về từ TP.HCM.
-                </p>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <div class="btn-group lang-switch shadow-sm me-2" role="group">
+                    <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
+                    <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
+                </div>
                 <a href="create-order.html" class="btn btn-success fw-bold px-3 py-2 rounded-pill shadow-sm">
-                    <i class="fa-solid fa-plus me-1"></i> Tạo đơn gom mới
-                </a>
-                <a href="driver-portal.html" class="btn btn-outline-success fw-semibold px-3 py-2 rounded-pill">
-                    <i class="fa-solid fa-truck-front me-1"></i> Cổng tài xế
+                    <i class="fa-solid fa-plus me-1"></i> <span class="i18n" data-vi="Tạo đơn gom mới" data-en="Create Order">Tạo đơn gom mới</span>
                 </a>
                 <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border ms-1">
                     <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="32">
-                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin Như</span>
+                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin </span>
                 </div>
             </div>
         </div>
 
-        <!-- THẺ THỐNG KÊ NHANH -->
+        <!-- THẺ THỐNG KÊ -->
         <div class="row g-3 mb-4">
             <div class="col-md-3">
                 <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #10b981 !important;">
                     <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">CHUYẾN ĐÃ ĐỦ TẢI (≥80%)</small>
-                            <h4 class="fw-bold text-success mb-0" id="statFullTrips">2 Chuyến</h4>
+                            <small class="text-muted fw-bold d-block i18n" data-vi="CHUYẾN ĐÃ ĐỦ TẢI" data-en="READY TRIPS">CHUYẾN ĐÃ ĐỦ TẢI</small>
+                            <h4 class="fw-bold text-success mb-0" id="statFullTrips">2</h4>
                         </div>
                         <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-truck-ramp-box"></i></div>
                     </div>
@@ -100,8 +81,8 @@
                 <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #facc15 !important;">
                     <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">ĐANG GOM TẢI THEO HUB</small>
-                            <h4 class="fw-bold text-warning mb-0" id="statPoolingTrips">1 Chuyến</h4>
+                            <small class="text-muted fw-bold d-block i18n" data-vi="ĐANG GOM TẢI" data-en="POOLING TRIPS">ĐANG GOM TẢI</small>
+                            <h4 class="fw-bold text-warning mb-0" id="statPoolingTrips">1</h4>
                         </div>
                         <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-hourglass-half"></i></div>
                     </div>
@@ -111,8 +92,8 @@
                 <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #3b82f6 !important;">
                     <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">XE CHIỀU VỀ GẦN HUB</small>
-                            <h4 class="fw-bold text-primary mb-0">12 Phương tiện</h4>
+                            <small class="text-muted fw-bold d-block i18n" data-vi="XE GẦN HUB" data-en="NEARBY TRUCKS">XE GẦN HUB</small>
+                            <h4 class="fw-bold text-primary mb-0">12</h4>
                         </div>
                         <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-route"></i></div>
                     </div>
@@ -122,7 +103,7 @@
                 <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #ef4444 !important;">
                     <div class="card-body py-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <small class="text-muted fw-bold d-block">KHỐI LƯỢNG ĐANG CHỞ</small>
+                            <small class="text-muted fw-bold d-block i18n" data-vi="TỔNG TẢI TRỌNG" data-en="TOTAL TONNAGE">TỔNG TẢI TRỌNG</small>
                             <h4 class="fw-bold text-danger mb-0" id="statActiveTons">11.5 Tấn</h4>
                         </div>
                         <div class="stat-icon bg-danger bg-opacity-10 text-danger"><i class="fa-solid fa-weight-hanging"></i></div>
@@ -131,25 +112,25 @@
             </div>
         </div>
 
-        <!-- BỘ LỌC VÀ TÌM KIẾM THỜI GIAN THỰC -->
+        <!-- BỘ LỌC VÀ TÌM KIẾM -->
         <div class="row mb-4 g-3">
             <div class="col-md-4">
                 <div class="input-group shadow-sm">
                     <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                    <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Tìm mã chuyến, biển số, nông sản, tài xế...">
+                    <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Tìm mã chuyến, nông sản, tài xế...">
                 </div>
             </div>
             <div class="col-md-3">
-                <select class="form-select shadow-sm" id="statusFilter">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="pooling">Đang gom tải</option>
-                    <option value="matched">Đã chốt xe (Chờ bốc hàng)</option>
-                    <option value="moving">Đang di chuyển</option>
+                <select class="form-select shadow-sm i18n-select" id="statusFilter">
+                    <option value="" class="i18n" data-vi="Tất cả trạng thái" data-en="All Statuses">Tất cả trạng thái</option>
+                    <option value="pooling" class="i18n" data-vi="Đang gom tải" data-en="Pooling">Đang gom tải</option>
+                    <option value="matched" class="i18n" data-vi="Đã chốt xe" data-en="Matched">Đã chốt xe</option>
+                    <option value="moving" class="i18n" data-vi="Đang di chuyển" data-en="In Transit">Đang di chuyển</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <select class="form-select shadow-sm" id="routeFilter">
-                    <option value="">Tất cả tuyến đường</option>
+                    <option value="" class="i18n" data-vi="Tất cả tuyến đường" data-en="All Routes">Tất cả tuyến đường</option>
                     <option value="LA">Long An ➔ TP.HCM</option>
                     <option value="TG">Tiền Giang ➔ TP.HCM</option>
                     <option value="DT">Đồng Tháp ➔ TP.HCM</option>
@@ -157,105 +138,94 @@
             </div>
             <div class="col-md-2 text-end">
                 <button class="btn btn-outline-secondary shadow-sm w-100 fw-bold" onclick="resetFilters()">
-                    <i class="fa-solid fa-rotate-left me-1"></i> Đặt lại
+                    <i class="fa-solid fa-rotate-left me-1"></i> <span class="i18n" data-vi="Đặt lại" data-en="Reset">Đặt lại</span>
                 </button>
             </div>
         </div>
 
-        <!-- BẢNG DANH SÁCH CHUYẾN XE -->
+        <!-- BẢNG DANH SÁCH -->
         <div class="card card-custom border-0 shadow-sm overflow-hidden mb-4">
             <div class="table-responsive">
                 <table class="table table-hover align-middle m-0 table-custom">
                     <thead>
                         <tr>
-                            <th>Mã Chuyến</th>
-                            <th>Tuyến Đường & Nông Sản</th>
-                            <th>Phương Tiện / Tài Xế</th>
-                            <th style="width: 220px;">Tiến Độ Lấp Đầy</th>
-                            <th>Điểm AI</th>
-                            <th>Trạng Thái</th>
-                            <th class="text-center">Thao Tác</th>
+                            <th class="i18n" data-vi="Mã Chuyến" data-en="Trip ID">Mã Chuyến</th>
+                            <th class="i18n" data-vi="Tuyến & Nông Sản" data-en="Route & Crop">Tuyến & Nông Sản</th>
+                            <th class="i18n" data-vi="Phương Tiện" data-en="Vehicle/Driver">Phương Tiện</th>
+                            <th style="width: 220px;" class="i18n" data-vi="Tiến Độ Tải" data-en="Fill Progress">Tiến Độ Tải</th>
+                            <th>AI Score</th>
+                            <th class="i18n" data-vi="Trạng Thái" data-en="Status">Trạng Thái</th>
+                            <th class="text-center i18n" data-vi="Thao Tác" data-en="Actions">Thao Tác</th>
                         </tr>
                     </thead>
                     <tbody id="tripsTableBody">
-                        <!-- Render động qua JavaScript -->
+                        <!-- Render qua JS -->
                     </tbody>
                 </table>
             </div>
             
             <div class="card-footer bg-white p-3 d-flex justify-content-between align-items-center border-top">
-                <small class="text-muted" id="tableCountInfo">Đang nạp dữ liệu chuyến xe...</small>
-                <button class="btn btn-sm btn-outline-danger" onclick="clearCustomOrders()" title="Khôi phục danh sách gốc">
-                    <i class="fa-solid fa-trash-can me-1"></i> Xóa đơn mẫu thử nghiệm
+                <small class="text-muted" id="tableCountInfo">Đang nạp dữ liệu...</small>
+                <button class="btn btn-sm btn-outline-danger" onclick="clearCustomOrders()">
+                    <i class="fa-solid fa-trash-can me-1"></i> <span class="i18n" data-vi="Xóa đơn mẫu thử nghiệm" data-en="Clear Test Data">Xóa đơn mẫu thử nghiệm</span>
                 </button>
             </div>
         </div>
 
-        <!-- FOOTER -->
-        <footer class="text-center py-3 text-muted border-top small">
-            LOADPOOL v2.4 • Smart Dispatching Module • Giảm thiểu xe tải chạy rỗng chiều về
-        </footer>
-
     </div>
 
-    <!-- Scripts chuẩn, không lỗi cú pháp -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
+        let currentLang = 'vi';
+        
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.i18n').forEach(el => {
+                if(el.hasAttribute('data-' + lang)) { 
+                    if (el.tagName === 'OPTION') {
+                        el.text = el.getAttribute('data-' + lang);
+                    } else {
+                        el.innerText = el.getAttribute('data-' + lang); 
+                    }
+                }
+            });
+            
+            document.getElementById('searchInput').placeholder = lang === 'en' ? "Search trip ID, crop, driver..." : "Tìm mã chuyến, biển số, nông sản, tài xế...";
+
+            if (lang === 'en') {
+                document.getElementById('btn-en').className = 'btn btn-success fw-bold';
+                document.getElementById('btn-vi').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+            } else {
+                document.getElementById('btn-vi').className = 'btn btn-success fw-bold';
+                document.getElementById('btn-en').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+            }
+            
+            renderTable(); // Re-render to translate JS injected content
+        }
+
         const defaultTrips = [
             {
-                tripId: 'TRP-1042',
-                routeCode: 'LA',
-                from: 'Tân Thạnh, Long An',
-                to: 'Chợ Đầu Mối Thủ Đức',
-                crop: 'Bí đỏ hồ lô (Đóng sọt 20kg)',
-                plate: '51C-123.45',
-                truckType: '5 Tấn (Mui bạt)',
-                driver: 'Nguyễn Văn An (0903.111.222)',
-                tons: 5.0,
-                maxTons: 5.0,
-                aiScore: 98,
-                time: 'Hôm nay, 16:00',
-                status: 'matched',
-                farmersCount: '5 Tiểu thương & Nông dân ghép chung',
-                cost: '2.800.000 VNĐ (560.000 đ/tấn)',
-                hubName: 'Hub 01 - Bưu điện xã Tân Thạnh, Long An'
+                tripId: 'TRP-1042', routeCode: 'LA', from: 'Tân Thạnh, Long An', to: 'Chợ Đầu Mối Thủ Đức',
+                crop: 'Bí đỏ hồ lô (Đóng sọt 20kg)', plate: '51C-123.45', truckType: '5 Tấn (Mui bạt)',
+                driver: 'Nguyễn Văn An (0903.111.222)', tons: 5.0, maxTons: 5.0, aiScore: 98, time: '16:00',
+                status: 'matched', farmersCount: '5 Tiểu thương & Nông dân ghép chung',
+                cost: '2.700.000 VNĐ (540.000 đ/tấn)', hubName: 'Hub 01 - Bưu điện xã Tân Thạnh, Long An'
             },
             {
-                tripId: 'TRP-1043',
-                routeCode: 'TG',
-                from: 'Châu Thành, Tiền Giang',
-                to: 'Chợ Đầu Mối Bình Điền',
-                crop: 'Thanh long ruột đỏ (Sọt nhựa)',
-                plate: null,
-                truckType: '5 Tấn',
-                driver: null,
-                tons: 3.5,
-                maxTons: 5.0,
-                aiScore: 95,
-                time: 'Hôm nay, 16:30',
-                status: 'pooling',
-                farmersCount: '3 Hộ dân HTX Châu Thành (Còn trống 1.5 Tấn)',
-                cost: '1.960.000 VNĐ (Tạm tính theo tỷ lệ)',
+                tripId: 'TRP-1043', routeCode: 'TG', from: 'Châu Thành, Tiền Giang', to: 'Chợ Đầu Mối Bình Điền',
+                crop: 'Thanh long ruột đỏ (Sọt nhựa)', plate: null, truckType: '5 Tấn', driver: null,
+                tons: 3.5, maxTons: 5.0, aiScore: 95, time: '16:30', status: 'pooling',
+                farmersCount: '3 Hộ HTX Châu Thành (Còn trống 1.5 Tấn)', cost: '1.890.000 VNĐ (Tạm tính theo tỷ lệ)',
                 hubName: 'Hub 02 - HTX Nông nghiệp Châu Thành, Tiền Giang'
             },
             {
-                tripId: 'TRP-1040',
-                routeCode: 'DT',
-                from: 'Cao Lãnh, Đồng Tháp',
-                to: 'Chợ Đầu Mối Hóc Môn',
-                crop: 'Xoài cát Hòa Lộc (Thùng Carton 15kg)',
-                plate: '66H-789.01',
-                truckType: '3 Tấn (Thùng kín)',
-                driver: 'Trần Hữu Lộc (0918.555.666)',
-                tons: 3.0,
-                maxTons: 3.0,
-                aiScore: 91,
-                time: 'Hôm qua, 22:15',
-                status: 'moving',
-                farmersCount: '4 Hộ nhà vườn Cao Lãnh',
-                cost: '2.100.000 VNĐ (Đã khóa Ví Escrow)',
+                tripId: 'TRP-1040', routeCode: 'DT', from: 'Cao Lãnh, Đồng Tháp', to: 'Chợ Đầu Mối Hóc Môn',
+                crop: 'Xoài cát Hòa Lộc', plate: '66H-789.01', truckType: '3 Tấn (Thùng kín)',
+                driver: 'Trần Hữu Lộc (0918.555.666)', tons: 3.0, maxTons: 3.0, aiScore: 91, time: '22:15',
+                status: 'moving', farmersCount: '4 Hộ nhà vườn Cao Lãnh', cost: '2.100.000 VNĐ (Đã khóa Ví Escrow)',
                 hubName: 'Hub 03 - Chợ nông sản Cao Lãnh, Đồng Tháp'
             }
         ];
@@ -263,25 +233,22 @@
         let allTrips = [];
 
         function loadTripsData() {
-            const customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
-            const convertedCustom = customOrders.map(order => ({
-                tripId: order.tripId ? order.tripId.replace('#', '') : 'TRP-' + Math.floor(1000 + Math.random() * 800),
-                routeCode: order.routeCode || 'LA',
-                from: order.from || 'Long An',
-                to: order.to || 'TP.HCM',
-                crop: order.crop || 'Nông sản tổng hợp',
-                plate: order.plate || null,
-                truckType: '5 Tấn',
-                driver: order.driver || null,
-                tons: parseFloat(order.tons) || 1.0,
-                maxTons: parseFloat(order.maxTons) || 5.0,
-                aiScore: 96,
-                time: order.time || 'Hôm nay, 16:00',
-                status: order.status || (order.tons >= 4.0 ? 'matched' : 'pooling'),
-                farmersCount: `Khởi tạo: ${order.creator || 'Lê Văn Sang'}`,
-                cost: `${order.cost || '560.000 đ'} (Chia sẻ qua LOADPOOL)`,
-                hubName: `Trạm Hub tập kết ${order.from}`
-            }));
+            let convertedCustom = [];
+            try {
+                const customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
+                convertedCustom = customOrders.map(order => ({
+                    tripId: order.tripId ? order.tripId.replace('#', '') : 'TRP-' + Math.floor(1000 + Math.random() * 800),
+                    routeCode: order.routeCode || 'LA', from: order.from || 'Long An', to: order.to || 'TP.HCM',
+                    crop: order.crop || 'Nông sản', plate: order.plate || null, truckType: '5 Tấn',
+                    driver: order.driver || null, tons: parseFloat(order.tons) || 1.0, maxTons: parseFloat(order.maxTons) || 5.0,
+                    aiScore: 96, time: order.time || '16:00', status: order.status || ((parseFloat(order.tons) || 1.0) >= 4.0 ? 'matched' : 'pooling'),
+                    farmersCount: `Khởi tạo: ${order.creator || 'Lê Văn Sang'}`, cost: `${order.cost || '540.000 đ'}`,
+                    hubName: `Trạm Hub tập kết ${order.from || 'Long An'}`
+                }));
+            } catch (e) {
+                console.warn("Dữ liệu tạm bị lỗi định dạng, đang tải lại...");
+                localStorage.removeItem('loadpool_custom_orders');
+            }
 
             allTrips = [...convertedCustom, ...defaultTrips];
             updateQuickStats();
@@ -289,19 +256,18 @@
         }
 
         function updateQuickStats() {
-            let fullCount = 0;
-            let poolingCount = 0;
-            let totalTons = 0;
-
+            let fullCount = 0; let poolingCount = 0; let totalTons = 0;
             allTrips.forEach(t => {
-                totalTons += t.tons;
+                totalTons += (t.tons || 0);
                 if (t.status === 'matched' || t.status === 'moving') fullCount++;
                 if (t.status === 'pooling') poolingCount++;
             });
 
-            document.getElementById('statFullTrips').innerText = `${fullCount} Chuyến`;
-            document.getElementById('statPoolingTrips').innerText = `${poolingCount} Chuyến`;
-            document.getElementById('statActiveTons').innerText = `${totalTons.toFixed(1)} Tấn`;
+            document.getElementById('statFullTrips').innerText = fullCount;
+            document.getElementById('statPoolingTrips').innerText = poolingCount;
+            
+            const tonLabel = currentLang === 'en' ? 'Tons' : 'Tấn';
+            document.getElementById('statActiveTons').innerText = `${totalTons.toFixed(1)} ${tonLabel}`;
         }
 
         function renderTable() {
@@ -310,14 +276,7 @@
             const routeVal = document.getElementById('routeFilter').value;
 
             const filtered = allTrips.filter(t => {
-                const matchKeyword = !keyword || 
-                    t.tripId.toLowerCase().includes(keyword) ||
-                    t.crop.toLowerCase().includes(keyword) ||
-                    t.from.toLowerCase().includes(keyword) ||
-                    t.to.toLowerCase().includes(keyword) ||
-                    (t.plate && t.plate.toLowerCase().includes(keyword)) ||
-                    (t.driver && t.driver.toLowerCase().includes(keyword));
-                
+                const matchKeyword = !keyword || t.tripId.toLowerCase().includes(keyword) || t.crop.toLowerCase().includes(keyword) || t.from.toLowerCase().includes(keyword) || t.to.toLowerCase().includes(keyword) || (t.plate && t.plate.toLowerCase().includes(keyword)) || (t.driver && t.driver.toLowerCase().includes(keyword));
                 const matchStatus = !statusVal || t.status === statusVal;
                 const matchRoute = !routeVal || t.routeCode === routeVal;
                 return matchKeyword && matchStatus && matchRoute;
@@ -327,41 +286,40 @@
             tbody.innerHTML = '';
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Không tìm thấy chuyến xe nào phù hợp với bộ lọc.</td></tr>`;
-                document.getElementById('tableCountInfo').innerText = 'Hiển thị 0 chuyến xe';
+                const emptyMsg = currentLang === 'en' ? 'No trips found matching the filters.' : 'Không tìm thấy chuyến xe nào phù hợp với bộ lọc.';
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">${emptyMsg}</td></tr>`;
+                document.getElementById('tableCountInfo').innerText = currentLang === 'en' ? 'Showing 0 trips' : 'Hiển thị 0 chuyến xe';
                 return;
             }
 
             filtered.forEach(t => {
-                const percent = Math.min(100, Math.round((t.tons / t.maxTons) * 100));
+                const maxTonsSafe = t.maxTons > 0 ? t.maxTons : 5.0;
+                const percent = Math.min(100, Math.round((t.tons / maxTonsSafe) * 100));
                 
-                let vehicleHtml = '';
-                if (t.plate) {
-                    vehicleHtml = `
-                        <div class="fw-bold">${t.plate} <span class="badge bg-light text-dark border ms-1">${t.truckType}</span></div>
-                        <small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>${t.driver}</small>
-                    `;
-                } else {
-                    vehicleHtml = `
-                        <div class="fw-bold text-muted fst-italic">Chưa gán xe chiều về</div>
-                        <small class="text-warning fw-semibold"><i class="fa-solid fa-route me-1"></i>Đang gom đơn theo Hub</small>
-                    `;
-                }
+                const t_unassigned = currentLang === 'en' ? 'No truck assigned' : 'Chưa gán xe chiều về';
+                const t_poolingHub = currentLang === 'en' ? 'Pooling at Hub' : 'Đang gom đơn theo Hub';
+                const t_statusPooling = currentLang === 'en' ? 'Pooling' : 'Đang gom tải';
+                const t_statusMatched = currentLang === 'en' ? 'Truck Assigned' : 'Đã chốt xe 5T';
+                const t_statusMoving = currentLang === 'en' ? 'In Transit' : 'Đang di chuyển';
+                const t_ton = currentLang === 'en' ? 'Tons' : 'Tấn';
+
+                let vehicleHtml = t.plate 
+                    ? `<div class="fw-bold">${t.plate} <span class="badge bg-light text-dark border ms-1">${t.truckType}</span></div><small class="text-muted"><i class="fa-solid fa-id-card me-1"></i>${t.driver}</small>`
+                    : `<div class="fw-bold text-muted fst-italic">${t_unassigned}</div><small class="text-warning fw-semibold"><i class="fa-solid fa-route me-1"></i>${t_poolingHub}</small>`;
 
                 let progressBarClass = 'bg-warning progress-bar-striped progress-bar-animated';
-                let statusBadgeHtml = `<span class="badge bg-warning bg-opacity-10 text-warning border border-warning badge-status">Đang gom tải</span>`;
-                let assignBtnHtml = `<button class="btn btn-light border action-btn-circle text-success me-1" onclick="assignDriver('${t.tripId}')" title="Điều phối xe rỗng chiều về"><i class="fa-solid fa-truck-medical"></i></button>`;
+                let statusBadgeHtml = `<span class="badge bg-warning bg-opacity-10 text-warning border border-warning badge-status">${t_statusPooling}</span>`;
+                let assignBtnHtml = `<button class="btn btn-light border action-btn-circle text-success me-1" onclick="assignDriver('${t.tripId}')"><i class="fa-solid fa-truck-medical"></i></button>`;
                 let cancelDisabled = '';
 
                 if (t.status === 'matched') {
                     progressBarClass = 'bg-info';
-                    statusBadgeHtml = `<span class="badge bg-info bg-opacity-10 text-info border border-info badge-status">Đã chốt xe 5T</span>`;
+                    statusBadgeHtml = `<span class="badge bg-info bg-opacity-10 text-info border border-info badge-status">${t_statusMatched}</span>`;
                     assignBtnHtml = '';
                 } else if (t.status === 'moving') {
                     progressBarClass = 'bg-success';
-                    statusBadgeHtml = `<span class="badge bg-success bg-opacity-10 text-success border border-success badge-status"><i class="fa-solid fa-truck-moving me-1"></i>Đang di chuyển</span>`;
-                    assignBtnHtml = '';
-                    cancelDisabled = 'disabled';
+                    statusBadgeHtml = `<span class="badge bg-success bg-opacity-10 text-success border border-success badge-status"><i class="fa-solid fa-truck-moving me-1"></i>${t_statusMoving}</span>`;
+                    assignBtnHtml = ''; cancelDisabled = 'disabled';
                 }
 
                 const tr = document.createElement('tr');
@@ -374,51 +332,55 @@
                     <td>${vehicleHtml}</td>
                     <td>
                         <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.8rem;">
-                            <span>${t.tons.toFixed(1)} / ${t.maxTons.toFixed(1)} Tấn</span>
+                            <span>${t.tons.toFixed(1)} / ${maxTonsSafe.toFixed(1)} ${t_ton}</span>
                             <span class="fw-bold text-dark">${percent}%</span>
                         </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar ${progressBarClass}" style="width: ${percent}%;"></div>
-                        </div>
+                        <div class="progress" style="height: 6px;"><div class="progress-bar ${progressBarClass}" style="width: ${percent}%;"></div></div>
                     </td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success border border-success fw-bold">${t.aiScore} / 100</span></td>
+                    <td><span class="badge bg-success bg-opacity-10 text-success border border-success fw-bold">${t.aiScore}/100</span></td>
                     <td>${statusBadgeHtml}</td>
                     <td class="text-center">
                         ${assignBtnHtml}
-                        <button class="btn btn-light border action-btn-circle text-primary me-1" onclick="viewDetails('${t.tripId}')" title="Xem chi tiết phân bổ cước"><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn btn-light border action-btn-circle ${cancelDisabled ? 'text-secondary' : 'text-danger'}" onclick="cancelTrip('${t.tripId}')" ${cancelDisabled} title="Hủy chuyến"><i class="fa-solid fa-ban"></i></button>
+                        <button class="btn btn-light border action-btn-circle text-primary me-1" onclick="viewDetails('${t.tripId}')"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn btn-light border action-btn-circle ${cancelDisabled ? 'text-secondary' : 'text-danger'}" onclick="cancelTrip('${t.tripId}')" ${cancelDisabled}><i class="fa-solid fa-ban"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            document.getElementById('tableCountInfo').innerText = `Hiển thị ${filtered.length} trên tổng số ${allTrips.length} chuyến xe`;
+            const showInfo = currentLang === 'en' ? `Showing ${filtered.length} of ${allTrips.length} trips` : `Hiển thị ${filtered.length} trên tổng số ${allTrips.length} chuyến`;
+            document.getElementById('tableCountInfo').innerText = showInfo;
         }
 
         function viewDetails(tripId) {
             const trip = allTrips.find(item => item.tripId === tripId);
             if (!trip) return;
+            const maxTonsSafe = trip.maxTons > 0 ? trip.maxTons : 5.0;
+            const percent = Math.min(100, Math.round((trip.tons / maxTonsSafe) * 100));
+            
+            const labels = currentLang === 'en' ? 
+                { hub: "Hub Location:", route: "Route:", crop: "Crop:", load: "Load Progress:", ai: "AI Route Score:", members: "Participants:", truck: "Vehicle:", cost: "Total Cost:", note: "Funds are protected via Escrow wallet until delivery." } : 
+                { hub: "Điểm tập kết Hub:", route: "Lộ trình:", crop: "Nông sản:", load: "Hệ số lấp đầy:", ai: "AI Route Score:", members: "Hộ tham gia ghép:", truck: "Phương tiện:", cost: "Cước phí chuyến:", note: "Tiền cước được chia theo tỷ lệ và bảo vệ qua Ví Escrow." };
 
-            const percent = Math.min(100, Math.round((trip.tons / trip.maxTons) * 100));
             Swal.fire({
-                title: `Chi tiết chuyến #${trip.tripId}`,
+                title: currentLang === 'en' ? `Trip Details #${trip.tripId}` : `Chi tiết chuyến #${trip.tripId}`,
                 width: '600px',
                 html: `
                     <div class="text-start mt-3" style="font-size: 0.92rem;">
-                        <p class="mb-2"><strong><i class="fa-solid fa-location-dot text-danger me-2"></i>Điểm tập kết Hub:</strong> ${trip.hubName}</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-route text-success me-2"></i>Lộ trình:</strong> ${trip.from} ➔ ${trip.to}</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-box text-success me-2"></i>Nông sản:</strong> ${trip.crop}</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-weight-hanging text-primary me-2"></i>Hệ số lấp đầy:</strong> ${trip.tons}/${trip.maxTons} Tấn (${percent}%)</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-brain text-warning me-2"></i>AI Route Score:</strong> ${trip.aiScore}/100 (Khớp tải trọng & giờ xuất bến)</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-users text-success me-2"></i>Hộ tham gia ghép:</strong> ${trip.farmersCount}</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-truck text-dark me-2"></i>Phương tiện:</strong> ${trip.plate ? `${trip.plate} (${trip.driver})` : '<span class="text-warning fw-bold">Đang chờ gán xe chiều về</span>'}</p>
-                        <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success me-2"></i>Cước phí chuyến:</strong> <span class="text-danger fw-bold">${trip.cost}</span></p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-location-dot text-danger me-2"></i>${labels.hub}</strong> ${trip.hubName}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-route text-success me-2"></i>${labels.route}</strong> ${trip.from} ➔ ${trip.to}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-box text-success me-2"></i>${labels.crop}</strong> ${trip.crop}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-weight-hanging text-primary me-2"></i>${labels.load}</strong> ${trip.tons}/${maxTonsSafe} (${percent}%)</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-brain text-warning me-2"></i>${labels.ai}</strong> ${trip.aiScore}/100</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-users text-success me-2"></i>${labels.members}</strong> ${trip.farmersCount}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-truck text-dark me-2"></i>${labels.truck}</strong> ${trip.plate ? `${trip.plate} (${trip.driver})` : `<span class="text-warning fw-bold">${currentLang==='en'?'Pending Assign':'Đang chờ gán xe'}</span>`}</p>
+                        <p class="mb-2"><strong><i class="fa-solid fa-money-bill-wave text-success me-2"></i>${labels.cost}</strong> <span class="text-danger fw-bold">${trip.cost}</span></p>
                         <hr class="my-2">
-                        <small class="text-muted d-block"><i class="fa-solid fa-shield-halved text-success me-1"></i>Tiền cước được chia theo tỷ lệ khối lượng thực tế và bảo vệ qua Ví ký quỹ Escrow cho đến khi bàn giao đủ cân tại chợ đầu mối.</small>
+                        <small class="text-muted d-block"><i class="fa-solid fa-shield-halved text-success me-1"></i>${labels.note}</small>
                     </div>
                 `,
                 confirmButtonColor: '#10b981',
-                confirmButtonText: 'Đóng'
+                confirmButtonText: currentLang === 'en' ? 'Close' : 'Đóng'
             });
         }
 
@@ -426,59 +388,59 @@
             const trip = allTrips.find(item => item.tripId === tripId);
             if (!trip) return;
 
+            const title = currentLang === 'en' ? `Assign Truck for #${trip.tripId}` : `Điều phối xe cho #${trip.tripId}`;
+            const subtitle = currentLang === 'en' ? `Found <strong>3 empty returning trucks</strong> heading to <b>${trip.from}</b>:` : `Phát hiện <strong>3 xe tải rỗng chiều về</strong> đang hướng về <b>${trip.from}</b>:`;
+
             Swal.fire({
-                title: `Điều phối xe chiều về cho #${trip.tripId}`,
+                title: title,
                 html: `
                     <div class="text-start" style="font-size: 0.9rem;">
-                        <p class="text-muted mb-2">Phát hiện <strong>3 xe tải trống chiều về</strong> từ TP.HCM đang di chuyển hướng về <b>${trip.from}</b>:</p>
+                        <p class="text-muted mb-2">${subtitle}</p>
                         <select id="driverSelectModal" class="form-select mb-3">
-                            <option value="62C-456.78|Lê Hoàng Nam (0909.888.777)|5 Tấn (Mui bạt)">62C-456.78 - Xe 5T Mui bạt (Tài xế: Lê Hoàng Nam - Cách 3.2km)</option>
-                            <option value="63C-999.12|Phạm Văn Tùng (0914.222.333)|5 Tấn (Thùng bạt)">63C-999.12 - Xe 5T Thùng bạt (Tài xế: Phạm Văn Tùng - Cách 5.8km)</option>
-                            <option value="51D-345.67|Trương Minh Tuấn (0982.444.555)|5 Tấn (Mui bạt)">51D-345.67 - Xe 5T Mui bạt (Tài xế: Trương Minh Tuấn - Cách 8.1km)</option>
+                            <option value="62C-456.78|Lê Hoàng Nam|5 Tấn">62C-456.78 - Xe 5T (Lê Hoàng Nam - Cách 3.2km)</option>
+                            <option value="63C-999.12|Phạm Văn Tùng|5 Tấn">63C-999.12 - Xe 5T (Phạm Văn Tùng - Cách 5.8km)</option>
                         </select>
-                        <div class="alert alert-success py-2 small mb-0">
-                            <i class="fa-solid fa-circle-check me-1"></i> Tận dụng xe chiều về giúp giữ nguyên mức tiết kiệm 44.4% cho bà con nông dân.
-                        </div>
                     </div>
                 `,
                 showCancelButton: true,
                 confirmButtonColor: '#10b981',
-                cancelButtonText: 'Đóng',
-                confirmButtonText: 'Xác nhận Chốt xe'
+                cancelButtonText: currentLang === 'en' ? 'Close' : 'Đóng',
+                confirmButtonText: currentLang === 'en' ? 'Confirm Dispatch' : 'Xác nhận Chốt xe'
             }).then((res) => {
                 if (res.isConfirmed) {
                     const val = document.getElementById('driverSelectModal').value.split('|');
-                    trip.plate = val[0];
-                    trip.driver = val[1];
-                    trip.truckType = val[2];
-                    trip.status = 'matched';
-                    updateQuickStats();
-                    renderTable();
-                    Swal.fire('Đã chốt phương tiện!', `Xe ${trip.plate} đã nhận lệnh đến Hub bốc hàng.`, 'success');
+                    trip.plate = val[0]; trip.driver = val[1]; trip.truckType = val[2]; trip.status = 'matched';
+                    
+                    // Update in localStorage if it's a custom trip
+                    let customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
+                    let orderIndex = customOrders.findIndex(o => (o.tripId ? o.tripId.replace('#', '') : '') === trip.tripId);
+                    if (orderIndex !== -1) {
+                        customOrders[orderIndex].plate = trip.plate;
+                        customOrders[orderIndex].driver = trip.driver;
+                        customOrders[orderIndex].status = 'matched';
+                        localStorage.setItem('loadpool_custom_orders', JSON.stringify(customOrders));
+                    }
+                    
+                    updateQuickStats(); renderTable();
+                    Swal.fire(currentLang==='en'?'Dispatched!':'Đã chốt phương tiện!', currentLang==='en'?`Truck ${trip.plate} is on the way.`:`Xe ${trip.plate} đã nhận lệnh đến Hub.`, 'success');
                 }
             });
         }
 
         function cancelTrip(tripId) {
             Swal.fire({
-                title: 'Hủy chuyến xe?',
-                text: `Hủy chuyến #${tripId}? Toàn bộ đơn hàng lẻ sẽ được hoàn cọc và trả về hàng đợi ghép mới.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Xác nhận Hủy',
-                cancelButtonText: 'Quay lại'
+                title: currentLang === 'en' ? 'Cancel Trip?' : 'Hủy chuyến xe?',
+                icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#6c757d',
+                confirmButtonText: currentLang === 'en' ? 'Confirm Cancel' : 'Xác nhận Hủy',
+                cancelButtonText: currentLang === 'en' ? 'Back' : 'Quay lại'
             }).then((result) => {
                 if (result.isConfirmed) {
                     allTrips = allTrips.filter(item => item.tripId !== tripId);
                     let customOrders = JSON.parse(localStorage.getItem('loadpool_custom_orders') || '[]');
                     customOrders = customOrders.filter(o => (o.tripId ? o.tripId.replace('#', '') : '') !== tripId);
                     localStorage.setItem('loadpool_custom_orders', JSON.stringify(customOrders));
-
-                    updateQuickStats();
-                    renderTable();
-                    Swal.fire('Đã hủy!', 'Chuyến xe đã được hủy thành công.', 'success');
+                    updateQuickStats(); renderTable();
+                    Swal.fire(currentLang==='en'?'Canceled!':'Đã hủy!', '', 'success');
                 }
             });
         }
@@ -493,7 +455,7 @@
         function clearCustomOrders() {
             localStorage.removeItem('loadpool_custom_orders');
             loadTripsData();
-            Swal.fire({ icon: 'info', title: 'Đã khôi phục dữ liệu gốc', timer: 1200, showConfirmButton: false });
+            Swal.fire({ icon: 'info', title: currentLang==='en'?'Reset to default':'Đã khôi phục dữ liệu gốc', timer: 1200, showConfirmButton: false });
         }
 
         document.getElementById('searchInput').addEventListener('input', renderTable);

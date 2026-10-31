@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phòng Gom Nhóm & Chat Thương Lượng - LOADPOOL</title>
+    <title>Phòng Gom Nhóm & Chat - LOADPOOL</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,214 +11,147 @@
 
     <style>
         body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-
         .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
 
-        /* KHUNG CHAT */
-        .chat-container-box {
-            height: 380px;
-            overflow-y: auto;
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid #e9ecef;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .chat-container-box { height: 420px; overflow-y: auto; background-color: #f8f9fa; border-radius: 12px; padding: 16px; border: 1px solid #e9ecef; display: flex; flex-direction: column; gap: 12px; }
+        .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 14px; font-size: 0.9rem; line-height: 1.5; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .chat-bubble.other { background-color: #ffffff; border: 1px solid #dee2e6; color: #212529; align-self: flex-start; border-top-left-radius: 4px; }
+        .chat-bubble.me { background-color: #10b981; color: #ffffff; align-self: flex-end; border-top-right-radius: 4px; }
 
-        .chat-bubble {
-            max-width: 82%;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 0.88rem;
-            line-height: 1.45;
-            position: relative;
-        }
-        .chat-bubble.other {
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            color: #212529;
-            align-self: flex-start;
-        }
-        .chat-bubble.me {
-            background-color: #10b981;
-            color: #ffffff;
-            align-self: flex-end;
-        }
+        .voice-note-pill { display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.12); color: #065f46; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: 1px solid rgba(16, 185, 129, 0.25); transition: all 0.2s; }
+        .voice-note-pill:hover { background: rgba(16, 185, 129, 0.2); transform: scale(1.02); }
 
-        .voice-note-pill {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(16, 185, 129, 0.12);
-            color: #065f46;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            cursor: pointer;
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            transition: all 0.2s;
-        }
-        .voice-note-pill:hover {
-            background: rgba(16, 185, 129, 0.2);
-            transform: scale(1.02);
-        }
+        .ai-transcription-box { background-color: #f0fdf4; border-left: 3px solid #10b981; padding: 8px 12px; margin-top: 8px; border-radius: 0 8px 8px 0; font-style: italic; color: #047857; font-size: 0.85rem; }
 
-        .table-custom thead th {
-            background-color: #f8f9fa;
-            color: #495057;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
-            padding: 12px 14px;
-        }
-        .table-custom tbody td {
-            padding: 12px 14px;
-            vertical-align: middle;
-        }
+        .table-custom thead th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px 14px; }
+        .table-custom tbody td { padding: 12px 14px; vertical-align: middle; }
+        .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar chuẩn 8 phân hệ đồng bộ -->
     <nav class="sidebar py-3">
-        <div class="sidebar-brand text-center pb-3 mb-3">
-            <i class="fa-solid fa-leaf text-warning"></i> LOADPOOL
+        <div class="sidebar-brand">
+            <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo">
         </div>
-        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i>Tổng quan</a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i>Trung tâm Huấn luyện AI</a>
-        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i>Tạo đơn gom tải</a>
-        <a href="community-pool.html" class="active"><i class="fa-solid fa-comments me-3"></i>Gom nhóm & Chat</a>
-        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i>Cổng Chủ xe</a>
-        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i>Quản lý chuyến xe</a>
-        <a href="users.html"><i class="fa-solid fa-users me-3"></i>Đối tác</a>
-        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i>QC & Ví Escrow</a>
+        <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i><span class="i18n" data-vi="Tổng quan" data-en="Dashboard">Tổng quan</span></a>
+        <a href="login.html"><i class="fa-solid fa-user-shield me-3 text-info"></i><span class="i18n" data-vi="Tài khoản" data-en="Account">Tài khoản</span></a>
+        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
+        <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i><span class="i18n" data-vi="Tạo đơn" data-en="Create Order">Tạo đơn</span></a>
+        <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i><span class="i18n" data-vi="Nhóm & Chat" data-en="Community Chat">Nhóm & Chat</span></a>
+        <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i><span class="i18n" data-vi="Cổng Chủ xe" data-en="Driver Portal">Cổng Chủ xe</span></a>
+        <a href="manage-trips.html"><i class="fa-solid fa-truck-fast me-3"></i><span class="i18n" data-vi="Chuyến xe" data-en="Manage Trips">Chuyến xe</span></a>
+        <a href="users.html"><i class="fa-solid fa-users me-3"></i><span class="i18n" data-vi="Đối tác" data-en="Partners">Đối tác</span></a>
+        <a href="qc.html"><i class="fa-solid fa-shield-halved me-3"></i><span class="i18n" data-vi="QC & Ví" data-en="QC & Escrow">QC & Ví</span></a>
     </nav>
 
     <div class="main-content">
         
-        <!-- HEADER GỌN GÀNG (KHÔNG BANNER TO) -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <h3 class="fw-bold text-dark m-0">Phòng Gom Nhóm Ngang Hàng & Phân Bổ Cước</h3>
-                    <span class="badge bg-success bg-opacity-10 text-success border border-success">Bước 2 & 3 LOADPOOL</span>
-                </div>
-                <p class="text-muted m-0 small">
-                    Kết nối nông dân, tiểu thương trong bán kính 10km thống nhất giờ bốc và tự động phân bổ cước theo tỷ lệ khối lượng.
-                </p>
+                <h4 class="fw-bold text-dark m-0 i18n" data-vi="Phòng Gom Nhóm Ngang Hàng & Phân Bổ Cước" data-en="Peer-to-Peer Pooling & Cost Allocation">Phòng Gom Nhóm Ngang Hàng & Phân Bổ Cước</h4>
+                <p class="text-muted m-0 small mt-1 i18n" data-vi="Kết nối người dùng trong bán kính 10km và tự động tính cước minh bạch theo thuật toán Lalamove/Ahamove." data-en="Connect users within 10km and auto-calculate transparent fees based on Lalamove algorithms.">Kết nối người dùng trong bán kính 10km và tự động tính cước minh bạch theo thuật toán Lalamove/Ahamove.</p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <a href="manage-trips.html" class="btn btn-outline-success btn-sm fw-bold px-3 py-2 rounded-pill">
-                    <i class="fa-solid fa-truck-fast me-1"></i> Xem các chuyến xe
-                </a>
-                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="32">
-                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin Như</span>
+                <div class="btn-group lang-switch shadow-sm" role="group">
+                    <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
+                    <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
-            <!-- CỘT TRÁI: THÔNG TIN PHÒNG GOM & BẢNG CHIA TIỀN CÔNG BẰNG -->
+            <!-- CỘT TRÁI: BẢNG CHIA TIỀN -->
             <div class="col-lg-7">
                 <div class="card card-custom p-4 bg-white h-100">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary mb-1">Mã phòng: #POOL-LA01 (Bán kính 10km)</span>
-                            <h5 class="fw-bold text-dark m-0">Nhóm 5 Tiểu Thương Nhập Bí Đỏ Hồ Lô</h5>
-                            <small class="text-muted">Tuyến: Chợ Đầu Mối Thủ Đức ➔ Hub 01 (Tân Thạnh, Long An)</small>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary mb-1 i18n" data-vi="Mã phòng: #POOL-LA01 (Bán kính 10km)" data-en="Room ID: #POOL-LA01 (10km Radius)">Mã phòng: #POOL-LA01 (Bán kính 10km)</span>
+                            <h5 class="fw-bold text-dark m-0 i18n" data-vi="Nhóm 5 Tiểu Thương Ghép Bí Đỏ Hồ Lô" data-en="Group of 5 Merchants Pooling Pumpkins">Nhóm 5 Tiểu Thương Ghép Bí Đỏ Hồ Lô</h5>
+                            <small class="text-muted i18n" data-vi="Tuyến: Tân Thạnh, Long An ➔ Chợ Đầu Mối Thủ Đức (100km)" data-en="Route: Tan Thanh, Long An ➔ Thu Duc Market (100km)">Tuyến: Tân Thạnh, Long An ➔ Chợ Đầu Mối Thủ Đức (100km)</small>
                         </div>
                         <div class="text-end">
-                            <span class="badge bg-success fs-6 px-3 py-2" id="poolTotalBadge">5.0 / 5.0 Tấn (100%)</span>
-                            <small class="text-muted d-block mt-1">Đủ tải xe 5T mui bạt</small>
+                            <span class="badge bg-success fs-6 px-3 py-2">5.0 / 5.0 Tấn (100%)</span>
+                            <small class="text-muted d-block mt-1 i18n" data-vi="Đủ tải xe 5T" data-en="5T Truck Full">Đủ tải xe 5T</small>
                         </div>
                     </div>
 
-                    <!-- Thanh phân bổ trực quan tải trọng của từng thành viên -->
                     <div class="mb-4">
                         <div class="d-flex justify-content-between small text-muted mb-1">
-                            <span>Tiến độ gom tải:</span>
-                            <strong class="text-success">5 Thành viên đã chốt đủ 100%</strong>
+                            <span class="i18n" data-vi="Tiến độ gom tải:" data-en="Pooling Progress:">Tiến độ gom tải:</span>
+                            <strong class="text-success i18n" data-vi="5 Thành viên đã chốt đủ 100%" data-en="5 Members committed 100%">5 Thành viên đã chốt đủ 100%</strong>
                         </div>
                         <div class="progress" style="height: 12px; border-radius: 6px;">
-                            <div class="progress-bar bg-success" style="width: 20%" title="Chị Hai Loan: 1.0 Tấn">20%</div>
-                            <div class="progress-bar bg-primary" style="width: 30%" title="Anh Tư Minh: 1.5 Tấn">30%</div>
-                            <div class="progress-bar bg-info" style="width: 20%" title="Cô Ba Lan: 1.0 Tấn">20%</div>
-                            <div class="progress-bar bg-warning text-dark" style="width: 15%" title="Chú Bảy: 0.75 Tấn">15%</div>
-                            <div class="progress-bar bg-secondary" style="width: 15%" id="member5Bar" title="Chị Út: 0.75 Tấn">15%</div>
+                            <div class="progress-bar bg-success" style="width: 20%">20%</div>
+                            <div class="progress-bar bg-primary" style="width: 30%">30%</div>
+                            <div class="progress-bar bg-info" style="width: 20%">20%</div>
+                            <div class="progress-bar bg-warning text-dark" style="width: 15%">15%</div>
+                            <div class="progress-bar bg-secondary" style="width: 15%" id="member5Bar">15%</div>
                         </div>
                     </div>
 
-                    <!-- Bảng phân bổ cước phí tự động -->
                     <h6 class="fw-bold text-success mb-2 small text-uppercase">
-                        <i class="fa-solid fa-scale-balanced me-1"></i> Bảng Phân Bổ Cước Minh Bạch (Tổng chuyến 5T: 2.800.000 VNĐ)
+                        <i class="fa-solid fa-scale-balanced me-1"></i> <span class="i18n" data-vi="Bảng Phân Bổ Cước (Xe 5 Tấn - 100km)" data-en="Cost Allocation Table (5T Truck - 100km)">Bảng Phân Bổ Cước (Xe 5 Tấn - 100km)</span>
                     </h6>
+                    
+                    <div class="alert alert-light border mb-3 py-2 small text-muted">
+                        <i class="fa-solid fa-calculator text-primary me-2"></i><b class="i18n" data-vi="Công thức:" data-en="Formula:">Công thức:</b> 100km × 27.000đ/km = <b>2.700.000 VNĐ</b>. <span class="i18n" data-vi="Cước cá nhân = (Tải trọng cá nhân / 5 Tấn) × 2.700.000đ" data-en="Personal Cost = (Personal Weight / 5 Tons) × 2,700,000 VND">Cước cá nhân = (Tải trọng cá nhân / 5 Tấn) × 2.700.000đ</span>
+                    </div>
+
                     <div class="table-responsive border rounded-3 mb-3">
                         <table class="table table-hover align-middle m-0 text-center table-custom" style="font-size: 0.86rem;">
                             <thead>
                                 <tr>
-                                    <th class="text-start">Thành viên</th>
-                                    <th>Khối lượng</th>
-                                    <th>Tỷ lệ tải</th>
-                                    <th>Cước chia sẻ</th>
-                                    <th>Phí sàn (3%)</th>
-                                    <th>Ví Escrow</th>
+                                    <th class="text-start i18n" data-vi="Thành viên" data-en="Member">Thành viên</th>
+                                    <th class="i18n" data-vi="Khối lượng" data-en="Weight">Khối lượng</th>
+                                    <th class="i18n" data-vi="Cước chia sẻ" data-en="Shared Cost">Cước chia sẻ</th>
+                                    <th class="i18n" data-vi="Phí sàn (3%)" data-en="Platform Fee (3%)">Phí sàn (3%)</th>
+                                    <th class="i18n" data-vi="Ví Escrow" data-en="Escrow Wallet">Ví Escrow</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="text-start fw-bold">1. Chị Hai Loan <span class="badge bg-light text-success border">Trưởng nhóm</span></td>
+                                    <td class="text-start fw-bold">1. Chị Hai Loan <span class="badge bg-light text-success border i18n" data-vi="Trưởng nhóm" data-en="Leader">Trưởng nhóm</span></td>
                                     <td>1,000 Kg</td>
-                                    <td>20%</td>
-                                    <td class="fw-bold text-dark">560.000 đ</td>
-                                    <td>150.000 đ</td>
-                                    <td><span class="badge bg-success">Đã ký quỹ</span></td>
+                                    <td class="fw-bold text-dark">540.000 đ</td>
+                                    <td>16.200 đ</td>
+                                    <td><span class="badge bg-success i18n" data-vi="Đã ký quỹ" data-en="Deposited">Đã ký quỹ</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-start fw-bold">2. Anh Tư Minh (Sạp Tân Thạnh)</td>
+                                    <td class="text-start fw-bold">2. Anh Tư Minh</td>
                                     <td>1,500 Kg</td>
-                                    <td>30%</td>
-                                    <td class="fw-bold text-dark">840.000 đ</td>
-                                    <td>225.000 đ</td>
-                                    <td><span class="badge bg-success">Đã ký quỹ</span></td>
+                                    <td class="fw-bold text-dark">810.000 đ</td>
+                                    <td>24.300 đ</td>
+                                    <td><span class="badge bg-success i18n" data-vi="Đã ký quỹ" data-en="Deposited">Đã ký quỹ</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-start fw-bold">3. Cô Ba Lan (Chợ Kiến Tường)</td>
+                                    <td class="text-start fw-bold">3. Cô Ba Lan</td>
                                     <td>1,000 Kg</td>
-                                    <td>20%</td>
-                                    <td class="fw-bold text-dark">560.000 đ</td>
-                                    <td>150.000 đ</td>
-                                    <td><span class="badge bg-success">Đã ký quỹ</span></td>
+                                    <td class="fw-bold text-dark">540.000 đ</td>
+                                    <td>16.200 đ</td>
+                                    <td><span class="badge bg-success i18n" data-vi="Đã ký quỹ" data-en="Deposited">Đã ký quỹ</span></td>
                                 </tr>
                                 <tr>
                                     <td class="text-start fw-bold">4. Chú Bảy Nông Sản</td>
                                     <td>750 Kg</td>
-                                    <td>15%</td>
-                                    <td class="fw-bold text-dark">420.000 đ</td>
-                                    <td>112.500 đ</td>
-                                    <td><span class="badge bg-success">Đã ký quỹ</span></td>
+                                    <td class="fw-bold text-dark">405.000 đ</td>
+                                    <td>12.150 đ</td>
+                                    <td><span class="badge bg-success i18n" data-vi="Đã ký quỹ" data-en="Deposited">Đã ký quỹ</span></td>
                                 </tr>
                                 <tr>
                                     <td class="text-start fw-bold">5. Chị Út Rau Củ</td>
                                     <td>750 Kg</td>
-                                    <td>15%</td>
-                                    <td class="fw-bold text-dark">420.000 đ</td>
-                                    <td>112.500 đ</td>
-                                    <td><span class="badge bg-warning text-dark" id="member5Status">Chờ xác nhận</span></td>
+                                    <td class="fw-bold text-dark">405.000 đ</td>
+                                    <td>12.150 đ</td>
+                                    <td><span class="badge bg-warning text-dark i18n" id="member5Status" data-vi="Chờ xác nhận" data-en="Pending">Chờ xác nhận</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Công thức phân bổ & Nút chốt nhóm -->
-                    <div class="d-flex flex-wrap justify-content-between align-items-center bg-light p-3 rounded-3 border gap-2 mt-auto">
-                        <div>
-                            <small class="text-muted d-block" style="font-size: 0.78rem;">Thuật toán chia cước công bằng:</small>
-                            <span class="fw-bold text-dark small">Cước cá nhân = (Số Kg cá nhân / 5.000 Kg) × 2.800.000 đ</span>
-                        </div>
+                    <div class="d-flex justify-content-end mt-auto">
                         <button type="button" class="btn btn-success fw-bold px-4 py-2 rounded-pill shadow-sm" onclick="lockPoolAndBookTruck()">
-                            <i class="fa-solid fa-lock me-1"></i> Chốt Nhóm & Gán Xe 5T
+                            <i class="fa-solid fa-check-double me-1"></i> <span class="i18n" data-vi="Chốt Nhóm & Gọi Xe (2.7 Triệu)" data-en="Lock Group & Book Truck (2.7M VND)">Chốt Nhóm & Gọi Xe (2.7 Triệu)</span>
                         </button>
                     </div>
                 </div>
@@ -226,46 +159,43 @@
 
             <!-- CỘT PHẢI: KHUNG CHAT & AI SPEECH-TO-TEXT -->
             <div class="col-lg-5">
-                <div class="card card-custom p-4 bg-white h-100 d-flex flex-column">
+                <div class="card card-custom p-4 bg-white h-100 d-flex flex-column border border-success border-opacity-25">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                         <div>
-                            <h6 class="fw-bold text-dark m-0"><i class="fa-solid fa-comments text-success me-2"></i>Thảo Luận Nhóm (#POOL-LA01)</h6>
-                            <small class="text-muted">Hỗ trợ Nông dân lớn tuổi gửi tin nhắn giọng nói</small>
+                            <h6 class="fw-bold text-dark m-0"><i class="fa-solid fa-microphone-lines text-danger me-2"></i><span class="i18n" data-vi="Tính Năng AI Speech-to-Text" data-en="AI Speech-to-Text Feature">Tính Năng AI Speech-to-Text</span></h6>
+                            <small class="text-muted i18n" data-vi="Nhận diện giọng nói địa phương (Miền Tây)" data-en="Local Dialect Voice Recognition (Mekong Delta)">Nhận diện giọng nói địa phương (Miền Tây)</small>
                         </div>
-                        <button type="button" class="btn btn-sm btn-outline-success rounded-pill fw-bold" onclick="callGroupVoice()">
-                            <i class="fa-solid fa-phone-volume me-1"></i> Gọi nhóm
-                        </button>
                     </div>
 
                     <!-- Vùng tin nhắn Chat -->
                     <div class="chat-container-box flex-grow-1 mb-3" id="chatContainer">
                         <div class="chat-bubble other">
-                            <small class="fw-bold text-primary d-block">Chị Hai Loan (Trưởng nhóm)</small>
-                            Bà con ơi mình gom đủ 5 tấn bí đỏ hồ lô rồi, tính ra cước xe từ Thủ Đức về Hub Tân Thạnh có 560 ngàn/tấn, rẻ hơn mua thương lái gần một nửa!
+                            <small class="fw-bold text-primary d-block">Chị Hai Loan</small>
+                            <span class="i18n" data-vi="Bà con ơi gom đủ 5 tấn rồi, cước xe chở về Thủ Đức có 540 ngàn/tấn thôi. Rẻ hơn thuê xe ba gác nhiều!" data-en="Hey folks, we reached 5 tons! The freight to Thu Duc is only 540k/ton. Much cheaper than hiring a small tricycle!">Bà con ơi gom đủ 5 tấn rồi, cước xe chở về Thủ Đức có 540 ngàn/tấn thôi. Rẻ hơn thuê xe ba gác nhiều!</span>
                         </div>
 
                         <div class="chat-bubble other">
-                            <small class="fw-bold text-success d-block">Chú Bảy Nông Sản (62 tuổi)</small>
+                            <small class="fw-bold text-success d-block">Chú Bảy Nông Sản</small>
                             <div class="voice-note-pill mt-1" onclick="playVoiceSimulation()">
-                                <i class="fa-solid fa-circle-play me-2"></i>Tin nhắn thoại (0:08s) - Bấm nghe
+                                <i class="fa-solid fa-circle-play me-2"></i><span class="i18n" data-vi="Tin nhắn thoại (0:08s) - Bấm nghe" data-en="Voice Note (0:08s) - Play">Tin nhắn thoại (0:08s) - Bấm nghe</span>
                             </div>
-                            <small class="d-block text-muted mt-1 fst-italic" style="font-size: 0.76rem;">
-                                AI Speech-to-Text: "Chú mắt kém không gõ chữ được, chú đồng ý ghép 750 ký nha, chiều 4 giờ chú ra Bưu điện Tân Thạnh nhận hàng."
-                            </small>
+                            <div class="ai-transcription-box">
+                                <i class="fa-solid fa-robot me-1"></i> <span class="i18n" data-vi="AI Dịch: Chú mắt yếu gõ chữ không được. Chú chốt 750 ký nha, chiều 4 giờ ra Bưu điện nhận hàng." data-en="AI Transcribed: My eyes are weak, can't type. I confirm 750kg, I'll be at the Post Office at 4 PM to hand over the goods.">AI Dịch: "Chú mắt yếu gõ chữ không được. Chú chốt 750 ký nha, chiều 4 giờ ra Bưu điện nhận hàng."</span>
+                            </div>
                         </div>
 
                         <div class="chat-bubble me">
-                            <small class="fw-bold text-warning d-block">Điều phối viên Hub 01 (Bạn)</small>
-                            Dạ con đã nhận cọc Escrow của 4 cô chú. Chị Út bấm xác nhận cọc 420.000đ nữa là hệ thống tự động gán xe 51C-123.45 chạy về liền ạ!
+                            <small class="fw-bold text-warning d-block i18n" data-vi="Bạn (Điều phối viên)" data-en="You (Coordinator)">Bạn (Điều phối viên)</small>
+                            <span class="i18n" data-vi="Dạ con đã nhận cọc của 4 người rồi ạ. Chị Út dùng tính năng Giọng nói để xác nhận cọc 405.000đ nữa là con gọi xe tải lại đón hàng luôn!" data-en="I've received deposits from 4 of you. Ms. Ut, please use the Voice feature to confirm your 405,000 VND deposit so I can call the truck right away!">Dạ con đã nhận cọc của 4 người rồi ạ. Chị Út dùng tính năng Giọng nói để xác nhận cọc 405.000đ nữa là con gọi xe tải lại đón hàng luôn!</span>
                         </div>
                     </div>
 
-                    <!-- Input gõ tin nhắn + Nút Micro thu âm AI -->
+                    <!-- Input -->
                     <div class="input-group">
-                        <button class="btn btn-outline-danger" type="button" onclick="recordVoiceSimulation()" title="Ghi âm giọng nói (AI Voice-to-Text)">
-                            <i class="fa-solid fa-microphone"></i>
+                        <button class="btn btn-danger fw-bold" type="button" onclick="recordVoiceSimulation()" title="Ghi âm giọng nói (AI Voice-to-Text)">
+                            <i class="fa-solid fa-microphone-lines me-1"></i> <span class="i18n" data-vi="Thu Âm" data-en="Record">Thu Âm</span>
                         </button>
-                        <input type="text" class="form-control" id="chatTextInput" placeholder="Nhập tin nhắn trao đổi giờ bốc hàng..." onkeydown="handleChatEnter(event)">
+                        <input type="text" class="form-control" id="chatTextInput" placeholder="..." onkeydown="handleChatEnter(event)">
                         <button class="btn btn-success fw-bold px-3" type="button" onclick="sendTextMessage()">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -274,18 +204,35 @@
             </div>
         </div>
 
-        <!-- FOOTER -->
-        <footer class="text-center py-3 text-muted border-top small mt-4">
-            LOADPOOL v2.4 • Peer-to-Peer Pooling Module • Kết nối nông dân & tiểu thương theo cụm Hub
-        </footer>
-
     </div>
 
-    <!-- Scripts chuẩn, không lỗi cú pháp -->
+    <!-- Scripts chuẩn -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        let currentLang = 'vi';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.i18n').forEach(el => {
+                if(el.hasAttribute('data-' + lang)) { el.innerText = el.getAttribute('data-' + lang); }
+            });
+            
+            document.getElementById('chatTextInput').placeholder = lang === 'en' ? "Type a message..." : "Nhập tin nhắn...";
+
+            if (lang === 'en') {
+                document.getElementById('btn-en').className = 'btn btn-success fw-bold';
+                document.getElementById('btn-vi').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+            } else {
+                document.getElementById('btn-vi').className = 'btn btn-success fw-bold';
+                document.getElementById('btn-en').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+            }
+        }
+
+        // Khởi tạo placeholder ban đầu
+        document.getElementById('chatTextInput').placeholder = "Nhập tin nhắn...";
+
         function sendTextMessage() {
             const input = document.getElementById('chatTextInput');
             const text = input.value.trim();
@@ -294,7 +241,8 @@
             const box = document.getElementById('chatContainer');
             const div = document.createElement('div');
             div.className = 'chat-bubble me';
-            div.innerHTML = `<small class="fw-bold text-warning d-block">Bạn</small>${text}`;
+            const senderName = currentLang === 'en' ? 'You' : 'Bạn';
+            div.innerHTML = `<small class="fw-bold text-warning d-block">${senderName}</small>${text}`;
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
             input.value = '';
@@ -308,25 +256,32 @@
             const box = document.getElementById('chatContainer');
             const div = document.createElement('div');
             div.className = 'chat-bubble other';
+            
+            const senderName = currentLang === 'en' ? 'Ms. Ut' : 'Chị Út Rau Củ';
+            const voiceLabel = currentLang === 'en' ? 'Voice Note (0:05s) - Play' : 'Tin nhắn thoại (0:05s) - Bấm nghe';
+            const aiText = currentLang === 'en' 
+                ? 'AI Transcribed: "I confirm 750kg of pumpkins. I just deposited into the Escrow wallet!"' 
+                : 'AI Dịch: "Chị Út chốt 750 ký bí đỏ nha. Chị vừa nạp tiền cọc Escrow vô hệ thống xong rồi đó!"';
+
             div.innerHTML = `
-                <small class="fw-bold text-danger d-block">Chị Út Rau Củ</small>
+                <small class="fw-bold text-danger d-block">${senderName}</small>
                 <div class="voice-note-pill mt-1" onclick="playVoiceSimulation()">
-                    <i class="fa-solid fa-volume-high me-2"></i>Tin nhắn thoại (0:05s) - Bấm nghe
+                    <i class="fa-solid fa-volume-high me-2"></i>${voiceLabel}
                 </div>
-                <small class="d-block text-muted mt-1 fst-italic" style="font-size: 0.76rem;">
-                    AI Speech-to-Text: "Chị Út xác nhận ghép 750 ký bí đỏ nha, chị vừa nạp cọc Escrow xong!"
-                </small>
+                <div class="ai-transcription-box">
+                    <i class="fa-solid fa-robot me-1"></i> ${aiText}
+                </div>
             `;
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
 
             document.getElementById('member5Status').className = 'badge bg-success';
-            document.getElementById('member5Status').innerText = 'Đã ký quỹ';
+            document.getElementById('member5Status').innerText = currentLang === 'en' ? 'Deposited' : 'Đã ký quỹ';
 
             Swal.fire({
                 icon: 'success',
-                title: 'AI Speech-to-Text Đã Chuyển Đổi',
-                text: 'Giọng nói tiếng Việt miền Tây của Chị Út đã được mô hình AI chuyển đổi thành văn bản và cập nhật cọc Escrow.',
+                title: currentLang === 'en' ? 'AI Speech-to-Text Processed' : 'AI Đã Phân Tích Giọng Nói',
+                text: currentLang === 'en' ? 'Local dialect transcribed successfully. Escrow status updated automatically!' : 'Giọng địa phương đã được chuyển thành văn bản, tự động hiểu từ khóa và cập nhật trạng thái Ví Escrow!',
                 confirmButtonColor: '#10b981'
             });
         }
@@ -334,34 +289,27 @@
         function playVoiceSimulation() {
             Swal.fire({
                 icon: 'info',
-                title: 'Phát Tin Nhắn Thoại',
-                text: 'Đang phát âm thanh ghi âm thực tế từ nông dân tại trạm Hub...',
+                title: currentLang === 'en' ? 'Playing Audio...' : 'Đang phát âm thanh...',
+                text: currentLang === 'en' ? 'Playing real voice note from user app...' : 'Hệ thống đang phát tin nhắn giọng nói thực tế từ ứng dụng của người dùng.',
                 timer: 1500,
                 showConfirmButton: false
             });
         }
 
-        function callGroupVoice() {
-            Swal.fire({
-                icon: 'info',
-                title: 'Kết nối Tổng đài Nhóm Voice IP',
-                text: 'Hệ thống tự động thiết lập cuộc gọi thoại nhóm bảo mật số điện thoại cá nhân (Anti-Leakage), chống thương lái trung gian chèo kéo.',
-                confirmButtonColor: '#10b981'
-            });
-        }
-
         function lockPoolAndBookTruck() {
             document.getElementById('member5Status').className = 'badge bg-success';
-            document.getElementById('member5Status').innerText = 'Đã ký quỹ';
+            document.getElementById('member5Status').innerText = currentLang === 'en' ? 'Deposited' : 'Đã ký quỹ';
 
             Swal.fire({
                 icon: 'success',
-                title: 'Đã chốt phòng gom #POOL-LA01!',
-                html: '5 thành viên đã đồng thuận và ký quỹ đủ <b>2.800.000 VNĐ</b>.<br>Chuyến xe 5 tấn đã sẵn sàng chuyển sang trạng thái <b>Đã chốt xe</b>.',
+                title: currentLang === 'en' ? 'Group Locked!' : 'Đã chốt nhóm ghép tải!',
+                html: currentLang === 'en' 
+                    ? '5 members have deposited <b>2,700,000 VND</b>.<br>System is booking the nearest 5T truck.' 
+                    : '5 thành viên đã ký quỹ đủ <b>2.700.000 VNĐ</b>.<br>Hệ thống tự động phát lệnh gọi xe tải 5 Tấn gần nhất.',
                 showCancelButton: true,
                 confirmButtonColor: '#10b981',
-                confirmButtonText: 'Xem trên Quản lý chuyến xe',
-                cancelButtonText: 'Ở lại phòng này'
+                confirmButtonText: currentLang === 'en' ? 'View Truck Status' : 'Xem Trạng Thái Xe',
+                cancelButtonText: currentLang === 'en' ? 'Stay Here' : 'Ở lại trang này'
             }).then((res) => {
                 if (res.isConfirmed) {
                     window.location.href = 'manage-trips.html';
