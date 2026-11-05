@@ -3,36 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QC & Ví Escrow - LOADPOOL</title>
+    <title>LOADPOOL AI Studio - Huấn Luyện & Kiểm Thử GenAI</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/main-style.css">
 
     <style>
-        body { background: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); background: #ffffff; }
 
-        .table-custom thead th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px 14px; }
-        .table-custom tbody td { padding: 12px 14px; vertical-align: middle; }
+        /* ENTITY TAGS TRỰC QUAN */
+        .entity-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.82rem; margin: 2px; }
+        .ent-loc { background-color: #d1e7dd; color: #0f5132; border: 1px solid #a3cfbb; }
+        .ent-cap { background-color: #cfe2ff; color: #084298; border: 1px solid #9ec5fe; }
+        .ent-time { background-color: #fff3cd; color: #664d03; border: 1px solid #ffecb5; }
+        .ent-phone { background-color: #f8d7da; color: #842029; border: 1px solid #f1aeb5; }
 
-        /* KHUNG THỊ GIÁC MÁY TÍNH VISION */
-        .vision-preview-box { position: relative; border-radius: 12px; overflow: hidden; border: 2px dashed #10b981; background: #f8f9fa; min-height: 220px; display: flex; align-items: center; justify-content: center; }
-        .bbox-overlay { position: absolute; border: 2px solid #ef4444; background: rgba(239, 68, 68, 0.15); color: #ffffff; font-size: 0.72rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-        .bbox-good { border-color: #10b981; background: rgba(16, 185, 129, 0.15); color: #065f46; }
+        /* TAB NAVIGATION ĐỒNG BỘ */
+        .ai-tab-btn {
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #475569;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+        .ai-tab-btn.active {
+            background-color: #166534 !important;
+            color: #ffffff !important;
+            border-color: #166534 !important;
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.25);
+        }
 
+        /* TERMINAL HUẤN LUYỆN */
+        .terminal-box {
+            background: #0f172a;
+            color: #38bdf8;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            height: 180px;
+            overflow-y: auto;
+            border: 1px solid #1e293b;
+        }
+
+        .chart-container-flex { position: relative; flex-grow: 1; min-height: 240px; width: 100%; }
         .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
     </style>
 </head>
 <body>
 
-  <nav class="sidebar py-3">
+    <!-- SIDEBAR CHUẨN ĐỒNG BỘ -->
+    <nav class="sidebar py-3">
         <div class="sidebar-brand">
-            <img src="assets/Screenshot 2026-10-31 090538.png" alt="LOADPOOL Logo">
+            <img src="assets/Screenshot 2026-10-31 090538.png" onerror="this.onerror=null; this.src='assets/images/logo.png';" alt="LOADPOOL Logo">
         </div>
         <a href="index.html"><i class="fa-solid fa-chart-pie me-3"></i><span class="i18n" data-vi="Tổng quan" data-en="Dashboard">Tổng quan</span></a>
         <a href="login.html"><i class="fa-solid fa-user-shield me-3 text-info"></i><span class="i18n" data-vi="Tài khoản" data-en="Account">Tài khoản</span></a>
-        <a href="ai-center.html"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
+        <a href="ai-center.html" class="active"><i class="fa-solid fa-brain me-3 text-warning"></i><span class="i18n" data-vi="Huấn luyện AI" data-en="AI Training">Huấn luyện AI</span></a>
         <a href="create-order.html"><i class="fa-solid fa-layer-group me-3"></i><span class="i18n" data-vi="Tạo đơn" data-en="Create Order">Tạo đơn</span></a>
         <a href="community-pool.html"><i class="fa-solid fa-comments me-3"></i><span class="i18n" data-vi="Nhóm & Chat" data-en="Community Chat">Nhóm & Chat</span></a>
         <a href="driver-portal.html"><i class="fa-solid fa-truck-front me-3"></i><span class="i18n" data-vi="Cổng Chủ xe" data-en="Driver Portal">Cổng Chủ xe</span></a>
@@ -43,176 +75,318 @@
 
     <div class="main-content">
         
-        <!-- HEADER -->
+        <!-- HEADER PHẲNG GỌN GÀNG -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-1">
-                    <h4 class="fw-bold text-dark m-0 i18n" data-vi="Hệ Thống Ví Ký Quỹ & Kiểm Định AI" data-en="Escrow Wallet & AI Quality Control">Hệ Thống Ví Ký Quỹ & Kiểm Định AI</h4>
-                    <span class="badge bg-success bg-opacity-10 text-success border border-success">Escrow Protected</span>
+                    <h4 class="fw-bold text-dark m-0 i18n" data-vi="Trung Tâm Huấn Luyện & Kiểm Thử GenAI" data-en="GenAI Training & Testing Studio">Trung Tâm Huấn Luyện & Kiểm Thử GenAI</h4>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success">AI Core Engine v2.4</span>
                 </div>
-                <p class="text-muted m-0 small i18n" data-vi="Bảo vệ 100% tiền cước của Nông dân, tự động cấn trừ nếu hàng hóa bị dập nát (AI QC)." data-en="100% Freight protection for Farmers, auto-deduction if goods are damaged (AI QC).">
-                    Bảo vệ 100% tiền cước của Nông dân, tự động cấn trừ nếu hàng hóa bị dập nát (AI QC).
+                <p class="text-muted m-0 small i18n" data-vi="Giám sát kiến trúc 3 trụ cột: Voice-to-Action NLP, RAG Hợp đồng thông minh & Phản ứng sự cố Real-time." data-en="Supervise 3 Core Pillars: Voice-to-Action NLP, RAG Dynamic Contracts & Real-time Incident Generation.">
+                    Giám sát kiến trúc 3 trụ cột: Voice-to-Action NLP, RAG Hợp đồng thông minh & Phản ứng sự cố Real-time.
                 </p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <div class="btn-group lang-switch shadow-sm me-2" role="group">
+                <div class="btn-group lang-switch shadow-sm" role="group">
                     <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
                     <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
                 </div>
-                <div class="d-flex align-items-center bg-white px-3 py-2 rounded-pill shadow-sm border ms-1">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Như&background=198754&color=fff" class="rounded-circle me-2" width="32">
-                    <span class="fw-bold text-dark" style="font-size: 0.88rem;">Admin</span>
-                </div>
             </div>
         </div>
 
-        <!-- 4 THẺ TÀI CHÍNH TỔNG QUAN -->
+        <!-- 4 THẺ CHỈ SỐ MÔ HÌNH THỜI GIAN THỰC -->
         <div class="row g-3 mb-4">
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #10b981 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block i18n" data-vi="TỔNG SỐ DƯ KÝ QUỸ (ĐANG GIỮ)" data-en="TOTAL ESCROW HOLDING">TỔNG SỐ DƯ KÝ QUỸ (ĐANG GIỮ)</small>
-                            <h4 class="fw-bold text-success mb-0" id="totalEscrowBalance">0 đ</h4>
-                        </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fa-solid fa-lock"></i></div>
-                    </div>
+                <div class="card card-custom p-3 border-start border-4 border-success h-100">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="DATASET ĐÃ GÁN NHÃN" data-en="LABELED DATASET">DATASET ĐÃ GÁN NHÃN</small>
+                    <h3 class="fw-bold text-dark mb-0" id="datasetCountDisplay">14.850 <small class="fs-6 text-muted fw-normal i18n" data-vi="Mẫu" data-en="Samples">Mẫu</small></h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #3b82f6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block i18n" data-vi="ĐÃ GIẢI NGÂN (CHO TÀI XẾ)" data-en="DISBURSED (TO DRIVERS)">ĐÃ GIẢI NGÂN (CHO TÀI XẾ)</small>
-                            <h4 class="fw-bold text-primary mb-0">0 đ</h4>
-                        </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                    </div>
+                <div class="card card-custom p-3 border-start border-4 border-primary h-100">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="ĐỘ CHÍNH XÁC PhoBERT NER" data-en="PhoBERT NER ACCURACY">ĐỘ CHÍNH XÁC PhoBERT NER</small>
+                    <h3 class="fw-bold text-primary mb-0">95.8% <span class="badge bg-primary ms-1" style="font-size:0.65rem;">F1-Score</span></h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #ef4444 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block i18n" data-vi="TIỀN BỒI THƯỜNG (HÀNG HỎNG)" data-en="COMPENSATED (DAMAGED GOODS)">TIỀN BỒI THƯỜNG (HÀNG HỎNG)</small>
-                            <h4 class="fw-bold text-danger mb-0" id="statCompensated">0 đ</h4>
-                        </div>
-                        <div class="stat-icon bg-danger bg-opacity-10 text-danger"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                    </div>
+                <div class="card card-custom p-3 border-start border-4 border-warning h-100">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="ĐỘ CHÍNH XÁC RAG RETRIEVAL" data-en="RAG RETRIEVAL PRECISION">ĐỘ CHÍNH XÁC RAG RETRIEVAL</small>
+                    <h3 class="fw-bold text-warning text-dark mb-0">98.2% <span class="badge bg-warning text-dark ms-1" style="font-size:0.65rem;">Cosine Top-3</span></h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card stat-card shadow-sm h-100" style="border-left: 5px solid #8b5cf6 !important;">
-                    <div class="card-body py-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <small class="text-muted fw-bold d-block i18n" data-vi="TỶ LỆ HAO HỤT TRUNG BÌNH" data-en="AVERAGE DAMAGE RATE">TỶ LỆ HAO HỤT TRUNG BÌNH</small>
-                            <h4 class="fw-bold text-dark mb-0">0.0% <span class="fs-6 text-success fw-normal i18n" data-vi="(Dưới mức trần 2%)" data-en="(Below 2% limit)">(Dưới mức trần 2%)</span></h4>
+                <div class="card card-custom p-3 border-start border-4 border-danger h-100">
+                    <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="ĐỘ TRỄ PHẢN ỨNG SỰ CỐ" data-en="INCIDENT RESPONSE LATENCY">ĐỘ TRỄ PHẢN ỨNG SỰ CỐ</small>
+                    <h3 class="fw-bold text-danger mb-0">&lt; 1.2s <span class="badge bg-danger ms-1" style="font-size:0.65rem;">Real-time</span></h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- BỘ CHUYỂN TAB 4 PHÂN HỆ GENAI -->
+        <div class="d-flex gap-2 mb-4 flex-wrap" role="tablist">
+            <button class="ai-tab-btn active shadow-sm" onclick="switchAiTab('tab-voice-nlp', this)">
+                <i class="fa-solid fa-microphone-lines me-2"></i>1. Voice & NLP Studio (Voice-to-Action)
+            </button>
+            <button class="ai-tab-btn shadow-sm" onclick="switchAiTab('tab-rag-contracts', this)">
+                <i class="fa-solid fa-file-contract me-2"></i>2. RAG & Prompt Engineering (Hợp đồng thông minh)
+            </button>
+            <button class="ai-tab-btn shadow-sm" onclick="switchAiTab('tab-incident-gen', this)">
+                <i class="fa-solid fa-triangle-exclamation me-2"></i>3. Real-time Incident Generator
+            </button>
+            <button class="ai-tab-btn shadow-sm" onclick="switchAiTab('tab-training-pipeline', this)">
+                <i class="fa-solid fa-sliders me-2"></i>4. Training Pipeline & GPU Terminal
+            </button>
+        </div>
+
+        <!-- ==========================================
+             TAB 1: VOICE & NLP STUDIO (VOICE-TO-ACTION)
+        ========================================== -->
+        <div id="tab-voice-nlp" class="ai-tab-content">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card card-custom p-4 h-100 border">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-comments text-success me-2"></i>Dữ Liệu Phát Ngôn & Bóc Tách Thực Thể (NER)</h5>
+                            <span class="badge bg-light text-dark border">Whisper-v3 + PhoBERT</span>
                         </div>
-                        <div class="stat-icon bg-purple bg-opacity-10 text-purple" style="color: #8b5cf6;"><i class="fa-solid fa-scale-unbalanced"></i></div>
+                        <p class="text-muted small mb-3">Chọn mẫu phát ngôn giọng địa phương hoặc tin nhắn hội xe tải để kiểm thử bóc tách 6 trường dữ liệu cốt lõi:</p>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Mẫu dữ liệu thực tế:</label>
+                            <select class="form-select form-select-sm fw-bold mb-2" id="sampleNlpSelect" onchange="changeNlpSample()">
+                                <option value="0">Mẫu 1: "Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ Tân Thạnh lên Chợ Thủ Đức nha..."</option>
+                                <option value="1">Mẫu 2: "Tối nay 21h xe 5 tấn chạy rỗng từ Bình Điền về Châu Thành Tiền Giang nhận ghép hàng, alo 0903.111.222"</option>
+                            </select>
+                            <textarea class="form-control" id="rawNlpInput" rows="3">Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ bưu điện Tân Thạnh Long An lên Chợ Thủ Đức nha chú, alo Sang 0901.234.567.</textarea>
+                        </div>
+
+                        <div class="p-3 bg-light rounded-3 border mb-3">
+                            <small class="text-muted fw-bold d-block mb-1">Văn bản sau khi nhận diện thực thể (NER Highlighting):</small>
+                            <div id="nerVisualOutput" style="line-height: 1.9; font-size: 0.9rem;">
+                                Chiều mai <span class="entity-tag ent-time">16h00 [TIME]</span> cho xe chở <span class="entity-tag ent-cap">50 sọt bí đỏ - 1000kg [WEIGHT]</span> từ <span class="entity-tag ent-loc">Hub Tân Thạnh, Long An [ORIGIN]</span> lên <span class="entity-tag ent-loc">Chợ Thủ Đức, TP.HCM [DEST]</span>. Alo <span class="entity-tag ent-phone">0901.234.567 [PHONE]</span>.
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-success fw-bold w-100 py-2 rounded-pill shadow-sm" onclick="addToDatasetAction()">
+                            <i class="fa-solid fa-database me-2"></i>Gán Nhãn Đạt Chuẩn & Đưa Vào Dataset Train
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card card-custom p-4 h-100 border">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-code text-primary me-2"></i>JSON Schema Chuẩn Hóa (Structured Output)</h5>
+                            <span class="badge bg-success">Pydantic Validated</span>
+                        </div>
+                        <p class="text-muted small mb-3">Dữ liệu phi cấu trúc được LLM ép kiểu sang JSON chuẩn để chuyển giao cho thuật toán tối ưu tuyến (VRPTW):</p>
+
+                        <pre class="bg-dark text-success p-3 rounded-3" style="font-size: 0.82rem; height: 260px; overflow-y: auto;" id="jsonSchemaBox">
+{
+  "commodity": "Bí đỏ hồ lô",
+  "packaging": "Sọt nhựa 20kg",
+  "quantity": 50,
+  "weight_kg": 1000,
+  "pickup_hub": "Hub 01 - Bưu điện Tân Thạnh, Long An",
+  "delivery_market": "Chợ Đầu Mối Thủ Đức, TP.HCM",
+  "pickup_window": "2026-11-06T16:00:00+07:00",
+  "requires_cool_storage": false,
+  "shipper_phone": "0901.234.567",
+  "estimated_cost": "540.000 VNĐ (Ghép xe 5T)"
+}</pre>
+                        
+                        <div class="alert alert-success py-2 small mb-0">
+                            <i class="fa-solid fa-circle-check me-1"></i> <strong>Tính toàn vẹn dữ liệu:</strong> Toàn bộ địa chỉ đã được đối chiếu kinh độ/vĩ độ GPS qua Google Maps Geocoding API trước khi xếp tài.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4">
-            <!-- CỘT TRÁI: DANH SÁCH HỒ SƠ ESCROW -->
-            <div class="col-lg-7">
-                <div class="card card-custom p-4 bg-white h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-wallet text-success me-2"></i><span class="i18n" data-vi="Danh Sách Ví Chờ Giải Ngân" data-en="Pending Escrow Wallets">Danh Sách Ví Chờ Giải Ngân</span></h5>
-                        <div class="input-group shadow-sm" style="width: 250px;">
-                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                            <input type="text" class="form-control border-start-0 bg-light" placeholder="...">
-                        </div>
-                    </div>
+        <!-- ==========================================
+             TAB 2: RAG & PROMPT ENGINEERING (HỢP ĐỒNG)
+        ========================================== -->
+        <div id="tab-rag-contracts" class="ai-tab-content d-none">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="card card-custom p-4 h-100 border">
+                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-book-bookmark text-primary me-2"></i>Knowledge Base (TCVN Nông Sản & Ví Escrow)</h5>
+                        <p class="text-muted small mb-3">Hệ thống RAG lập chỉ mục các tiêu chuẩn kỹ thuật đóng gói và tỷ lệ hao hụt bay hơi tự nhiên:</p>
 
-                    <div class="table-responsive border rounded-3 mb-3">
-                        <table class="table table-hover align-middle m-0 table-custom" style="font-size: 0.9rem;">
-                            <thead>
-                                <tr>
-                                    <th class="i18n" data-vi="Mã Chuyến" data-en="Trip ID">Mã Chuyến</th>
-                                    <th class="i18n" data-vi="Nông Sản & Chủ Hàng" data-en="Crop & Owner">Nông Sản & Chủ Hàng</th>
-                                    <th class="i18n" data-vi="Cước Ký Quỹ" data-en="Escrow Amount">Cước Ký Quỹ</th>
-                                    <th class="i18n" data-vi="Tình Trạng Hàng" data-en="Cargo Status">Tình Trạng Hàng</th>
-                                    <th class="text-center i18n" data-vi="Thao Tác" data-en="Action">Thao Tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Dòng 1: Hàng đẹp, giải ngân 100% -->
-                                <tr id="row-TRP-1049">
-                                    <td><span class="fw-bold text-dark">#TRP-1049</span></td>
-                                    <td>
-                                        <div class="fw-bold">Bí đỏ hồ lô (5 Tấn)</div>
-                                        <small class="text-muted">Nhóm Chị Hai Loan (5 Người)</small>
-                                    </td>
-                                    <td class="fw-bold text-success">2.700.000 đ</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success border border-success i18n" data-vi="Đạt chuẩn Loại 1" data-en="Grade A (Passed)">Đạt chuẩn Loại 1</span></td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-success fw-bold px-3 rounded-pill" onclick="disburseFunds('TRP-1049', '2.700.000', 'Nguyễn Văn An')">
-                                            <i class="fa-solid fa-check-double me-1"></i> <span class="i18n" data-vi="Giải ngân" data-en="Payout">Giải ngân</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Dòng 2: Hàng dập nát, cấn trừ -->
-                                <tr id="row-TRP-1040">
-                                    <td><span class="fw-bold text-dark">#TRP-1040</span></td>
-                                    <td>
-                                        <div class="fw-bold">Thanh long (3 Tấn)</div>
-                                        <small class="text-muted">Nhà vườn Cao Lãnh</small>
-                                    </td>
-                                    <td class="fw-bold text-danger">2.100.000 đ</td>
-                                    <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger i18n" data-vi="Hư hỏng 25%" data-en="Damaged 25%">Hư hỏng 25%</span></td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-warning fw-bold px-3 rounded-pill text-dark" onclick="processDeduction('TRP-1040')">
-                                            <i class="fa-solid fa-scale-unbalanced me-1"></i> <span class="i18n" data-vi="Xử lý cấn trừ" data-en="Deduct">Xử lý cấn trừ</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="vstack gap-2 mb-3">
+                            <div class="p-2 border rounded bg-light">
+                                <strong class="d-block text-success" style="font-size:0.86rem;">TCVN 10738:2015 - Bảo Quản Bí Đỏ</strong>
+                                <small class="text-muted">Đóng sọt nhựa 20kg thông thoáng, xếp tối đa 5 tầng, hao hụt định mức cho phép ≤ 1.5%.</small>
+                            </div>
+                            <div class="p-2 border rounded bg-light">
+                                <strong class="d-block text-primary" style="font-size:0.86rem;">TCVN 7578:2006 - Bảo Quản Thanh Long</strong>
+                                <small class="text-muted">Không xếp chồng quá 4 lớp, nhiệt độ tối ưu 12°C - 14°C, cấm ghép chung với sầu riêng tỏa mùi nồng.</small>
+                            </div>
+                            <div class="p-2 border rounded bg-light">
+                                <strong class="d-block text-warning text-dark" style="font-size:0.86rem;">Quy Chế Ví Escrow & Bồi Hoàn</strong>
+                                <small class="text-muted">Hao hụt bay hơi tự nhiên ≤ 2.0% được miễn trừ. Dập nát do tài xế tự động cấn trừ từ cọc xe.</small>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-outline-primary fw-bold w-100 rounded-pill py-2" onclick="testRagRetrieval()">
+                            <i class="fa-solid fa-magnifying-glass me-2"></i>Kiểm Thử Cosine Similarity (Top-3 Trùng Khớp)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="card card-custom p-4 h-100 border">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-file-signature text-success me-2"></i>Dự Thảo Thỏa Thuận Điện Tử (RAG Output)</h5>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success">Automated Agreement</span>
+                        </div>
+                        <p class="text-muted small mb-2">Bản thỏa thuận sinh động theo đúng đặc thù lô hàng và điều khoản phân chia cước minh bạch:</p>
+
+                        <div class="p-3 bg-light rounded-3 border" style="font-size: 0.84rem; line-height: 1.6; height: 260px; overflow-y: auto;" id="contractPreviewBox">
+                            <h6 class="fw-bold text-center text-dark mb-2">PHỤ LỤC THỎA THUẬN VẬN CHUYỂN GHÉP TẢI #AGR-1049</h6>
+                            <p class="mb-1"><strong>Bên gửi (Shipper):</strong> Nhóm 5 Tiểu Thương (Đại diện: Chị Hai Loan) | SĐT: 0988.765.432</p>
+                            <p class="mb-1"><strong>Bên nhận chở (Carrier):</strong> Tài xế Nguyễn Văn An (Xe 51C-123.45 - Mui bạt 5T)</p>
+                            <p class="mb-1"><strong>Lộ trình:</strong> Hub 01 (Tân Thạnh, Long An) ➔ Chợ Đầu Mối Thủ Đức (Quãng đường 100km)</p>
+                            <p class="mb-1"><strong>Công thức cước động:</strong> 100km × 27.000 đ/km = 2.700.000 đ (Tương đương 540.000 đ/tấn)</p>
+                            <hr class="my-2">
+                            <p class="mb-1 text-success fw-bold"><i class="fa-solid fa-shield-halved me-1"></i>Điều khoản bảo vệ Escrow & Chất lượng nông sản (RAG Injected):</p>
+                            <ul class="mb-0 ps-3">
+                                <li>Quy cách: 250 Sọt nhựa 20kg nguyên vẹn, chằng buộc bạt thông gió theo chuẩn TCVN 10738.</li>
+                                <li>Định mức hao hụt tự nhiên cho phép: &le; 2.0% khối lượng bàn giao tại đầu chợ.</li>
+                                <li>Bảo chứng thanh toán: 100% tiền cước (2.700.000đ) đã khóa tại Ví Escrow và chỉ giải ngân sau khi cân đủ tại chợ đầu mối.</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small class="text-muted"><i class="fa-solid fa-user-check text-success me-1"></i>Human-in-the-loop: Chờ tài xế & chủ hàng bấm xác nhận ký số</small>
+                            <button type="button" class="btn btn-sm btn-success fw-bold px-4 rounded-pill" onclick="Swal.fire('Thành công', 'Đã chuyển bản thảo thỏa thuận sang cổng ký số của các bên.', 'success')">
+                                Phát Hành Thỏa Thuận
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- CỘT PHẢI: AI VISION QC KIỂM ĐỊNH -->
-            <div class="col-lg-5">
-                <div class="card card-custom p-4 bg-white h-100 border border-success border-opacity-25">
-                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-camera-rotate text-primary me-2"></i><span class="i18n" data-vi="AI Vision Kiểm Định Nông Sản" data-en="AI Vision Crop Inspection">AI Vision Kiểm Định Nông Sản</span></h5>
-                    
-                    <p class="text-muted small mb-2 i18n" data-vi="Chọn 1 hình ảnh từ camera tại bãi xuống hàng để AI quét:" data-en="Select an image from the unloading hub for AI scanning:">Chọn 1 hình ảnh từ camera tại bãi xuống hàng để AI quét:</p>
-                    <select class="form-select form-select-sm mb-3 fw-bold" id="visionSampleSelect" onchange="runVisionInspection()">
-                        <option value="good">Chuyến #TRP-1049: Lô Bí Đỏ (Giao tại Chợ Thủ Đức) - Hàng đẹp</option>
-                        <option value="damaged">Chuyến #TRP-1040: Lô Thanh Long (Giao tại Hóc Môn) - Bị dập</option>
-                    </select>
+        <!-- ==========================================
+             TAB 3: REAL-TIME INCIDENT GENERATOR
+        ========================================== -->
+        <div id="tab-incident-gen" class="ai-tab-content d-none">
+            <div class="card card-custom p-4 border mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-radar text-danger me-2"></i>Mô Phỏng Biến Cố Vận Hành & GenAI Đa Đối Tượng</h5>
+                    <span class="badge bg-danger">Simulation Engine</span>
+                </div>
+                <p class="text-muted small mb-3">Khi GPS phát hiện xe lệch lộ trình hoặc tắc đường, GenAI tự động phân tích bối cảnh và sinh thông điệp ứng biến phù hợp riêng cho từng bên:</p>
 
-                    <div class="vision-preview-box p-3 mb-3" id="visionCanvas">
-                        <div class="text-center">
-                            <i class="fa-solid fa-boxes-packing text-success display-4 mb-2"></i>
-                            <h6 class="fw-bold text-dark mb-1" id="visionImgTitle">Ảnh Camera: 250 Sọt Bí Đỏ</h6>
-                            <span class="badge bg-success" id="visionBoxTag">AI YOLOv8: Đã quét bề mặt sọt</span>
-                        </div>
-                        <div class="bbox-overlay bbox-good" style="top: 20px; left: 24px;" id="firstBbox">Nguyên vẹn (Conf: 0.99)</div>
-                        <div class="bbox-overlay bbox-good" style="bottom: 20px; right: 24px;" id="secondBbox">Không xước (Conf: 0.98)</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-8">
+                        <label class="form-label small fw-bold">Kịch bản sự cố phát sinh trên đường:</label>
+                        <select class="form-select fw-bold text-danger border-danger" id="incidentTypeSelect" onchange="runIncidentSimulation()">
+                            <option value="traffic">Kịch bản 1: Kẹt xe nghiêm trọng tại Cầu Bến Lức (Dự kiến trễ ETA 35 phút)</option>
+                            <option value="rain">Kịch bản 2: Mưa lớn ngập đường tại QL1A đoạn Bình Chánh (Tăng nguy cơ ẩm ướt hàng hóa)</option>
+                            <option value="flat_tire">Kịch bản 3: Xe bị sự cố thủng lốp tại Tân An (Cần dừng xử lý 45 phút)</option>
+                        </select>
                     </div>
-
-                    <div class="p-3 bg-light rounded-3 border mb-3">
-                        <div class="d-flex justify-content-between mb-1 small">
-                            <span class="fw-bold text-success i18n" data-vi="Tỷ lệ đạt chuẩn" data-en="Pass Rate">Tỷ lệ đạt chuẩn</span>
-                            <span class="fw-bold text-success" id="visGoodRate">100%</span>
-                        </div>
-                        <div class="progress mb-3" style="height: 8px;"><div class="progress-bar bg-success" id="visGoodBar" style="width: 100%;"></div></div>
-
-                        <div class="d-flex justify-content-between mb-1 small">
-                            <span class="fw-bold text-danger i18n" data-vi="Tỷ lệ hư hỏng (Dập nát)" data-en="Damage Rate (Bruised)">Tỷ lệ hư hỏng (Dập nát)</span>
-                            <span class="fw-bold text-danger" id="visBadRate">0%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;"><div class="progress-bar bg-danger" id="visBadBar" style="width: 0%;"></div></div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger fw-bold w-100 py-2 shadow-sm rounded-pill" onclick="runIncidentSimulation()">
+                            <i class="fa-solid fa-bolt me-2"></i>Kích Hoạt GenAI Xử Lý Sự Cố
+                        </button>
                     </div>
+                </div>
 
-                    <div class="alert alert-success mt-auto mb-0" id="visionConclusionBox">
-                        <h6 class="fw-bold mb-1"><i class="fa-solid fa-check-circle me-1"></i>HÀNG ĐẠT CHUẨN</h6>
-                        <p class="small mb-0 i18n" data-vi="Hao hụt bằng 0. Cho phép giải ngân 100% tiền cước cho tài xế." data-en="Zero loss. 100% freight payout approved for the driver.">Hao hụt bằng 0. Cho phép giải ngân 100% tiền cước cho tài xế.</p>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 border bg-light h-100">
+                            <span class="badge bg-dark mb-2">Gửi Tài Xế (Driver)</span>
+                            <h6 class="fw-bold text-primary mb-1"><i class="fa-solid fa-route me-1"></i>Lộ trình tránh kẹt xe</h6>
+                            <p class="small text-muted mb-0" id="msgDriver">
+                                "Cảnh báo kẹt xe 3km phía trước. Hệ thống đề xuất rẽ phải vào đường tránh Tân An qua ĐT 830 để tiết kiệm 20 phút. Vui lòng bấm xác nhận để cập nhật bản đồ."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 border bg-light h-100">
+                            <span class="badge bg-success mb-2">Gửi Nông Dân (Shipper)</span>
+                            <h6 class="fw-bold text-success mb-1"><i class="fa-solid fa-seedling me-1"></i>Bảo toàn nông sản</h6>
+                            <p class="small text-muted mb-0" id="msgShipper">
+                                "Thông báo: Chuyến hàng #TRP-1049 chậm 30 phút do sự cố giao thông. Tài xế đã kéo kín bạt che mưa bảo vệ 50 sọt bí đỏ. Quỹ Escrow vẫn giữ an toàn 100% quyền lợi của bạn."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 border bg-light h-100">
+                            <span class="badge bg-primary mb-2">Gửi Tiểu Thương (Receiver)</span>
+                            <h6 class="fw-bold text-danger mb-1"><i class="fa-solid fa-clock me-1"></i>Cập nhật ETA nhận hàng</h6>
+                            <p class="small text-muted mb-0" id="msgReceiver">
+                                "Dự kiến hàng về Chợ Thủ Đức lúc 17:35 (trễ 35 phút so với lịch cũ). Chúng tôi đã thông báo tổ bốc xếp chờ tại sạp B12 để xuống hàng nhanh nhất."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             TAB 4: TRAINING PIPELINE & GPU TERMINAL
+        ========================================== -->
+        <div id="tab-training-pipeline" class="ai-tab-content d-none">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="card card-custom p-4 h-100 border">
+                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-gears text-warning me-2"></i>Cấu Hình Siêu Tham Số (Hyperparameters)</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Mô hình Fine-tune:</label>
+                            <select class="form-select form-select-sm fw-bold">
+                                <option selected>PhoBERT-v2-NER-Logistics (Bóc tách tin mạng XH)</option>
+                                <option>Whisper-v3-Vietnamese-Mekong (ASR Giọng miền Tây)</option>
+                                <option>Embedding-BGE-M3 (Vector Search Hợp đồng RAG)</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-4">
+                                <label class="form-label small mb-1">Epochs</label>
+                                <input type="number" class="form-control form-control-sm fw-bold" id="cfgEpochs" value="30">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label small mb-1">Batch Size</label>
+                                <input type="number" class="form-control form-control-sm fw-bold" value="32">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label small mb-1">Learning Rate</label>
+                                <input type="text" class="form-control form-control-sm fw-bold" value="2e-5">
+                            </div>
+                        </div>
+
+                        <!-- Cửa sổ Terminal giả lập -->
+                        <label class="form-label small fw-bold mb-1"><i class="fa-solid fa-terminal me-1"></i>Quá trình thực thi GPU (NVIDIA A100 Simulation):</label>
+                        <div class="terminal-box mb-3" id="gpuTerminal">
+                            [INFO] Model checkpoint loaded: phobert-base-v2<br>
+                            [INFO] Labeled dataset: 14,850 samples (Train: 80%, Val: 20%)<br>
+                            [INFO] Optimizer: AdamW, weight_decay=0.01<br>
+                            [READY] System idle. Sẵn sàng chạy Fine-tune bổ sung...
+                        </div>
+
+                        <button type="button" class="btn btn-dark fw-bold w-100 py-2 rounded-pill shadow-sm" onclick="startTerminalTraining()">
+                            <i class="fa-solid fa-play me-2 text-warning"></i>Bắt Đầu Fine-Tune Model
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="card card-custom p-4 h-100 border">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-chart-line text-success me-2"></i>Đường Cong Huấn Luyện (Loss & F1-Score)</h5>
+                            <span class="badge bg-success" id="chartStatusBadge">Trạng thái: Hội tụ tốt (Converged)</span>
+                        </div>
+                        <div class="chart-container-flex mb-2">
+                            <canvas id="studioTrainingChart"></canvas>
+                        </div>
+                        <small class="text-muted text-center d-block" style="font-size:0.75rem;">
+                            Đường màu xanh lá: F1-Score (Tăng dần tới 95.8%) • Đường màu đỏ: Training Loss (Giảm dần tới 0.12)
+                        </small>
                     </div>
                 </div>
             </div>
@@ -220,150 +394,161 @@
 
     </div>
 
+    <!-- SCRIPTS XỬ LÝ TƯƠNG TÁC -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // --- CHUYỂN NGÔN NGỮ (VI / EN) ---
         let currentLang = 'vi';
-        
         function setLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.i18n').forEach(el => {
-                if(el.hasAttribute('data-' + lang)) { el.innerText = el.getAttribute('data-' + lang); }
+                if(el.hasAttribute('data-' + lang)) el.innerText = el.getAttribute('data-' + lang);
             });
+            document.getElementById('btn-en').className = lang === 'en' ? 'btn btn-success fw-bold' : 'btn btn-white border bg-white text-secondary fw-semibold';
+            document.getElementById('btn-vi').className = lang === 'vi' ? 'btn btn-success fw-bold' : 'btn btn-white border bg-white text-secondary fw-semibold';
+        }
 
-            if (lang === 'en') {
-                document.getElementById('btn-en').className = 'btn btn-success fw-bold';
-                document.getElementById('btn-vi').className = 'btn btn-white border bg-white text-secondary fw-semibold';
-            } else {
-                document.getElementById('btn-vi').className = 'btn btn-success fw-bold';
-                document.getElementById('btn-en').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+        // --- CHUYỂN TAB THÔNG MINH ---
+        function switchAiTab(tabId, btnElement) {
+            document.querySelectorAll('.ai-tab-content').forEach(el => el.classList.add('d-none'));
+            document.querySelectorAll('.ai-tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.remove('d-none');
+            btnElement.classList.add('active');
+        }
+
+        // --- TAB 1: NLP SAMPLE CHANGER ---
+        const nlpSamples = [
+            {
+                raw: "Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ bưu điện Tân Thạnh Long An lên Chợ Thủ Đức nha chú, alo Sang 0901.234.567.",
+                highlighted: `Chiều mai <span class="entity-tag ent-time">16h00 [TIME]</span> cho xe chở <span class="entity-tag ent-cap">50 sọt bí đỏ - 1000kg [WEIGHT]</span> từ <span class="entity-tag ent-loc">Hub Tân Thạnh, Long An [ORIGIN]</span> lên <span class="entity-tag ent-loc">Chợ Thủ Đức, TP.HCM [DEST]</span>. Alo <span class="entity-tag ent-phone">0901.234.567 [PHONE]</span>.`,
+                json: `{\n  "commodity": "Bí đỏ hồ lô",\n  "packaging": "Sọt nhựa 20kg",\n  "quantity": 50,\n  "weight_kg": 1000,\n  "pickup_hub": "Hub 01 - Bưu điện Tân Thạnh, Long An",\n  "delivery_market": "Chợ Đầu Mối Thủ Đức, TP.HCM",\n  "pickup_window": "2026-11-06T16:00:00+07:00",\n  "requires_cool_storage": false,\n  "shipper_phone": "0901.234.567",\n  "estimated_cost": "540.000 VNĐ (Ghép xe 5T)"\n}`
+            },
+            {
+                raw: "Tối nay 21h xe 5 tấn chạy rỗng từ Bình Điền về Châu Thành Tiền Giang nhận ghép hàng trái cây, alo tài xế An 0903.111.222.",
+                highlighted: `Tối nay <span class="entity-tag ent-time">21h00 [TIME]</span> xe <span class="entity-tag ent-cap">5 tấn chạy rỗng [CAPACITY]</span> từ <span class="entity-tag ent-loc">Chợ Bình Điền [ORIGIN]</span> về <span class="entity-tag ent-loc">Châu Thành, Tiền Giang [DEST]</span>. Alo tài xế <span class="entity-tag ent-phone">An 0903.111.222 [PHONE]</span>.`,
+                json: `{\n  "intent": "EMPTY_TRUCK_BACKHAUL",\n  "driver_name": "Nguyễn Văn An",\n  "phone": "0903.111.222",\n  "vehicle_type": "5 Tấn (Mui bạt)",\n  "origin": "Chợ Đầu Mối Bình Điền, TP.HCM",\n  "destination": "Hub 02 - Châu Thành, Tiền Giang",\n  "departure_time": "2026-11-05T21:00:00+07:00",\n  "status": "AVAILABLE_FOR_POOLING"\n}`
             }
-            
-            runVisionInspection(); // Update text in Vision box
+        ];
+
+        function changeNlpSample() {
+            const idx = parseInt(document.getElementById('sampleNlpSelect').value);
+            document.getElementById('rawNlpInput').value = nlpSamples[idx].raw;
+            document.getElementById('nerVisualOutput').innerHTML = nlpSamples[idx].highlighted;
+            document.getElementById('jsonSchemaBox').innerText = nlpSamples[idx].json;
         }
 
-        let totalEscrow = 24500000;
-        let totalCompensated = 850000;
-
-        function updateStatsUI() {
-            document.getElementById('totalEscrowBalance').innerText = totalEscrow.toLocaleString('vi-VN') + ' đ';
-            document.getElementById('statCompensated').innerText = totalCompensated.toLocaleString('vi-VN') + ' đ';
+        let datasetCounter = 14850;
+        function addToDatasetAction() {
+            datasetCounter++;
+            document.getElementById('datasetCountDisplay').innerHTML = `${datasetCounter.toLocaleString('vi-VN')} <small class="fs-6 text-muted fw-normal">Mẫu</small>`;
+            Swal.fire({
+                icon: 'success',
+                title: 'Đã lưu vào Kho dữ liệu huấn luyện!',
+                text: 'Mẫu phát ngôn đã được thẩm định JSON Schema và chuyển vào hàng đợi Active Learning.',
+                confirmButtonColor: '#166534'
+            });
         }
 
-        // --- VISION QC ---
-        function runVisionInspection() {
-            const mode = document.getElementById('visionSampleSelect').value;
-            
-            const titleGood = currentLang === 'en' ? 'Camera: 250 Pumpkin Crates' : 'Ảnh Camera: 250 Sọt Bí Đỏ';
-            const badgeGood = currentLang === 'en' ? 'AI: Surface scanned' : 'AI YOLOv8: Đã quét bề mặt sọt';
-            const b1Good = currentLang === 'en' ? 'Intact (0.99)' : 'Nguyên vẹn (0.99)';
-            const b2Good = currentLang === 'en' ? 'No scratch (0.98)' : 'Không xước (0.98)';
-            const conclGood = currentLang === 'en' ? 
-                `<h6 class="fw-bold mb-1"><i class="fa-solid fa-check-circle me-1"></i>PASSED</h6><p class="small mb-0">Zero loss. 100% freight payout approved for the driver.</p>` :
-                `<h6 class="fw-bold mb-1"><i class="fa-solid fa-check-circle me-1"></i>HÀNG ĐẠT CHUẨN</h6><p class="small mb-0">Hao hụt bằng 0. Cho phép giải ngân 100% tiền cước cho tài xế.</p>`;
-                
-            const titleBad = currentLang === 'en' ? 'Camera: 150 Dragon Fruit Crates' : 'Ảnh Camera: 150 Sọt Thanh Long';
-            const badgeBad = currentLang === 'en' ? 'AI Alert: Crush detected' : 'AI Cảnh báo: Phát hiện dập nát';
-            const b1Bad = currentLang === 'en' ? 'Cracked (0.93)' : 'Bị nứt vỏ đè nặng (0.93)';
-            const b2Bad = currentLang === 'en' ? 'Leaking (0.91)' : 'Thối hỏng rỉ nước (0.91)';
-            const conclBad = currentLang === 'en' ? 
-                `<h6 class="fw-bold mb-1"><i class="fa-solid fa-triangle-exclamation me-1"></i>CRITICAL DAMAGE (25%)</h6><p class="small mb-0">Exceeds limits. Hold Escrow and proceed to deduct for Farmer compensation.</p>` :
-                `<h6 class="fw-bold mb-1"><i class="fa-solid fa-triangle-exclamation me-1"></i>VƯỢT MỨC HƯ HỎNG (25%)</h6><p class="small mb-0">Đình chỉ giải ngân. Chuyển sang cấn trừ tiền cước bồi thường cho Nông dân.</p>`;
+        // --- TAB 2: RAG TEST ---
+        function testRagRetrieval() {
+            Swal.fire({
+                title: 'Đang truy xuất Vector Database...',
+                html: 'Truy vấn ChromaDB với độ tương đồng Cosine Similarity cho cặp hàng <b>Bí đỏ & Thanh long</b>...',
+                timer: 1200,
+                didOpen: () => { Swal.showLoading(); }
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đã truy xuất Top-3 Điều khoản!',
+                    html: 'Độ khớp <b>98.2%</b> với TCVN 10738:2015 và Quy chế ký quỹ Ví Escrow. Đã nạp thành công ngữ cảnh vào Prompt soạn thảo hợp đồng.',
+                    confirmButtonColor: '#166534'
+                });
+            });
+        }
 
-            if (mode === 'good') {
-                document.getElementById('visionImgTitle').innerText = titleGood;
-                document.getElementById('visionBoxTag').className = 'badge bg-success';
-                document.getElementById('visionBoxTag').innerText = badgeGood;
-                
-                document.getElementById('firstBbox').className = 'bbox-overlay bbox-good'; document.getElementById('firstBbox').innerText = b1Good;
-                document.getElementById('secondBbox').className = 'bbox-overlay bbox-good'; document.getElementById('secondBbox').innerText = b2Good;
-                
-                document.getElementById('visGoodRate').innerText = '100%'; document.getElementById('visGoodBar').style.width = '100%';
-                document.getElementById('visBadRate').innerText = '0%'; document.getElementById('visBadBar').style.width = '0%';
-                
-                document.getElementById('visionConclusionBox').className = 'alert alert-success mt-auto mb-0';
-                document.getElementById('visionConclusionBox').innerHTML = conclGood;
+        // --- TAB 3: INCIDENT SIMULATION ---
+        function runIncidentSimulation() {
+            const type = document.getElementById('incidentTypeSelect').value;
+            if (type === 'traffic') {
+                document.getElementById('msgDriver').innerText = '"Cảnh báo kẹt xe 3km tại Cầu Bến Lức. AI đề xuất rẽ vào ĐT 830 để tiết kiệm 20 phút. Vui lòng bấm xác nhận trên ứng dụng."';
+                document.getElementById('msgShipper').innerText = '"Thông báo: Lô hàng #TRP-1049 chậm 30 phút do kẹt xe. Tài xế đã kiểm tra bạt che kín 50 sọt bí đỏ. Quỹ Escrow bảo chứng an toàn 100%."';
+                document.getElementById('msgReceiver').innerText = '"Dự kiến giao hàng lúc 17:35 (trễ 35 phút). Sạp B12 tại Chợ Thủ Đức đã được thông báo chuẩn bị bốc dỡ nhanh."';
+            } else if (type === 'rain') {
+                document.getElementById('msgDriver').innerText = '"Mưa lớn ngập 0.3m đoạn Bình Chánh. Giảm tốc độ < 40km/h, kiểm tra dây chằng bạt đáy thùng xe tránh thấm nước nông sản."';
+                document.getElementById('msgShipper').innerText = '"Xe đang qua vùng mưa to, hệ thống kích hoạt chế độ giám sát bạt mui kín, đảm bảo không ảnh hưởng độ ẩm hàng hóa."';
+                document.getElementById('msgReceiver').innerText = '"Thời tiết xấu làm giảm tốc độ xe, ETA dời lại 15 phút. Biên bản bàn giao vẫn tuân thủ kiểm định dập nát AI Vision."';
             } else {
-                document.getElementById('visionImgTitle').innerText = titleBad;
-                document.getElementById('visionBoxTag').className = 'badge bg-danger';
-                document.getElementById('visionBoxTag').innerText = badgeBad;
-                
-                document.getElementById('firstBbox').className = 'bbox-overlay'; document.getElementById('firstBbox').innerText = b1Bad;
-                document.getElementById('secondBbox').className = 'bbox-overlay'; document.getElementById('secondBbox').innerText = b2Bad;
-
-                document.getElementById('visGoodRate').innerText = '75%'; document.getElementById('visGoodBar').style.width = '75%';
-                document.getElementById('visBadRate').innerText = '25%'; document.getElementById('visBadBar').style.width = '25%';
-                
-                document.getElementById('visionConclusionBox').className = 'alert alert-danger mt-auto mb-0';
-                document.getElementById('visionConclusionBox').innerHTML = conclBad;
+                document.getElementById('msgDriver').innerText = '"Đã ghi nhận sự cố thủng lốp. Trạm cứu hộ Tân An cách 1.5km đang di chuyển hỗ trợ trong 15 phút."';
+                document.getElementById('msgShipper').innerText = '"Xe tạm dừng thay lốp tại trạm Tân An (40 phút). Nhiệt độ thùng xe bình thường, không ảnh hưởng nông sản."';
+                document.getElementById('msgReceiver').innerText = '"Xe gặp sự cố kỹ thuật nhẹ tại Tân An, ETA mới là 18:00. Hệ thống giữ quyền ưu tiên kiểm hàng trước khi giải ngân Escrow."';
             }
-        }
-
-        // --- ACTION BUTTONS ---
-        function disburseFunds(tripId, amountStr, driverName) {
-            const amountNum = parseInt(amountStr.replace(/\./g, ''));
-            
-            const title = currentLang === 'en' ? `Release ${amountStr} VND?` : `Giải ngân ${amountStr} đ?`;
-            const text = currentLang === 'en' ? `Transfer the locked Escrow funds to driver ${driverName}'s wallet.` : `Chuyển số tiền ký quỹ đang khóa cho tài xế ${driverName}.`;
-            const confirmTxt = currentLang === 'en' ? 'Confirm Transfer' : 'Xác nhận Chuyển';
 
             Swal.fire({
-                title: title, text: text, icon: 'info', showCancelButton: true,
-                confirmButtonColor: '#10b981', confirmButtonText: confirmTxt, cancelButtonText: currentLang==='en'?'Cancel':'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    totalEscrow -= amountNum;
-                    updateStatsUI();
-                    
-                    const row = document.getElementById('row-' + tripId);
-                    if(row) row.remove();
-
-                    Swal.fire(currentLang==='en'?'Success!':'Thành công!', currentLang==='en'?'Funds transferred to driver via bank gateway.':'Tiền đã được chuyển vào ví tài xế qua cổng ngân hàng.', 'success');
-                }
+                icon: 'info',
+                title: 'GenAI Đã Tạo Thông Báo Tự Động',
+                text: '3 thông điệp cá nhân hóa đã được đồng bộ tới giao diện Tài xế, Nông dân và Tiểu thương trong 0.8 giây.',
+                confirmButtonColor: '#166534'
             });
         }
 
-        function processDeduction(tripId) {
-            const title = currentLang === 'en' ? 'Process Deduction Compensation' : 'Xử Lý Cấn Trừ Bồi Thường';
-            const html = currentLang === 'en' ? `
-                <div class="text-start" style="font-size: 0.9rem;">
-                    <p>AI detected <strong>25% damage</strong> on trip #${tripId}.</p>
-                    <p>Total Freight: 2,100,000 VND.</p>
-                    <hr>
-                    <label class="form-label small fw-bold text-danger">Amount to deduct for Farmer (VND)</label>
-                    <input type="number" id="deductAmount" class="form-control fw-bold text-danger" value="525000">
-                    <small class="text-muted d-block mt-1">Remaining 1,575,000 VND will be paid to the driver.</small>
-                </div>
-            ` : `
-                <div class="text-start" style="font-size: 0.9rem;">
-                    <p>Hệ thống AI ghi nhận hàng hóa chuyến #${tripId} <strong>bị dập nát 25%</strong>.</p>
-                    <p>Tổng tiền cước đang khóa: 2.100.000 VNĐ.</p>
-                    <hr>
-                    <label class="form-label small fw-bold text-danger">Số tiền cấn trừ bồi thường cho Nông dân (VNĐ)</label>
-                    <input type="number" id="deductAmount" class="form-control fw-bold text-danger" value="525000">
-                    <small class="text-muted d-block mt-1">Phần cước còn lại 1.575.000 đ sẽ được thanh toán cho tài xế.</small>
-                </div>
-            `;
-            const confirmTxt = currentLang === 'en' ? 'Execute Deduction' : 'Thực hiện Cấn Trừ';
+        // --- TAB 4: BIỂU ĐỒ & TERMINAL SIMULATOR ---
+        const ctxStudio = document.getElementById('studioTrainingChart').getContext('2d');
+        const studioChart = new Chart(ctxStudio, {
+            type: 'line',
+            data: {
+                labels: ['Epoch 5', 'Epoch 10', 'Epoch 15', 'Epoch 20', 'Epoch 25', 'Epoch 30'],
+                datasets: [
+                    {
+                        label: 'F1-Score (%)',
+                        data: [74.2, 82.5, 88.1, 91.8, 94.2, 95.8],
+                        borderColor: '#166534',
+                        backgroundColor: 'rgba(22, 101, 52, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Training Loss (x100)',
+                        data: [65.4, 43.1, 28.5, 19.2, 14.0, 12.1],
+                        borderColor: '#ef4444',
+                        borderDash: [5, 5],
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } }
+            }
+        });
 
-            Swal.fire({
-                title: title, html: html, showCancelButton: true,
-                confirmButtonColor: '#ef4444', confirmButtonText: confirmTxt, cancelButtonText: currentLang==='en'?'Cancel':'Hủy'
-            }).then((res) => {
-                if (res.isConfirmed) {
-                    const deductAmt = parseInt(document.getElementById('deductAmount').value);
-                    totalEscrow -= 2100000;
-                    totalCompensated += deductAmt;
-                    updateStatsUI();
+        function startTerminalTraining() {
+            const term = document.getElementById('gpuTerminal');
+            term.innerHTML += `<br><span style="color:#facc15;">[START] Fine-tuning PhoBERT-v2 với 30 Epochs...</span>`;
+            term.scrollTop = term.scrollHeight;
 
-                    const row = document.getElementById('row-' + tripId);
-                    if(row) row.remove();
-
-                    Swal.fire(currentLang==='en'?'Resolved!':'Đã xử lý!', currentLang==='en'?'Compensation routed to Farmer. Balance paid to Driver.':'Tiền bồi thường đã về ví Nông dân. Phần còn lại đã thanh toán cho tài xế.', 'success');
+            let step = 1;
+            const interval = setInterval(() => {
+                if (step <= 3) {
+                    term.innerHTML += `<br>[GPU-0] Batch ${step * 100}/400 - Loss: ${(0.35 - step * 0.08).toFixed(4)} - LR: 1.8e-5`;
+                    term.scrollTop = term.scrollHeight;
+                    step++;
+                } else {
+                    clearInterval(interval);
+                    term.innerHTML += `<br><span style="color:#4ade80;">[SUCCESS] Huấn luyện hoàn tất! F1-Score đạt 95.8%. Trọng số đã lưu vào model checkpoint.</span>`;
+                    term.scrollTop = term.scrollHeight;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Huấn luyện hoàn tất!',
+                        text: 'Mô hình PhoBERT-v2 đã cập nhật trọng số mới và sẵn sàng phục vụ điều phối.',
+                        confirmButtonColor: '#166534'
+                    });
                 }
-            });
+            }, 500);
         }
     </script>
 </body>
-</html> cam on ban nhe to thuyet trinh rat tot roi to dc a+ luon hjhj
+</html>
