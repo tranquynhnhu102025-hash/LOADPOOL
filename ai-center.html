@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOADPOOL AI Studio - Huấn Luyện & Kiểm Thử GenAI</title>
+    <title>LOADPOOL AI Studio</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,23 +11,23 @@
     <link rel="stylesheet" href="css/main-style.css">
 
     <style>
-        .card-custom { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); background: #ffffff; }
+        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); background: #ffffff; }
 
-        /* ENTITY TAGS TRỰC QUAN */
+        /* ENTITY TAGS */
         .entity-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.82rem; margin: 2px; }
         .ent-loc { background-color: #d1e7dd; color: #0f5132; border: 1px solid #a3cfbb; }
         .ent-cap { background-color: #cfe2ff; color: #084298; border: 1px solid #9ec5fe; }
         .ent-time { background-color: #fff3cd; color: #664d03; border: 1px solid #ffecb5; }
         .ent-phone { background-color: #f8d7da; color: #842029; border: 1px solid #f1aeb5; }
 
-        /* TAB NAVIGATION ĐỒNG BỘ */
+        /* TAB NAVIGATION */
         .ai-tab-btn {
             border: 1px solid #e2e8f0;
             background: #ffffff;
             color: #475569;
             font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 9px 18px;
+            border-radius: 8px;
             font-size: 0.88rem;
             transition: all 0.2s ease;
         }
@@ -38,13 +38,16 @@
             box-shadow: 0 4px 12px rgba(22, 101, 52, 0.25);
         }
 
+        /* NÚT CHUYỂN NGÔN NGỮ TIÊU CHUẨN (KHÔNG BO VIỀN CẦU KỲ) */
+        .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
+
         /* TERMINAL HUẤN LUYỆN */
         .terminal-box {
             background: #0f172a;
             color: #38bdf8;
             font-family: 'Consolas', 'Courier New', monospace;
             padding: 14px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 0.82rem;
             height: 180px;
             overflow-y: auto;
@@ -52,7 +55,6 @@
         }
 
         .chart-container-flex { position: relative; flex-grow: 1; min-height: 240px; width: 100%; }
-        .lang-switch .btn { font-size: 0.85rem; padding: 4px 16px; transition: all 0.2s ease; }
     </style>
 </head>
 <body>
@@ -86,11 +88,11 @@
                     Giám sát kiến trúc 3 trụ cột: Voice-to-Action NLP, RAG Hợp đồng thông minh & Phản ứng sự cố Real-time.
                 </p>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <div class="btn-group lang-switch shadow-sm" role="group">
-                    <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
-                    <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
-                </div>
+            
+            <!-- NÚT CHUYỂN NGÔN NGỮ TIÊU CHUẨN GỌN GÀNG (KHÔNG BO VIỀN PHỨC TẠP) -->
+            <div class="btn-group lang-switch shadow-sm" role="group">
+                <button type="button" id="btn-vi" class="btn btn-success fw-bold" onclick="setLang('vi')">VI</button>
+                <button type="button" id="btn-en" class="btn btn-white border bg-white text-secondary fw-semibold" onclick="setLang('en')">EN</button>
             </div>
         </div>
 
@@ -99,7 +101,7 @@
             <div class="col-md-3">
                 <div class="card card-custom p-3 border-start border-4 border-success h-100">
                     <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="DATASET ĐÃ GÁN NHÃN" data-en="LABELED DATASET">DATASET ĐÃ GÁN NHÃN</small>
-                    <h3 class="fw-bold text-dark mb-0" id="datasetCountDisplay">14.850 <small class="fs-6 text-muted fw-normal i18n" data-vi="Mẫu" data-en="Samples">Mẫu</small></h3>
+                    <h3 class="fw-bold text-dark mb-0" id="datasetCountDisplay">14.850 <small class="fs-6 text-muted fw-normal" id="unitSamples">Mẫu</small></h3>
                 </div>
             </div>
             <div class="col-md-3">
@@ -125,16 +127,16 @@
         <!-- BỘ CHUYỂN TAB 4 PHÂN HỆ GENAI -->
         <div class="d-flex gap-2 mb-4 flex-wrap" role="tablist">
             <button class="ai-tab-btn active shadow-sm" onclick="switchAiTab('tab-voice-nlp', this)">
-                <i class="fa-solid fa-microphone-lines me-2"></i>1. Voice & NLP Studio (Voice-to-Action)
+                <i class="fa-solid fa-microphone-lines me-2"></i><span class="i18n" data-vi="1. Voice & NLP Studio (Voice-to-Action)" data-en="1. Voice & NLP Studio (Voice-to-Action)">1. Voice & NLP Studio (Voice-to-Action)</span>
             </button>
             <button class="ai-tab-btn shadow-sm" onclick="switchAiTab('tab-rag-contracts', this)">
-                <i class="fa-solid fa-file-contract me-2"></i>2. RAG & Prompt Engineering (Hợp đồng thông minh)
+                <i class="fa-solid fa-file-contract me-2"></i><span class="i18n" data-vi="2. RAG & Prompt Engineering (Hợp đồng thông minh)" data-en="2. RAG & Prompt Engineering (Smart Contracts)">2. RAG & Prompt Engineering (Hợp đồng thông minh)</span>
             </button>
             <button class="ai-tab-btn shadow-sm" onclick="switchAiTab('tab-incident-gen', this)">
-                <i class="fa-solid fa-triangle-exclamation me-2"></i>3. Real-time Incident Generator
+                <i class="fa-solid fa-triangle-exclamation me-2"></i><span class="i18n" data-vi="3. Real-time Incident Generator" data-en="3. Real-time Incident Generator">3. Real-time Incident Generator</span>
             </button>
             <button class="ai-tab-btn shadow-sm" onclick="switchAiTab('tab-training-pipeline', this)">
-                <i class="fa-solid fa-sliders me-2"></i>4. Training Pipeline & GPU Terminal
+                <i class="fa-solid fa-sliders me-2"></i><span class="i18n" data-vi="4. Training Pipeline & GPU Terminal" data-en="4. Training Pipeline & GPU Terminal">4. Training Pipeline & GPU Terminal</span>
             </button>
         </div>
 
@@ -146,29 +148,31 @@
                 <div class="col-lg-6">
                     <div class="card card-custom p-4 h-100 border">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-comments text-success me-2"></i>Dữ Liệu Phát Ngôn & Bóc Tách Thực Thể (NER)</h5>
+                            <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                                <i class="fa-solid fa-comments text-success me-2"></i>
+                                <span class="i18n" data-vi="Dữ Liệu Phát Ngôn & Bóc Tách Thực Thể (NER)" data-en="Voice Input & Entity Extraction (NER)">Dữ Liệu Phát Ngôn & Bóc Tách Thực Thể (NER)</span>
+                            </h5>
                             <span class="badge bg-light text-dark border">Whisper-v3 + PhoBERT</span>
                         </div>
-                        <p class="text-muted small mb-3">Chọn mẫu phát ngôn giọng địa phương hoặc tin nhắn hội xe tải để kiểm thử bóc tách 6 trường dữ liệu cốt lõi:</p>
+                        <p class="text-muted small mb-3 i18n" data-vi="Chọn mẫu phát ngôn giọng địa phương hoặc tin nhắn hội xe tải để kiểm thử bóc tách 6 trường dữ liệu cốt lõi:" data-en="Select local dialect speech or trucker group posts to test extraction of 6 core fields:">
+                            Chọn mẫu phát ngôn giọng địa phương hoặc tin nhắn hội xe tải để kiểm thử bóc tách 6 trường dữ liệu cốt lõi:
+                        </p>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Mẫu dữ liệu thực tế:</label>
+                            <label class="form-label small fw-bold i18n" data-vi="Mẫu dữ liệu thực tế:" data-en="Real-world input sample:">Mẫu dữ liệu thực tế:</label>
                             <select class="form-select form-select-sm fw-bold mb-2" id="sampleNlpSelect" onchange="changeNlpSample()">
-                                <option value="0">Mẫu 1: "Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ Tân Thạnh lên Chợ Thủ Đức nha..."</option>
-                                <option value="1">Mẫu 2: "Tối nay 21h xe 5 tấn chạy rỗng từ Bình Điền về Châu Thành Tiền Giang nhận ghép hàng, alo 0903.111.222"</option>
+                                <!-- Options rendered via JS to ensure clean translation -->
                             </select>
-                            <textarea class="form-control" id="rawNlpInput" rows="3">Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ bưu điện Tân Thạnh Long An lên Chợ Thủ Đức nha chú, alo Sang 0901.234.567.</textarea>
+                            <textarea class="form-control" id="rawNlpInput" rows="3"></textarea>
                         </div>
 
                         <div class="p-3 bg-light rounded-3 border mb-3">
-                            <small class="text-muted fw-bold d-block mb-1">Văn bản sau khi nhận diện thực thể (NER Highlighting):</small>
-                            <div id="nerVisualOutput" style="line-height: 1.9; font-size: 0.9rem;">
-                                Chiều mai <span class="entity-tag ent-time">16h00 [TIME]</span> cho xe chở <span class="entity-tag ent-cap">50 sọt bí đỏ - 1000kg [WEIGHT]</span> từ <span class="entity-tag ent-loc">Hub Tân Thạnh, Long An [ORIGIN]</span> lên <span class="entity-tag ent-loc">Chợ Thủ Đức, TP.HCM [DEST]</span>. Alo <span class="entity-tag ent-phone">0901.234.567 [PHONE]</span>.
-                            </div>
+                            <small class="text-muted fw-bold d-block mb-1 i18n" data-vi="Văn bản sau khi nhận diện thực thể (NER Highlighting):" data-en="Text after Named Entity Recognition (NER):">Văn bản sau khi nhận diện thực thể (NER Highlighting):</small>
+                            <div id="nerVisualOutput" style="line-height: 1.9; font-size: 0.9rem;"></div>
                         </div>
 
                         <button type="button" class="btn btn-success fw-bold w-100 py-2 rounded-pill shadow-sm" onclick="addToDatasetAction()">
-                            <i class="fa-solid fa-database me-2"></i>Gán Nhãn Đạt Chuẩn & Đưa Vào Dataset Train
+                            <i class="fa-solid fa-database me-2"></i><span class="i18n" data-vi="Gán Nhãn Đạt Chuẩn & Đưa Vào Dataset Train" data-en="Label Ground Truth & Save to Training Dataset">Gán Nhãn Đạt Chuẩn & Đưa Vào Dataset Train</span>
                         </button>
                     </div>
                 </div>
@@ -176,27 +180,20 @@
                 <div class="col-lg-6">
                     <div class="card card-custom p-4 h-100 border">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-code text-primary me-2"></i>JSON Schema Chuẩn Hóa (Structured Output)</h5>
+                            <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                                <i class="fa-solid fa-code text-primary me-2"></i>
+                                <span class="i18n" data-vi="JSON Schema Chuẩn Hóa (Structured Output)" data-en="Standardized JSON Schema (Structured Output)">JSON Schema Chuẩn Hóa (Structured Output)</span>
+                            </h5>
                             <span class="badge bg-success">Pydantic Validated</span>
                         </div>
-                        <p class="text-muted small mb-3">Dữ liệu phi cấu trúc được LLM ép kiểu sang JSON chuẩn để chuyển giao cho thuật toán tối ưu tuyến (VRPTW):</p>
+                        <p class="text-muted small mb-3 i18n" data-vi="Dữ liệu phi cấu trúc được LLM ép kiểu sang JSON chuẩn để chuyển giao cho thuật toán tối ưu tuyến (VRPTW):" data-en="Unstructured data is constrained into JSON format for mathematical route optimization (VRPTW):">
+                            Dữ liệu phi cấu trúc được LLM ép kiểu sang JSON chuẩn để chuyển giao cho thuật toán tối ưu tuyến (VRPTW):
+                        </p>
 
-                        <pre class="bg-dark text-success p-3 rounded-3" style="font-size: 0.82rem; height: 260px; overflow-y: auto;" id="jsonSchemaBox">
-{
-  "commodity": "Bí đỏ hồ lô",
-  "packaging": "Sọt nhựa 20kg",
-  "quantity": 50,
-  "weight_kg": 1000,
-  "pickup_hub": "Hub 01 - Bưu điện Tân Thạnh, Long An",
-  "delivery_market": "Chợ Đầu Mối Thủ Đức, TP.HCM",
-  "pickup_window": "2026-11-06T16:00:00+07:00",
-  "requires_cool_storage": false,
-  "shipper_phone": "0901.234.567",
-  "estimated_cost": "540.000 VNĐ (Ghép xe 5T)"
-}</pre>
+                        <pre class="bg-dark text-success p-3 rounded-3" style="font-size: 0.82rem; height: 260px; overflow-y: auto;" id="jsonSchemaBox"></pre>
                         
                         <div class="alert alert-success py-2 small mb-0">
-                            <i class="fa-solid fa-circle-check me-1"></i> <strong>Tính toàn vẹn dữ liệu:</strong> Toàn bộ địa chỉ đã được đối chiếu kinh độ/vĩ độ GPS qua Google Maps Geocoding API trước khi xếp tài.
+                            <i class="fa-solid fa-circle-check me-1"></i> <span class="i18n" data-vi="Tính toàn vẹn dữ liệu: Toàn bộ địa chỉ đã đối chiếu GPS qua Google Maps Geocoding API trước khi xếp tài." data-en="Data Integrity: All addresses verified via Google Maps Geocoding API before dispatching.">Tính toàn vẹn dữ liệu: Toàn bộ địa chỉ đã đối chiếu GPS qua Google Maps Geocoding API trước khi xếp tài.</span>
                         </div>
                     </div>
                 </div>
@@ -210,26 +207,31 @@
             <div class="row g-4">
                 <div class="col-lg-5">
                     <div class="card card-custom p-4 h-100 border">
-                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-book-bookmark text-primary me-2"></i>Knowledge Base (TCVN Nông Sản & Ví Escrow)</h5>
-                        <p class="text-muted small mb-3">Hệ thống RAG lập chỉ mục các tiêu chuẩn kỹ thuật đóng gói và tỷ lệ hao hụt bay hơi tự nhiên:</p>
+                        <h5 class="fw-bold text-dark mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-book-bookmark text-primary me-2"></i>
+                            <span class="i18n" data-vi="Knowledge Base (TCVN Nông Sản & Ví Escrow)" data-en="Knowledge Base (TCVN Standards & Escrow)">Knowledge Base (TCVN Nông Sản & Ví Escrow)</span>
+                        </h5>
+                        <p class="text-muted small mb-3 i18n" data-vi="Hệ thống RAG lập chỉ mục các tiêu chuẩn kỹ thuật đóng gói và tỷ lệ hao hụt bay hơi tự nhiên:" data-en="RAG indexes packaging standards and natural moisture evaporation limits:">
+                            Hệ thống RAG lập chỉ mục các tiêu chuẩn kỹ thuật đóng gói và tỷ lệ hao hụt bay hơi tự nhiên:
+                        </p>
 
                         <div class="vstack gap-2 mb-3">
                             <div class="p-2 border rounded bg-light">
-                                <strong class="d-block text-success" style="font-size:0.86rem;">TCVN 10738:2015 - Bảo Quản Bí Đỏ</strong>
-                                <small class="text-muted">Đóng sọt nhựa 20kg thông thoáng, xếp tối đa 5 tầng, hao hụt định mức cho phép ≤ 1.5%.</small>
+                                <strong class="d-block text-success i18n" data-vi="TCVN 10738:2015 - Bảo Quản Bí Đỏ" data-en="TCVN 10738:2015 - Pumpkin Storage" style="font-size:0.86rem;">TCVN 10738:2015 - Bảo Quản Bí Đỏ</strong>
+                                <small class="text-muted i18n" data-vi="Đóng sọt nhựa 20kg thông thoáng, xếp tối đa 5 tầng, hao hụt định mức cho phép ≤ 1.5%." data-en="20kg plastic crates, max 5 layers stacked, allowable loss ≤ 1.5%.">Đóng sọt nhựa 20kg thông thoáng, xếp tối đa 5 tầng, hao hụt định mức cho phép ≤ 1.5%.</small>
                             </div>
                             <div class="p-2 border rounded bg-light">
-                                <strong class="d-block text-primary" style="font-size:0.86rem;">TCVN 7578:2006 - Bảo Quản Thanh Long</strong>
-                                <small class="text-muted">Không xếp chồng quá 4 lớp, nhiệt độ tối ưu 12°C - 14°C, cấm ghép chung với sầu riêng tỏa mùi nồng.</small>
+                                <strong class="d-block text-primary i18n" data-vi="TCVN 7578:2006 - Bảo Quản Thanh Long" data-en="TCVN 7578:2006 - Dragon Fruit Storage" style="font-size:0.86rem;">TCVN 7578:2006 - Bảo Quản Thanh Long</strong>
+                                <small class="text-muted i18n" data-vi="Không xếp chồng quá 4 lớp, nhiệt độ tối ưu 12°C - 14°C, cấm ghép chung với sầu riêng tỏa mùi nồng." data-en="Max 4 layers stacked, optimal temp 12°C - 14°C, prohibited with pungent durian.">Không xếp chồng quá 4 lớp, nhiệt độ tối ưu 12°C - 14°C, cấm ghép chung với sầu riêng tỏa mùi nồng.</small>
                             </div>
                             <div class="p-2 border rounded bg-light">
-                                <strong class="d-block text-warning text-dark" style="font-size:0.86rem;">Quy Chế Ví Escrow & Bồi Hoàn</strong>
-                                <small class="text-muted">Hao hụt bay hơi tự nhiên ≤ 2.0% được miễn trừ. Dập nát do tài xế tự động cấn trừ từ cọc xe.</small>
+                                <strong class="d-block text-warning text-dark i18n" data-vi="Quy Chế Ví Escrow & Bồi Hoàn" data-en="Escrow Policy & Dispute Resolution" style="font-size:0.86rem;">Quy Chế Ví Escrow & Bồi Hoàn</strong>
+                                <small class="text-muted i18n" data-vi="Hao hụt bay hơi tự nhiên ≤ 2.0% được miễn trừ. Dập nát do tài xế tự động cấn trừ từ cọc xe." data-en="Evaporation loss ≤ 2.0% is exempt. Physical damage automatically deducted from carrier deposit.">Hao hụt bay hơi tự nhiên ≤ 2.0% được miễn trừ. Dập nát do tài xế tự động cấn trừ từ cọc xe.</small>
                             </div>
                         </div>
 
                         <button type="button" class="btn btn-outline-primary fw-bold w-100 rounded-pill py-2" onclick="testRagRetrieval()">
-                            <i class="fa-solid fa-magnifying-glass me-2"></i>Kiểm Thử Cosine Similarity (Top-3 Trùng Khớp)
+                            <i class="fa-solid fa-magnifying-glass me-2"></i><span class="i18n" data-vi="Kiểm Thử Cosine Similarity (Top-3 Trùng Khớp)" data-en="Test Cosine Similarity (Top-3 Matches)">Kiểm Thử Cosine Similarity (Top-3 Trùng Khớp)</span>
                         </button>
                     </div>
                 </div>
@@ -237,30 +239,22 @@
                 <div class="col-lg-7">
                     <div class="card card-custom p-4 h-100 border">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-file-signature text-success me-2"></i>Dự Thảo Thỏa Thuận Điện Tử (RAG Output)</h5>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success">Automated Agreement</span>
+                            <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                                <i class="fa-solid fa-file-signature text-success me-2"></i>
+                                <span class="i18n" data-vi="Dự Thảo Thỏa Thuận Điện Tử (RAG Output)" data-en="Dynamic Smart Agreement (RAG Output)">Dự Thảo Thỏa Thuận Điện Tử (RAG Output)</span>
+                            </h5>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success i18n" data-vi="Hợp đồng tự động" data-en="Automated Agreement">Hợp đồng tự động</span>
                         </div>
-                        <p class="text-muted small mb-2">Bản thỏa thuận sinh động theo đúng đặc thù lô hàng và điều khoản phân chia cước minh bạch:</p>
+                        <p class="text-muted small mb-2 i18n" data-vi="Bản thỏa thuận sinh động theo đúng đặc thù lô hàng và điều khoản phân chia cước minh bạch:" data-en="Generated dynamically according to crop specs and transparent cost-sharing terms:">
+                            Bản thỏa thuận sinh động theo đúng đặc thù lô hàng và điều khoản phân chia cước minh bạch:
+                        </p>
 
-                        <div class="p-3 bg-light rounded-3 border" style="font-size: 0.84rem; line-height: 1.6; height: 260px; overflow-y: auto;" id="contractPreviewBox">
-                            <h6 class="fw-bold text-center text-dark mb-2">PHỤ LỤC THỎA THUẬN VẬN CHUYỂN GHÉP TẢI #AGR-1049</h6>
-                            <p class="mb-1"><strong>Bên gửi (Shipper):</strong> Nhóm 5 Tiểu Thương (Đại diện: Chị Hai Loan) | SĐT: 0988.765.432</p>
-                            <p class="mb-1"><strong>Bên nhận chở (Carrier):</strong> Tài xế Nguyễn Văn An (Xe 51C-123.45 - Mui bạt 5T)</p>
-                            <p class="mb-1"><strong>Lộ trình:</strong> Hub 01 (Tân Thạnh, Long An) ➔ Chợ Đầu Mối Thủ Đức (Quãng đường 100km)</p>
-                            <p class="mb-1"><strong>Công thức cước động:</strong> 100km × 27.000 đ/km = 2.700.000 đ (Tương đương 540.000 đ/tấn)</p>
-                            <hr class="my-2">
-                            <p class="mb-1 text-success fw-bold"><i class="fa-solid fa-shield-halved me-1"></i>Điều khoản bảo vệ Escrow & Chất lượng nông sản (RAG Injected):</p>
-                            <ul class="mb-0 ps-3">
-                                <li>Quy cách: 250 Sọt nhựa 20kg nguyên vẹn, chằng buộc bạt thông gió theo chuẩn TCVN 10738.</li>
-                                <li>Định mức hao hụt tự nhiên cho phép: &le; 2.0% khối lượng bàn giao tại đầu chợ.</li>
-                                <li>Bảo chứng thanh toán: 100% tiền cước (2.700.000đ) đã khóa tại Ví Escrow và chỉ giải ngân sau khi cân đủ tại chợ đầu mối.</li>
-                            </ul>
-                        </div>
+                        <div class="p-3 bg-light rounded-3 border" style="font-size: 0.84rem; line-height: 1.6; height: 260px; overflow-y: auto;" id="contractPreviewBox"></div>
 
                         <div class="d-flex justify-content-between align-items-center mt-3">
-                            <small class="text-muted"><i class="fa-solid fa-user-check text-success me-1"></i>Human-in-the-loop: Chờ tài xế & chủ hàng bấm xác nhận ký số</small>
-                            <button type="button" class="btn btn-sm btn-success fw-bold px-4 rounded-pill" onclick="Swal.fire('Thành công', 'Đã chuyển bản thảo thỏa thuận sang cổng ký số của các bên.', 'success')">
-                                Phát Hành Thỏa Thuận
+                            <small class="text-muted i18n" data-vi="Human-in-the-loop: Chờ tài xế & chủ hàng xác nhận ký số" data-en="Human-in-the-loop: Awaiting digital sign-off from parties"><i class="fa-solid fa-user-check text-success me-1"></i>Human-in-the-loop: Chờ tài xế & chủ hàng xác nhận ký số</small>
+                            <button type="button" class="btn btn-sm btn-success fw-bold px-4 rounded-pill" onclick="publishContractAction()">
+                                <span class="i18n" data-vi="Phát Hành Thỏa Thuận" data-en="Publish Agreement">Phát Hành Thỏa Thuận</span>
                             </button>
                         </div>
                     </div>
@@ -274,23 +268,26 @@
         <div id="tab-incident-gen" class="ai-tab-content d-none">
             <div class="card card-custom p-4 border mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-radar text-danger me-2"></i>Mô Phỏng Biến Cố Vận Hành & GenAI Đa Đối Tượng</h5>
-                    <span class="badge bg-danger">Simulation Engine</span>
+                    <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                        <i class="fa-solid fa-radar text-danger me-2"></i>
+                        <span class="i18n" data-vi="Mô Phỏng Biến Cố Vận Hành & GenAI Đa Đối Tượng" data-en="Real-time Incident Simulation & Multi-agent GenAI">Mô Phỏng Biến Cố Vận Hành & GenAI Đa Đối Tượng</span>
+                    </h5>
+                    <span class="badge bg-danger i18n" data-vi="Mô phỏng" data-en="Simulation Engine">Mô phỏng</span>
                 </div>
-                <p class="text-muted small mb-3">Khi GPS phát hiện xe lệch lộ trình hoặc tắc đường, GenAI tự động phân tích bối cảnh và sinh thông điệp ứng biến phù hợp riêng cho từng bên:</p>
+                <p class="text-muted small mb-3 i18n" data-vi="Khi GPS phát hiện xe lệch lộ trình hoặc tắc đường, GenAI tự động phân tích bối cảnh và sinh thông điệp ứng biến phù hợp riêng cho từng bên:" data-en="When GPS detects route deviation or traffic jams, GenAI synthesizes context and generates customized messages:">
+                    Khi GPS phát hiện xe lệch lộ trình hoặc tắc đường, GenAI tự động phân tích bối cảnh và sinh thông điệp ứng biến phù hợp riêng cho từng bên:
+                </p>
 
                 <div class="row g-3 mb-4">
                     <div class="col-md-8">
-                        <label class="form-label small fw-bold">Kịch bản sự cố phát sinh trên đường:</label>
+                        <label class="form-label small fw-bold i18n" data-vi="Kịch bản sự cố phát sinh trên đường:" data-en="Incident scenario en route:">Kịch bản sự cố phát sinh trên đường:</label>
                         <select class="form-select fw-bold text-danger border-danger" id="incidentTypeSelect" onchange="runIncidentSimulation()">
-                            <option value="traffic">Kịch bản 1: Kẹt xe nghiêm trọng tại Cầu Bến Lức (Dự kiến trễ ETA 35 phút)</option>
-                            <option value="rain">Kịch bản 2: Mưa lớn ngập đường tại QL1A đoạn Bình Chánh (Tăng nguy cơ ẩm ướt hàng hóa)</option>
-                            <option value="flat_tire">Kịch bản 3: Xe bị sự cố thủng lốp tại Tân An (Cần dừng xử lý 45 phút)</option>
+                            <!-- Options rendered via JS -->
                         </select>
                     </div>
                     <div class="col-md-4 d-flex align-items-end">
                         <button type="button" class="btn btn-danger fw-bold w-100 py-2 shadow-sm rounded-pill" onclick="runIncidentSimulation()">
-                            <i class="fa-solid fa-bolt me-2"></i>Kích Hoạt GenAI Xử Lý Sự Cố
+                            <i class="fa-solid fa-bolt me-2"></i><span class="i18n" data-vi="Kích Hoạt GenAI Xử Lý Sự Cố" data-en="Trigger GenAI Incident Response">Kích Hoạt GenAI Xử Lý Sự Cố</span>
                         </button>
                     </div>
                 </div>
@@ -298,29 +295,23 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="p-3 rounded-3 border bg-light h-100">
-                            <span class="badge bg-dark mb-2">Gửi Tài Xế (Driver)</span>
-                            <h6 class="fw-bold text-primary mb-1"><i class="fa-solid fa-route me-1"></i>Lộ trình tránh kẹt xe</h6>
-                            <p class="small text-muted mb-0" id="msgDriver">
-                                "Cảnh báo kẹt xe 3km phía trước. Hệ thống đề xuất rẽ phải vào đường tránh Tân An qua ĐT 830 để tiết kiệm 20 phút. Vui lòng bấm xác nhận để cập nhật bản đồ."
-                            </p>
+                            <span class="badge bg-dark mb-2 i18n" data-vi="Gửi Tài Xế (Driver)" data-en="To Carrier (Driver)">Gửi Tài Xế (Driver)</span>
+                            <h6 class="fw-bold text-primary mb-1"><i class="fa-solid fa-route me-1"></i><span class="i18n" data-vi="Lộ trình tránh kẹt xe" data-en="Reroute Navigation">Lộ trình tránh kẹt xe</span></h6>
+                            <p class="small text-muted mb-0" id="msgDriver"></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="p-3 rounded-3 border bg-light h-100">
-                            <span class="badge bg-success mb-2">Gửi Nông Dân (Shipper)</span>
-                            <h6 class="fw-bold text-success mb-1"><i class="fa-solid fa-seedling me-1"></i>Bảo toàn nông sản</h6>
-                            <p class="small text-muted mb-0" id="msgShipper">
-                                "Thông báo: Chuyến hàng #TRP-1049 chậm 30 phút do sự cố giao thông. Tài xế đã kéo kín bạt che mưa bảo vệ 50 sọt bí đỏ. Quỹ Escrow vẫn giữ an toàn 100% quyền lợi của bạn."
-                            </p>
+                            <span class="badge bg-success mb-2 i18n" data-vi="Gửi Nông Dân (Shipper)" data-en="To Farmer (Shipper)">Gửi Nông Dân (Shipper)</span>
+                            <h6 class="fw-bold text-success mb-1"><i class="fa-solid fa-seedling me-1"></i><span class="i18n" data-vi="Bảo toàn nông sản" data-en="Crop Protection Status">Bảo toàn nông sản</span></h6>
+                            <p class="small text-muted mb-0" id="msgShipper"></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="p-3 rounded-3 border bg-light h-100">
-                            <span class="badge bg-primary mb-2">Gửi Tiểu Thương (Receiver)</span>
-                            <h6 class="fw-bold text-danger mb-1"><i class="fa-solid fa-clock me-1"></i>Cập nhật ETA nhận hàng</h6>
-                            <p class="small text-muted mb-0" id="msgReceiver">
-                                "Dự kiến hàng về Chợ Thủ Đức lúc 17:35 (trễ 35 phút so với lịch cũ). Chúng tôi đã thông báo tổ bốc xếp chờ tại sạp B12 để xuống hàng nhanh nhất."
-                            </p>
+                            <span class="badge bg-primary mb-2 i18n" data-vi="Gửi Tiểu Thương (Receiver)" data-en="To Buyer (Receiver)">Gửi Tiểu Thương (Receiver)</span>
+                            <h6 class="fw-bold text-danger mb-1"><i class="fa-solid fa-clock me-1"></i><span class="i18n" data-vi="Cập nhật ETA nhận hàng" data-en="Updated ETA">Cập nhật ETA nhận hàng</span></h6>
+                            <p class="small text-muted mb-0" id="msgReceiver"></p>
                         </div>
                     </div>
                 </div>
@@ -334,21 +325,24 @@
             <div class="row g-4">
                 <div class="col-lg-5">
                     <div class="card card-custom p-4 h-100 border">
-                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-gears text-warning me-2"></i>Cấu Hình Siêu Tham Số (Hyperparameters)</h5>
+                        <h5 class="fw-bold text-dark mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-gears text-warning me-2"></i>
+                            <span class="i18n" data-vi="Cấu Hình Siêu Tham Số" data-en="Hyperparameter Tuning">Cấu Hình Siêu Tham Số</span>
+                        </h5>
                         
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Mô hình Fine-tune:</label>
+                            <label class="form-label small fw-bold i18n" data-vi="Mô hình Fine-tune:" data-en="Model to Fine-tune:">Mô hình Fine-tune:</label>
                             <select class="form-select form-select-sm fw-bold">
-                                <option selected>PhoBERT-v2-NER-Logistics (Bóc tách tin mạng XH)</option>
-                                <option>Whisper-v3-Vietnamese-Mekong (ASR Giọng miền Tây)</option>
-                                <option>Embedding-BGE-M3 (Vector Search Hợp đồng RAG)</option>
+                                <option selected>PhoBERT-v2-NER-Logistics (NER Model)</option>
+                                <option>Whisper-v3-Vietnamese-Mekong (ASR Model)</option>
+                                <option>Embedding-BGE-M3 (RAG Vector Model)</option>
                             </select>
                         </div>
 
                         <div class="row g-2 mb-3">
                             <div class="col-4">
                                 <label class="form-label small mb-1">Epochs</label>
-                                <input type="number" class="form-control form-control-sm fw-bold" id="cfgEpochs" value="30">
+                                <input type="number" class="form-control form-control-sm fw-bold" value="30">
                             </div>
                             <div class="col-4">
                                 <label class="form-label small mb-1">Batch Size</label>
@@ -360,17 +354,16 @@
                             </div>
                         </div>
 
-                        <!-- Cửa sổ Terminal giả lập -->
-                        <label class="form-label small fw-bold mb-1"><i class="fa-solid fa-terminal me-1"></i>Quá trình thực thi GPU (NVIDIA A100 Simulation):</label>
+                        <label class="form-label small fw-bold mb-1 i18n" data-vi="Thực thi GPU (NVIDIA A100 Simulation):" data-en="GPU Execution (NVIDIA A100 Simulation):"><i class="fa-solid fa-terminal me-1"></i>Thực thi GPU (NVIDIA A100 Simulation):</label>
                         <div class="terminal-box mb-3" id="gpuTerminal">
                             [INFO] Model checkpoint loaded: phobert-base-v2<br>
                             [INFO] Labeled dataset: 14,850 samples (Train: 80%, Val: 20%)<br>
                             [INFO] Optimizer: AdamW, weight_decay=0.01<br>
-                            [READY] System idle. Sẵn sàng chạy Fine-tune bổ sung...
+                            [READY] System idle. Sẵn sàng chạy Fine-tune...
                         </div>
 
                         <button type="button" class="btn btn-dark fw-bold w-100 py-2 rounded-pill shadow-sm" onclick="startTerminalTraining()">
-                            <i class="fa-solid fa-play me-2 text-warning"></i>Bắt Đầu Fine-Tune Model
+                            <i class="fa-solid fa-play me-2 text-warning"></i><span class="i18n" data-vi="Bắt Đầu Fine-Tune Model" data-en="Start Model Fine-Tuning">Bắt Đầu Fine-Tune Model</span>
                         </button>
                     </div>
                 </div>
@@ -378,14 +371,17 @@
                 <div class="col-lg-7">
                     <div class="card card-custom p-4 h-100 border">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-chart-line text-success me-2"></i>Đường Cong Huấn Luyện (Loss & F1-Score)</h5>
-                            <span class="badge bg-success" id="chartStatusBadge">Trạng thái: Hội tụ tốt (Converged)</span>
+                            <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                                <i class="fa-solid fa-chart-line text-success me-2"></i>
+                                <span class="i18n" data-vi="Đường Cong Huấn Luyện (Loss & F1-Score)" data-en="Training Curves (Loss & F1-Score)">Đường Cong Huấn Luyện (Loss & F1-Score)</span>
+                            </h5>
+                            <span class="badge bg-success i18n" data-vi="Hội tụ tốt (Converged)" data-en="Converged">Hội tụ tốt (Converged)</span>
                         </div>
                         <div class="chart-container-flex mb-2">
                             <canvas id="studioTrainingChart"></canvas>
                         </div>
-                        <small class="text-muted text-center d-block" style="font-size:0.75rem;">
-                            Đường màu xanh lá: F1-Score (Tăng dần tới 95.8%) • Đường màu đỏ: Training Loss (Giảm dần tới 0.12)
+                        <small class="text-muted text-center d-block i18n" data-vi="Đường xanh lá: F1-Score (Tăng dần tới 95.8%) • Đường đỏ: Training Loss (Giảm dần tới 0.12)" data-en="Green Line: F1-Score (Up to 95.8%) • Red Line: Training Loss (Down to 0.12)" style="font-size:0.75rem;">
+                            Đường xanh lá: F1-Score (Tăng dần tới 95.8%) • Đường đỏ: Training Loss (Giảm dần tới 0.12)
                         </small>
                     </div>
                 </div>
@@ -394,23 +390,190 @@
 
     </div>
 
-    <!-- SCRIPTS XỬ LÝ TƯƠNG TÁC -->
+    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // --- CHUYỂN NGÔN NGỮ (VI / EN) ---
-        let currentLang = 'vi';
+        let currentLang = localStorage.getItem('loadpool_lang') || 'vi';
+
+        // Dữ liệu mẫu NLP đa ngôn ngữ
+        const nlpSamples = {
+            vi: [
+                {
+                    label: 'Mẫu 1: "Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ Tân Thạnh lên Chợ Thủ Đức..."',
+                    raw: 'Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ bưu điện Tân Thạnh Long An lên Chợ Thủ Đức nha chú, alo Sang 0901.234.567.',
+                    highlighted: `Chiều mai <span class="entity-tag ent-time">16h00 [TIME]</span> cho xe chở <span class="entity-tag ent-cap">50 sọt bí đỏ - 1000kg [WEIGHT]</span> từ <span class="entity-tag ent-loc">Hub Tân Thạnh, Long An [ORIGIN]</span> lên <span class="entity-tag ent-loc">Chợ Thủ Đức, TP.HCM [DEST]</span>. Alo <span class="entity-tag ent-phone">0901.234.567 [PHONE]</span>.`,
+                    json: `{\n  "commodity": "Bí đỏ hồ lô",\n  "packaging": "Sọt nhựa 20kg",\n  "quantity": 50,\n  "weight_kg": 1000,\n  "pickup_hub": "Hub 01 - Bưu điện Tân Thạnh, Long An",\n  "delivery_market": "Chợ Đầu Mối Thủ Đức, TP.HCM",\n  "pickup_window": "2026-11-06T16:00:00+07:00",\n  "requires_cool_storage": false,\n  "shipper_phone": "0901.234.567",\n  "estimated_cost": "540.000 VNĐ (Ghép xe 5T)"\n}`
+                },
+                {
+                    label: 'Mẫu 2: "Tối nay 21h xe 5 tấn chạy rỗng từ Bình Điền về Châu Thành Tiền Giang nhận ghép hàng..."',
+                    raw: 'Tối nay 21h xe 5 tấn chạy rỗng từ Bình Điền về Châu Thành Tiền Giang nhận ghép hàng trái cây, alo tài xế An 0903.111.222.',
+                    highlighted: `Tối nay <span class="entity-tag ent-time">21h00 [TIME]</span> xe <span class="entity-tag ent-cap">5 tấn chạy rỗng [CAPACITY]</span> từ <span class="entity-tag ent-loc">Chợ Bình Điền [ORIGIN]</span> về <span class="entity-tag ent-loc">Châu Thành, Tiền Giang [DEST]</span>. Alo tài xế <span class="entity-tag ent-phone">An 0903.111.222 [PHONE]</span>.`,
+                    json: `{\n  "intent": "EMPTY_TRUCK_BACKHAUL",\n  "driver_name": "Nguyễn Văn An",\n  "phone": "0903.111.222",\n  "vehicle_type": "5 Tấn (Mui bạt)",\n  "origin": "Chợ Đầu Mối Bình Điền, TP.HCM",\n  "destination": "Hub 02 - Châu Thành, Tiền Giang",\n  "departure_time": "2026-11-05T21:00:00+07:00",\n  "status": "AVAILABLE_FOR_POOLING"\n}`
+                }
+            ],
+            en: [
+                {
+                    label: 'Sample 1: "Tomorrow 4 PM book a truck for 50 crates of pumpkins (1 ton) from Tan Thanh to Thu Duc Market..."',
+                    raw: 'Tomorrow 4 PM book a truck for 50 crates of pumpkins (1 ton) from Tan Thanh Post Office to Thu Duc Market, call Sang 0901.234.567.',
+                    highlighted: `Tomorrow <span class="entity-tag ent-time">16:00 [TIME]</span> transport <span class="entity-tag ent-cap">50 crates pumpkins - 1000kg [WEIGHT]</span> from <span class="entity-tag ent-loc">Tan Thanh Hub, Long An [ORIGIN]</span> to <span class="entity-tag ent-loc">Thu Duc Market, HCMC [DEST]</span>. Call <span class="entity-tag ent-phone">0901.234.567 [PHONE]</span>.`,
+                    json: `{\n  "commodity": "Pumpkins",\n  "packaging": "20kg plastic crates",\n  "quantity": 50,\n  "weight_kg": 1000,\n  "pickup_hub": "Hub 01 - Tan Thanh, Long An",\n  "delivery_market": "Thu Duc Wholesale Market, HCMC",\n  "pickup_window": "2026-11-06T16:00:00+07:00",\n  "requires_cool_storage": false,\n  "shipper_phone": "0901.234.567",\n  "estimated_cost": "540,000 VND (5T Pooling)"\n}`
+                },
+                {
+                    label: 'Sample 2: "Tonight 9 PM 5T empty truck returning from Binh Dien to Chau Thanh Tien Giang, call An..."',
+                    raw: 'Tonight 9 PM 5T empty truck returning from Binh Dien to Chau Thanh Tien Giang available for fruit pooling, call driver An 0903.111.222.',
+                    highlighted: `Tonight <span class="entity-tag ent-time">21:00 [TIME]</span> <span class="entity-tag ent-cap">5T empty truck [CAPACITY]</span> from <span class="entity-tag ent-loc">Binh Dien Market [ORIGIN]</span> to <span class="entity-tag ent-loc">Chau Thanh, Tien Giang [DEST]</span>. Call driver <span class="entity-tag ent-phone">An 0903.111.222 [PHONE]</span>.`,
+                    json: `{\n  "intent": "EMPTY_TRUCK_BACKHAUL",\n  "driver_name": "Nguyen Van An",\n  "phone": "0903.111.222",\n  "vehicle_type": "5 Ton (Tarpaulin)",\n  "origin": "Binh Dien Wholesale Market, HCMC",\n  "destination": "Hub 02 - Chau Thanh, Tien Giang",\n  "departure_time": "2026-11-05T21:00:00+07:00",\n  "status": "AVAILABLE_FOR_POOLING"\n}`
+                }
+            ]
+        };
+
+        const incidentScenarios = {
+            vi: [
+                { val: 'traffic', text: 'Kịch bản 1: Kẹt xe nghiêm trọng tại Cầu Bến Lức (Trễ ETA 35 phút)' },
+                { val: 'rain', text: 'Kịch bản 2: Mưa lớn ngập đường tại QL1A đoạn Bình Chánh' },
+                { val: 'flat_tire', text: 'Kịch bản 3: Xe bị sự cố thủng lốp tại Tân An (Dừng 45 phút)' }
+            ],
+            en: [
+                { val: 'traffic', text: 'Scenario 1: Heavy traffic jam at Ben Luc Bridge (ETA delayed 35 mins)' },
+                { val: 'rain', text: 'Scenario 2: Heavy storm & flood on National Route 1A at Binh Chanh' },
+                { val: 'flat_tire', text: 'Scenario 3: Flat tire incident at Tan An (45 mins technical stop)' }
+            ]
+        };
+
         function setLang(lang) {
             currentLang = lang;
+            localStorage.setItem('loadpool_lang', lang);
+
+            // Cập nhật text các thẻ có class i18n
             document.querySelectorAll('.i18n').forEach(el => {
-                if(el.hasAttribute('data-' + lang)) el.innerText = el.getAttribute('data-' + lang);
+                if (el.hasAttribute('data-' + lang)) {
+                    el.innerText = el.getAttribute('data-' + lang);
+                }
             });
-            document.getElementById('btn-en').className = lang === 'en' ? 'btn btn-success fw-bold' : 'btn btn-white border bg-white text-secondary fw-semibold';
-            document.getElementById('btn-vi').className = lang === 'vi' ? 'btn btn-success fw-bold' : 'btn btn-white border bg-white text-secondary fw-semibold';
+
+            // Cập nhật giao diện nút bấm
+            if (lang === 'en') {
+                document.getElementById('btn-en').className = 'btn btn-success fw-bold';
+                document.getElementById('btn-vi').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+                document.getElementById('unitSamples').innerText = 'Samples';
+            } else {
+                document.getElementById('btn-vi').className = 'btn btn-success fw-bold';
+                document.getElementById('btn-en').className = 'btn btn-white border bg-white text-secondary fw-semibold';
+                document.getElementById('unitSamples').innerText = 'Mẫu';
+            }
+
+            // Render lại các dropdown mẫu và hợp đồng
+            renderNlpDropdown(lang);
+            renderIncidentDropdown(lang);
+            renderContractPreview(lang);
+            runIncidentSimulation();
         }
 
-        // --- CHUYỂN TAB THÔNG MINH ---
+        function renderNlpDropdown(lang) {
+            const select = document.getElementById('sampleNlpSelect');
+            const curVal = select.value || '0';
+            select.innerHTML = '';
+            nlpSamples[lang].forEach((item, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.innerText = item.label;
+                select.appendChild(opt);
+            });
+            select.value = curVal;
+            changeNlpSample();
+        }
+
+        function changeNlpSample() {
+            const idx = parseInt(document.getElementById('sampleNlpSelect').value) || 0;
+            const item = nlpSamples[currentLang][idx];
+            document.getElementById('rawNlpInput').value = item.raw;
+            document.getElementById('nerVisualOutput').innerHTML = item.highlighted;
+            document.getElementById('jsonSchemaBox').innerText = item.json;
+        }
+
+        function renderIncidentDropdown(lang) {
+            const select = document.getElementById('incidentTypeSelect');
+            const curVal = select.value || 'traffic';
+            select.innerHTML = '';
+            incidentScenarios[lang].forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.val;
+                opt.innerText = item.text;
+                select.appendChild(opt);
+            });
+            select.value = curVal;
+        }
+
+        function renderContractPreview(lang) {
+            const box = document.getElementById('contractPreviewBox');
+            if (lang === 'en') {
+                box.innerHTML = `
+                    <h6 class="fw-bold text-center text-dark mb-2">DYNAMIC FREIGHT POOLING AGREEMENT #AGR-1049</h6>
+                    <p class="mb-1"><strong>Shipper:</strong> Group of 5 Merchants (Lead: Ms. Hai Loan) | Phone: 0988.765.432</p>
+                    <p class="mb-1"><strong>Carrier:</strong> Driver Nguyen Van An (Vehicle: 51C-123.45 - 5T Tarpaulin Truck)</p>
+                    <p class="mb-1"><strong>Route:</strong> Hub 01 (Tan Thanh, Long An) ➔ Thu Duc Wholesale Market (Distance: 100km)</p>
+                    <p class="mb-1"><strong>Dynamic Formula:</strong> 100km × 27,000 VND/km = 2,700,000 VND (~540,000 VND/Ton)</p>
+                    <hr class="my-2">
+                    <p class="mb-1 text-success fw-bold"><i class="fa-solid fa-shield-halved me-1"></i>Escrow Protection & TCVN Quality Clauses (RAG Injected):</p>
+                    <ul class="mb-0 ps-3">
+                        <li>Specifications: 250 plastic crates (20kg each), strapped & ventilated according to TCVN 10738.</li>
+                        <li>Natural evaporation tolerance: ≤ 2.0% of total dispatch weight at destination.</li>
+                        <li>Payment Guarantee: 100% freight (2,700,000 VND) locked in Escrow Wallet, released only upon complete weight log verification.</li>
+                    </ul>
+                `;
+            } else {
+                box.innerHTML = `
+                    <h6 class="fw-bold text-center text-dark mb-2">PHỤ LỤC THỎA THUẬN VẬN CHUYỂN GHÉP TẢI #AGR-1049</h6>
+                    <p class="mb-1"><strong>Bên gửi (Shipper):</strong> Nhóm 5 Tiểu Thương (Đại diện: Chị Hai Loan) | SĐT: 0988.765.432</p>
+                    <p class="mb-1"><strong>Bên nhận chở (Carrier):</strong> Tài xế Nguyễn Văn An (Xe 51C-123.45 - Mui bạt 5T)</p>
+                    <p class="mb-1"><strong>Lộ trình:</strong> Hub 01 (Tân Thạnh, Long An) ➔ Chợ Đầu Mối Thủ Đức (Quãng đường 100km)</p>
+                    <p class="mb-1"><strong>Công thức cước động:</strong> 100km × 27.000 đ/km = 2.700.000 đ (Tương đương 540.000 đ/tấn)</p>
+                    <hr class="my-2">
+                    <p class="mb-1 text-success fw-bold"><i class="fa-solid fa-shield-halved me-1"></i>Điều khoản bảo vệ Escrow & Chất lượng nông sản (RAG Injected):</p>
+                    <ul class="mb-0 ps-3">
+                        <li>Quy cách: 250 Sọt nhựa 20kg nguyên vẹn, chằng buộc bạt thông gió theo chuẩn TCVN 10738.</li>
+                        <li>Định mức hao hụt tự nhiên cho phép: ≤ 2.0% khối lượng bàn giao tại đầu chợ.</li>
+                        <li>Bảo chứng thanh toán: 100% tiền cước (2.700.000đ) đã khóa tại Ví Escrow và chỉ giải ngân sau khi cân đủ tại chợ đầu mối.</li>
+                    </ul>
+                `;
+            }
+        }
+
+        function runIncidentSimulation() {
+            const type = document.getElementById('incidentTypeSelect').value;
+            if (currentLang === 'en') {
+                if (type === 'traffic') {
+                    document.getElementById('msgDriver').innerText = '"Traffic alert: 3km bottleneck at Ben Luc bridge. System recommends detour via DT 830 to save 20 mins. Confirm in app."';
+                    document.getElementById('msgShipper').innerText = '"Update: Shipment #TRP-1049 delayed by 30 mins due to traffic. Cargo tarpaulin secured. 100% Escrow coverage guaranteed."';
+                    document.getElementById('msgReceiver').innerText = '"Expected delivery at Thu Duc Market at 17:35 (35 mins delay). Unloading team at stall B12 alerted."';
+                } else if (type === 'rain') {
+                    document.getElementById('msgDriver').innerText = '"Heavy rain & flood ahead (0.3m). Reduce speed < 40km/h, verify tarpaulin seals to prevent moisture damage."';
+                    document.getElementById('msgShipper').innerText = '"Truck is passing heavy rain area. Enclosed cover mode verified, temperature and humidity remain stable."';
+                    document.getElementById('msgReceiver').innerText = '"Inclement weather slows transport, ETA rescheduled by 15 mins. Handover remains strictly bound to AI Vision QC."';
+                } else {
+                    document.getElementById('msgDriver').innerText = '"Flat tire recorded. Tan An roadside service 1.5km away is dispatched, ETA 15 mins."';
+                    document.getElementById('msgShipper').innerText = '"Truck paused for tire replacement at Tan An (40 mins). Container temperature optimal, zero impact on goods."';
+                    document.getElementById('msgReceiver').innerText = '"Minor technical stop at Tan An, updated ETA is 18:00. Prioritized QC inspection preserved before Escrow release."';
+                }
+            } else {
+                if (type === 'traffic') {
+                    document.getElementById('msgDriver').innerText = '"Cảnh báo kẹt xe 3km tại Cầu Bến Lức. AI đề xuất rẽ vào ĐT 830 để tiết kiệm 20 phút. Vui lòng bấm xác nhận trên ứng dụng."';
+                    document.getElementById('msgShipper').innerText = '"Thông báo: Lô hàng #TRP-1049 chậm 30 phút do kẹt xe. Tài xế đã kiểm tra bạt che kín 50 sọt bí đỏ. Quỹ Escrow bảo chứng an toàn 100%."';
+                    document.getElementById('msgReceiver').innerText = '"Dự kiến giao hàng lúc 17:35 (trễ 35 phút). Sạp B12 tại Chợ Thủ Đức đã được thông báo chuẩn bị bốc dỡ nhanh."';
+                } else if (type === 'rain') {
+                    document.getElementById('msgDriver').innerText = '"Mưa lớn ngập 0.3m đoạn Bình Chánh. Giảm tốc độ < 40km/h, kiểm tra dây chằng bạt đáy thùng xe tránh thấm nước nông sản."';
+                    document.getElementById('msgShipper').innerText = '"Xe đang qua vùng mưa to, hệ thống kích hoạt chế độ giám sát bạt mui kín, đảm bảo không ảnh hưởng độ ẩm hàng hóa."';
+                    document.getElementById('msgReceiver').innerText = '"Thời tiết xấu làm giảm tốc độ xe, ETA dời lại 15 phút. Biên bản bàn giao vẫn tuân thủ kiểm định dập nát AI Vision."';
+                } else {
+                    document.getElementById('msgDriver').innerText = '"Đã ghi nhận sự cố thủng lốp. Trạm cứu hộ Tân An cách 1.5km đang di chuyển hỗ trợ trong 15 phút."';
+                    document.getElementById('msgShipper').innerText = '"Xe tạm dừng thay lốp tại trạm Tân An (40 phút). Nhiệt độ thùng xe bình thường, không ảnh hưởng nông sản."';
+                    document.getElementById('msgReceiver').innerText = '"Xe gặp sự cố kỹ thuật nhẹ tại Tân An, ETA mới là 18:00. Hệ thống giữ quyền ưu tiên kiểm hàng trước khi giải ngân Escrow."';
+                }
+            }
+        }
+
         function switchAiTab(tabId, btnElement) {
             document.querySelectorAll('.ai-tab-content').forEach(el => el.classList.add('d-none'));
             document.querySelectorAll('.ai-tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -419,82 +582,44 @@
             btnElement.classList.add('active');
         }
 
-        // --- TAB 1: NLP SAMPLE CHANGER ---
-        const nlpSamples = [
-            {
-                raw: "Chiều mai 4 giờ cho xe chở giùm 50 sọt bí đỏ nặng 1 tấn từ bưu điện Tân Thạnh Long An lên Chợ Thủ Đức nha chú, alo Sang 0901.234.567.",
-                highlighted: `Chiều mai <span class="entity-tag ent-time">16h00 [TIME]</span> cho xe chở <span class="entity-tag ent-cap">50 sọt bí đỏ - 1000kg [WEIGHT]</span> từ <span class="entity-tag ent-loc">Hub Tân Thạnh, Long An [ORIGIN]</span> lên <span class="entity-tag ent-loc">Chợ Thủ Đức, TP.HCM [DEST]</span>. Alo <span class="entity-tag ent-phone">0901.234.567 [PHONE]</span>.`,
-                json: `{\n  "commodity": "Bí đỏ hồ lô",\n  "packaging": "Sọt nhựa 20kg",\n  "quantity": 50,\n  "weight_kg": 1000,\n  "pickup_hub": "Hub 01 - Bưu điện Tân Thạnh, Long An",\n  "delivery_market": "Chợ Đầu Mối Thủ Đức, TP.HCM",\n  "pickup_window": "2026-11-06T16:00:00+07:00",\n  "requires_cool_storage": false,\n  "shipper_phone": "0901.234.567",\n  "estimated_cost": "540.000 VNĐ (Ghép xe 5T)"\n}`
-            },
-            {
-                raw: "Tối nay 21h xe 5 tấn chạy rỗng từ Bình Điền về Châu Thành Tiền Giang nhận ghép hàng trái cây, alo tài xế An 0903.111.222.",
-                highlighted: `Tối nay <span class="entity-tag ent-time">21h00 [TIME]</span> xe <span class="entity-tag ent-cap">5 tấn chạy rỗng [CAPACITY]</span> từ <span class="entity-tag ent-loc">Chợ Bình Điền [ORIGIN]</span> về <span class="entity-tag ent-loc">Châu Thành, Tiền Giang [DEST]</span>. Alo tài xế <span class="entity-tag ent-phone">An 0903.111.222 [PHONE]</span>.`,
-                json: `{\n  "intent": "EMPTY_TRUCK_BACKHAUL",\n  "driver_name": "Nguyễn Văn An",\n  "phone": "0903.111.222",\n  "vehicle_type": "5 Tấn (Mui bạt)",\n  "origin": "Chợ Đầu Mối Bình Điền, TP.HCM",\n  "destination": "Hub 02 - Châu Thành, Tiền Giang",\n  "departure_time": "2026-11-05T21:00:00+07:00",\n  "status": "AVAILABLE_FOR_POOLING"\n}`
-            }
-        ];
-
-        function changeNlpSample() {
-            const idx = parseInt(document.getElementById('sampleNlpSelect').value);
-            document.getElementById('rawNlpInput').value = nlpSamples[idx].raw;
-            document.getElementById('nerVisualOutput').innerHTML = nlpSamples[idx].highlighted;
-            document.getElementById('jsonSchemaBox').innerText = nlpSamples[idx].json;
-        }
-
         let datasetCounter = 14850;
         function addToDatasetAction() {
             datasetCounter++;
-            document.getElementById('datasetCountDisplay').innerHTML = `${datasetCounter.toLocaleString('vi-VN')} <small class="fs-6 text-muted fw-normal">Mẫu</small>`;
+            document.getElementById('datasetCountDisplay').innerHTML = `${datasetCounter.toLocaleString('vi-VN')} <small class="fs-6 text-muted fw-normal">${currentLang==='en'?'Samples':'Mẫu'}</small>`;
             Swal.fire({
                 icon: 'success',
-                title: 'Đã lưu vào Kho dữ liệu huấn luyện!',
-                text: 'Mẫu phát ngôn đã được thẩm định JSON Schema và chuyển vào hàng đợi Active Learning.',
+                title: currentLang==='en'?'Saved to Training Dataset!':'Đã lưu vào Kho dữ liệu huấn luyện!',
+                text: currentLang==='en'?'Speech sample validated by JSON Schema and queued for Active Learning.':'Mẫu phát ngôn đã được thẩm định JSON Schema và chuyển vào hàng đợi Active Learning.',
                 confirmButtonColor: '#166534'
             });
         }
 
-        // --- TAB 2: RAG TEST ---
         function testRagRetrieval() {
             Swal.fire({
-                title: 'Đang truy xuất Vector Database...',
-                html: 'Truy vấn ChromaDB với độ tương đồng Cosine Similarity cho cặp hàng <b>Bí đỏ & Thanh long</b>...',
+                title: currentLang==='en'?'Querying Vector Database...':'Đang truy xuất Vector Database...',
+                html: currentLang==='en'?'Running Cosine Similarity on ChromaDB for <b>Pumpkin & Dragon Fruit</b> cargo...':'Truy vấn ChromaDB với độ tương đồng Cosine Similarity cho cặp hàng <b>Bí đỏ & Thanh long</b>...',
                 timer: 1200,
                 didOpen: () => { Swal.showLoading(); }
             }).then(() => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Đã truy xuất Top-3 Điều khoản!',
-                    html: 'Độ khớp <b>98.2%</b> với TCVN 10738:2015 và Quy chế ký quỹ Ví Escrow. Đã nạp thành công ngữ cảnh vào Prompt soạn thảo hợp đồng.',
+                    title: currentLang==='en'?'Top-3 Clauses Retrieved!':'Đã truy xuất Top-3 Điều khoản!',
+                    html: currentLang==='en'?'<b>98.2% similarity</b> with TCVN 10738:2015 & Escrow policies. Injected into contract prompt.':'Độ khớp <b>98.2%</b> với TCVN 10738:2015 và Quy chế ký quỹ Ví Escrow. Đã nạp thành công ngữ cảnh vào Prompt soạn thảo hợp đồng.',
                     confirmButtonColor: '#166534'
                 });
             });
         }
 
-        // --- TAB 3: INCIDENT SIMULATION ---
-        function runIncidentSimulation() {
-            const type = document.getElementById('incidentTypeSelect').value;
-            if (type === 'traffic') {
-                document.getElementById('msgDriver').innerText = '"Cảnh báo kẹt xe 3km tại Cầu Bến Lức. AI đề xuất rẽ vào ĐT 830 để tiết kiệm 20 phút. Vui lòng bấm xác nhận trên ứng dụng."';
-                document.getElementById('msgShipper').innerText = '"Thông báo: Lô hàng #TRP-1049 chậm 30 phút do kẹt xe. Tài xế đã kiểm tra bạt che kín 50 sọt bí đỏ. Quỹ Escrow bảo chứng an toàn 100%."';
-                document.getElementById('msgReceiver').innerText = '"Dự kiến giao hàng lúc 17:35 (trễ 35 phút). Sạp B12 tại Chợ Thủ Đức đã được thông báo chuẩn bị bốc dỡ nhanh."';
-            } else if (type === 'rain') {
-                document.getElementById('msgDriver').innerText = '"Mưa lớn ngập 0.3m đoạn Bình Chánh. Giảm tốc độ < 40km/h, kiểm tra dây chằng bạt đáy thùng xe tránh thấm nước nông sản."';
-                document.getElementById('msgShipper').innerText = '"Xe đang qua vùng mưa to, hệ thống kích hoạt chế độ giám sát bạt mui kín, đảm bảo không ảnh hưởng độ ẩm hàng hóa."';
-                document.getElementById('msgReceiver').innerText = '"Thời tiết xấu làm giảm tốc độ xe, ETA dời lại 15 phút. Biên bản bàn giao vẫn tuân thủ kiểm định dập nát AI Vision."';
-            } else {
-                document.getElementById('msgDriver').innerText = '"Đã ghi nhận sự cố thủng lốp. Trạm cứu hộ Tân An cách 1.5km đang di chuyển hỗ trợ trong 15 phút."';
-                document.getElementById('msgShipper').innerText = '"Xe tạm dừng thay lốp tại trạm Tân An (40 phút). Nhiệt độ thùng xe bình thường, không ảnh hưởng nông sản."';
-                document.getElementById('msgReceiver').innerText = '"Xe gặp sự cố kỹ thuật nhẹ tại Tân An, ETA mới là 18:00. Hệ thống giữ quyền ưu tiên kiểm hàng trước khi giải ngân Escrow."';
-            }
-
+        function publishContractAction() {
             Swal.fire({
-                icon: 'info',
-                title: 'GenAI Đã Tạo Thông Báo Tự Động',
-                text: '3 thông điệp cá nhân hóa đã được đồng bộ tới giao diện Tài xế, Nông dân và Tiểu thương trong 0.8 giây.',
+                icon: 'success',
+                title: currentLang==='en'?'Agreement Published!':'Thỏa Thuận Đã Phát Hành!',
+                text: currentLang==='en'?'Dispatched to digital sign-off gateway for Shipper & Carrier.':'Đã chuyển bản thảo thỏa thuận sang cổng ký số của các bên.',
                 confirmButtonColor: '#166534'
             });
         }
 
-        // --- TAB 4: BIỂU ĐỒ & TERMINAL SIMULATOR ---
+        // Biểu đồ Loss & Accuracy
         const ctxStudio = document.getElementById('studioTrainingChart').getContext('2d');
         const studioChart = new Chart(ctxStudio, {
             type: 'line',
@@ -527,7 +652,7 @@
 
         function startTerminalTraining() {
             const term = document.getElementById('gpuTerminal');
-            term.innerHTML += `<br><span style="color:#facc15;">[START] Fine-tuning PhoBERT-v2 với 30 Epochs...</span>`;
+            term.innerHTML += `<br><span style="color:#facc15;">[START] Fine-tuning PhoBERT-v2 with 30 Epochs...</span>`;
             term.scrollTop = term.scrollHeight;
 
             let step = 1;
@@ -538,17 +663,20 @@
                     step++;
                 } else {
                     clearInterval(interval);
-                    term.innerHTML += `<br><span style="color:#4ade80;">[SUCCESS] Huấn luyện hoàn tất! F1-Score đạt 95.8%. Trọng số đã lưu vào model checkpoint.</span>`;
+                    term.innerHTML += `<br><span style="color:#4ade80;">[SUCCESS] Training completed! F1-Score reached 95.8%. Model weights saved to checkpoint.</span>`;
                     term.scrollTop = term.scrollHeight;
                     Swal.fire({
                         icon: 'success',
-                        title: 'Huấn luyện hoàn tất!',
-                        text: 'Mô hình PhoBERT-v2 đã cập nhật trọng số mới và sẵn sàng phục vụ điều phối.',
+                        title: currentLang==='en'?'Fine-Tuning Finished!':'Huấn luyện hoàn tất!',
+                        text: currentLang==='en'?'PhoBERT-v2 model weights updated and ready for deployment.':'Mô hình PhoBERT-v2 đã cập nhật trọng số mới và sẵn sàng phục vụ điều phối.',
                         confirmButtonColor: '#166534'
                     });
                 }
             }, 500);
         }
+
+        // Tự động khởi tạo ngôn ngữ khi tải trang
+        setLang(currentLang);
     </script>
 </body>
 </html>
